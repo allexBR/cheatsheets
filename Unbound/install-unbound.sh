@@ -4,32 +4,15 @@
 # Created by allexBR | https://github.com/allexBR
 # -----------------------------------------------------------------------------------
 
-# Ensure security and predictability (consistent permissions and unmasked pipe failures)
-set -o pipefail
-umask 022
-
-# Require root privileges to prevent mid-process failures
+# --- Validating privileges and re-executing as root ---
 if [ "$(id -u)" -ne 0 ]; then
-  echo "This script needs to be run as root. Use 'sudo -i' or 'su -' before running it."
-  exit 1
+  echo "This script requires root privileges."
+  echo "Enter the root password when prompted to continue."
+  # Resolves the absolute path of the script for correct re-execution
+  SCRIPT_PATH="$(readlink -f "$0" 2>/dev/null || realpath "$0")"
+  # Re-executes the script in a root login shell while preserving arguments
+  exec su - -c "/bin/bash \"$SCRIPT_PATH\" $*"
 fi
-
-# Avoid interactive APT prompts in non-interactive/CI environments
-export DEBIAN_FRONTEND=noninteractive
-export APT_LISTCHANGES_FRONTEND=none
-
-# Consolidated execution log (stdout+stderr)
-LOG_FILE="/var/log/unbound-install.log"
-mkdir -p "$(dirname "$LOG_FILE")"
-exec > >(tee -a "$LOG_FILE") 2>&1
-echo "=== Início: $(date -Is) ==="
-
-# Show Debian version and kernel (useful for troubleshooting)
-echo "Debian: $(lsb_release -ds 2>/dev/null || cat /etc/debian_version || echo 'desconhecido')"
-echo "Kernel: $(uname -r)"
-
-
-su -
 
 apt clean ; apt update ; apt upgrade -y
 
