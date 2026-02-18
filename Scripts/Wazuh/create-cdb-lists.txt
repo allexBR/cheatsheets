@@ -1,0 +1,31 @@
+https://wazuh.com/blog/using-osint-to-create-cdb-lists/
+
+
+sudo wget https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/alienvault_reputation.ipset -O /var/ossec/etc/lists/alienvault_reputation.ipset
+sudo wget https://wazuh.com/resources/iplist-to-cdblist.py -O /var/ossec/etc/lists/iplist-to-cdblist.py
+sudo chmod +x /var/ossec/etc/lists/iplist-to-cdblist.py
+sudo /var/ossec/etc/lists/iplist-to-cdblist.py /var/ossec/etc/lists/alienvault_reputation.ipset /var/ossec/etc/lists/blacklist-alienvault
+sudo rm -f /var/ossec/etc/lists/alienvault_reputation.ipset
+
+
+## Manager: ossec.conf
+...
+<ruleset>
+  <list>etc/lists/blacklist-alienvault</list>
+...
+
+sudo /var/ossec/bin/ossec-makelists
+* File etc/lists/blacklist-alienvault.cdb needs to be updated
+
+
+## Manager: local_rules.xml
+<group name="attack,">
+    <rule id="100100" level="10">
+      <if_group>web|attack|attacks</if_group>
+      <list field="srcip" lookup="address_match_key">etc/lists/blacklist-alienvault</list>
+      <description>IP in black list.</description>
+    </rule>
+</group>
+
+
+sudo /var/ossec/bin/ossec-control restart
