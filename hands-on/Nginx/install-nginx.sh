@@ -33,7 +33,7 @@ echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https:/
 # Final System repositories update
 apt update
 
-# Start Nginx Installation
+# Start Nginx installation in full mode
 apt install -y nginx-full
 
 echo "Installation completed successfully!"
