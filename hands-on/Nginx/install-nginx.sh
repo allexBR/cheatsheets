@@ -50,6 +50,6 @@ EOF
 apt update
 
 # Start Nginx installation in full mode
-apt install nginx nginx-common
+apt install nginx
 
 echo "Installation completed successfully!"
