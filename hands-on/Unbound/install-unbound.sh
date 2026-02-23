@@ -101,7 +101,7 @@ ldconfig
 touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
-chown root:unbound /var/log/unbound.log && chmod 640 /var/log/unbound.log
+chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
 
 # Add Unbound system user permissions in required folders
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
