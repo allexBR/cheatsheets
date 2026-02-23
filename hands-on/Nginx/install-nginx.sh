@@ -1,9 +1,9 @@
 #!/bin/bash
 # ------------------------------------------------------------------------------------------------
-# Installing NGINX (latest stable release) on Debian Server via Sury repo (https://deb.sury.org/)
+# Installing NGINX (latest stable release) on Debian Server via Nginx Official Repo
 # Created by allexBR | https://github.com/allexBR
 # from: https://nginx.org/en/linux_packages.html#Debian
-# ------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------ 
 
 # --- Validating privileges and re-executing as root ---
 # Check if the script is already running as root (UID 0)
@@ -53,3 +53,5 @@ apt update
 apt install nginx
 
 echo "Installation completed successfully!"
+
+nginx -v
