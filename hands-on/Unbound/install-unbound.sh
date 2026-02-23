@@ -7,12 +7,12 @@
 # --- Validating privileges and re-executing as root ---
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
-  echo "This script requires root privileges."
-  echo "Enter the root password when prompted to continue."
-  # Resolves the absolute path of the script for correct re-execution
-  SCRIPT_PATH="$(readlink -f "$0" 2>/dev/null || realpath "$0")"
-  # Re-executes the script in a root login shell while preserving arguments
-  exec su - -c "/bin/bash \"$SCRIPT_PATH\" $*"
+    echo "This script requires root privileges."
+    echo "Enter the root password when prompted to continue."
+    # 'exec' Replace the current process with the command su -c
+    # '$0' refers to the current script itself
+    exec su -c "sh $0"
+    exit $?
 fi
 
 echo "Starting the Unbound DNS installation. Please wait..."
