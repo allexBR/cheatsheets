@@ -5,6 +5,7 @@
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
+# Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
   echo "This script requires root privileges."
   echo "Enter the root password when prompted to continue."
@@ -14,14 +15,18 @@ if [ "$(id -u)" -ne 0 ]; then
   exec su - -c "/bin/bash \"$SCRIPT_PATH\" $*"
 fi
 
+echo "Starting the Unbound DNS installation. Please wait..."
+
+# Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
 
+# Install required dependencies
 apt install -y unbound-anchor lsb-release ca-certificates apt-transport-https curl
 
+# Update System certificate authority
 update-ca-certificates
 
-cd /tmp
-
+# Install libraries and packages required to start compiling
 apt install -y build-essential \
   bison \
   flex \
@@ -39,12 +44,19 @@ apt install -y build-essential \
 
 apt install -y python-is-python3
 
+# Enter to the folder where the necessary files will be downloaded
+cd /tmp
+
+# Download Unbound (latest stable release) source code
 wget https://nlnetlabs.nl/downloads/unbound/unbound-latest.tar.gz
 
+# Extract Unbound source code
 tar xzf unbound-*.tar.gz
 
+# Enter the directory extracted from the compressed file
 cd unbound-1*
 
+# Compile Unbound from source code
 ./configure \
   --prefix=/usr \
   --sysconfdir=/etc \
@@ -76,28 +88,37 @@ make install
 
 ldconfig
 
+# Add Unbound user to the System
 adduser --system --group --no-create-home --quiet unbound
 
+# Create a log file for Unbound
 touch /var/log/unbound.log
 
-chown root:unbound /var/log/unbound.log
+# Configure permissions for the Unbound log file
+chown root:unbound /var/log/unbound.log && chmod 640 /var/log/unbound.log
 
-chmod 640 /var/log/unbound.log
-
+# Add Unbound system user permissions in required folders
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
 
+# Add Unbound system user permissions in required folders
 install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 
+# Create Unbound root.key file
 unbound-anchor -a /var/lib/unbound/root.key
 
+# Unbound system user must have write permission to the file
 chmod 644 /var/lib/unbound/root.key
 
+# Download root.hints file from Internic.net
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
 
+# Unbound system user must have write permission to the file
 chmod 644 /etc/unbound/root.hints
 
+# Remove default resolv.conf file from the System
 rm -f /etc/resolv.conf
 
+# Create a new resolv.conf file
 tee /etc/resolv.conf <<EOF
 nameserver 127.0.0.1
 nameserver ::1
@@ -107,6 +128,7 @@ EOF
 #chattr -e /etc/resolv.conf
 #chattr +i /etc/resolv.conf
 
+# Add Unbound as a System service
 tee /lib/systemd/system/unbound.service <<EOF
 [Unit]
 Description=Unbound DNS Resolver
@@ -124,16 +146,19 @@ EOF
 
 systemd-analyze verify /lib/systemd/system/unbound.service || true
 
+# Create Unbound server keys into Unbound folder
 unbound-control-setup -d /etc/unbound
 
-chmod 640 /etc/unbound/unbound_*.key
+# Configure permissions for the Unbound server keys
+chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
 
-chmod 644 /etc/unbound/unbound_*.pem
-
+# Rename default Unbound server configuration file
 mv /etc/unbound/unbound.conf /etc/unbound/unbound.conf.example
 
+# Set recursive permissions for the Unbound system user in Unbound folder
 chown -R root:unbound /etc/unbound
 
+# Create a new Unbound server configuration file
 tee /etc/unbound/unbound.conf <<EOF
 ###################################################################################
 #
@@ -297,15 +322,19 @@ remote-control:
 include-toplevel: "/etc/unbound/conf.d/*.conf"
 EOF
 
-
+# Check that all Unbound default settings are correct
 unbound-checkconf /etc/unbound/unbound.conf
 
+# Reload System daemon
 systemctl daemon-reload
 
+# Check Unbnound service status
 systemctl status unbound
 
+# Enable automatic Unbound service startup
 systemctl enable unbound
 
+# Start Unbound service
 systemctl start unbound
 
 
