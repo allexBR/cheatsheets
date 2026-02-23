@@ -5,7 +5,7 @@
 # ------------------------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
-# Check if the script is already running as root (UID 0).
+# Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script requires root privileges."
     echo "Enter the root password when prompted to continue."
