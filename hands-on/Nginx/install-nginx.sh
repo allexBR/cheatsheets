@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------------------------
 # Installing NGINX (latest stable release) on Debian Server via Sury repo (https://deb.sury.org/)
 # Created by allexBR | https://github.com/allexBR
+# from: https://nginx.org/en/linux_packages.html#Debian
 # ------------------------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
@@ -21,19 +22,30 @@ echo "Starting the NGINX installation. Please wait..."
 apt clean ; apt update ; apt upgrade -y
 
 # Installation of dependencies
-apt -y install lsb-release ca-certificates apt-transport-https curl
+apt -y install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
 
-# Add Sury repository key
-curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-dpkg -i /tmp/debsuryorg-archive-keyring.deb
+# Import an official nginx signing key so apt could verify the packages authenticity
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
-# Add the official SURY repository
-echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/nginx/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/nginx.list
+# Verify that the downloaded file contains the proper key
+gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+
+echo "The output should contain the full fingerprint 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
+
+# Set up the apt repository for stable Nginx packages
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+https://nginx.org/packages/debian `lsb_release -cs` nginx" \
+    | sudo tee /etc/apt/sources.list.d/nginx.list
+
+# Set up repository pinning to prefer our packages over distribution-provided ones
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+    | sudo tee /etc/apt/preferences.d/99nginx
 
 # Final System repositories update
 apt update
 
 # Start Nginx installation in full mode
-apt install -y nginx-full
+apt install nginx
 
 echo "Installation completed successfully!"
