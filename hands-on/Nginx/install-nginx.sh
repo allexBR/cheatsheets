@@ -1,6 +1,6 @@
 #!/bin/bash
 # ------------------------------------------------------------------------------------------------
-# Installing NGINX (latest stable version) on Debian Server via Sury repo (https://deb.sury.org/)
+# Installing NGINX (latest stable release) on Debian Server via Sury repo (https://deb.sury.org/)
 # Created by allexBR | https://github.com/allexBR
 # ------------------------------------------------------------------------------------------------
 
