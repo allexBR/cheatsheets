@@ -107,7 +107,7 @@ install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 unbound-anchor -a /var/lib/unbound/root.key
 
 # Unbound system user must have write permission to the file
-chmod 644 /var/lib/unbound/root.key
+chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
 
 # Download root.hints file from Internic.net
 curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
