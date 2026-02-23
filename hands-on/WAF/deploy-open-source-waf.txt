@@ -5,11 +5,62 @@
 #       https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 # -----------------------------------------------------------------------------------
 
-# INSTRUCTIONS FOR THE NGINX MODSECURITY
+## INSTRUCTIONS FOR THE NGINX MODSECURITY
+
+# Nginx installation is required
+wget https://raw.githubusercontent.com/allexBR/guidebooks/main/hands-on/Nginx/install-nginx.sh
+chmod +x install-nginx.sh
+bash install-nginx.sh
+
+# Install required libraries and packages
+apt install -y build-essential \
+apt-utils \
+autoconf \
+automake \
+git \
+libcurl4-openssl-dev \
+libpcre3-dev \
+libssl-dev \
+libxml2-dev \
+libgeoip-dev \
+liblmdb-dev \
+libpcre2-dev \
+libtool \
+libxml2-dev \
+libyajl-dev \
+pkgconf \
+zlib1g-dev \
+libxslt1-dev \
+libgd-dev
 
 
+# ModSecurity compilation
+cd /tmp
 
-# INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
+git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
+
+cd ModSecurity/
+
+git submodule init
+
+git submodule update
+
+./build.sh
+
+./configure
+
+make
+
+make install
+
+cd ..
+
+git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
+
+nginx -v
+
+
+## INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
 
 # Step 1:
 curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
