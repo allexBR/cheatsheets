@@ -1,4 +1,8 @@
-https://wazuh.com/blog/using-osint-to-create-cdb-lists/
+# -----------------------------------------------------------------------------------
+# Wazuh - Using OSINT to Create CDB Lists
+# from: https://wazuh.com/blog/using-osint-to-create-cdb-lists/
+# -----------------------------------------------------------------------------------
+
 
 
 sudo wget https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/alienvault_reputation.ipset -O /var/ossec/etc/lists/alienvault_reputation.ipset
