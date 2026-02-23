@@ -46,6 +46,6 @@ echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 
 apt update
 
 # Start Nginx installation in full mode
-apt install nginx
+apt install nginx nginx-common
 
 echo "Installation completed successfully!"
