@@ -29,7 +29,7 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
 # Verify that the downloaded file contains the proper key
-gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
+gpg --homedir /tmp --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
 
 echo "The output should contain the full fingerprint 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
 
