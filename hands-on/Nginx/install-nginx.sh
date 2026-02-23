@@ -24,7 +24,7 @@ apt clean ; apt update ; apt upgrade -y
 # Installation of dependencies
 apt -y install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
 
-# Import an official nginx signing key so apt could verify the packages authenticity
+# Import an official Nginx signing key so apt could verify the packages authenticity
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 
