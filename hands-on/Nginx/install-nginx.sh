@@ -39,8 +39,12 @@ https://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list
 
 # Set up repository pinning to prefer our packages over distribution-provided ones
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
-    | tee /etc/apt/preferences.d/99nginx
+tee /etc/apt/preferences.d/99nginx cat <<EOF
+Package: *
+Pin: origin nginx.org
+Pin: release o=nginx
+Pin-Priority: 900
+EOF
 
 # Final System repositories update
 apt update
