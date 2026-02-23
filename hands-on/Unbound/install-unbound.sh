@@ -89,7 +89,12 @@ make install
 ldconfig
 
 # Add Unbound user to the System
-adduser --system --group --no-create-home --quiet unbound
+if ! getent passwd unbound > /dev/null; then
+    echo "Creating unbound user..."
+    adduser --system --group --no-create-home --quiet unbound
+else
+    echo "Unbound user already exists. Skipping step."
+fi
 
 # Create a log file for Unbound
 touch /var/log/unbound.log
