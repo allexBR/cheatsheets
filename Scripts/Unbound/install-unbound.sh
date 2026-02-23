@@ -22,7 +22,20 @@ update-ca-certificates
 
 cd /tmp
 
-apt install -y build-essential bison flex libssl-dev libexpat1-dev libevent-dev libnghttp2-dev libsystemd-dev libsodium-dev libhiredis-dev python3-dev swig protobuf-c-compiler libprotobuf-c-dev
+apt install -y build-essential \
+  bison \
+  flex \
+  libssl-dev \
+  libexpat1-dev \
+  libevent-dev \
+  libnghttp2-dev \
+  libsystemd-dev \
+  libsodium-dev \
+  libhiredis-dev \
+  python3-dev \
+  swig \
+  protobuf-c-compiler \
+  libprotobuf-c-dev
 
 apt install -y python-is-python3
 
@@ -65,11 +78,11 @@ ldconfig
 
 adduser --system --group --no-create-home --quiet unbound
 
-touch /var/log/unbound
+touch /var/log/unbound.log
 
-chown root:unbound /var/log/unbound
+chown root:unbound /var/log/unbound.log
 
-chmod 640 /var/log/unbound
+chmod 640 /var/log/unbound.log
 
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
 
@@ -145,7 +158,7 @@ tee /etc/unbound/unbound.conf <<EOF
 ###################################################################################
 
 server:
-        # Common settings
+        # Common Server Options
         directory: "/etc/unbound"
         username: unbound
         chroot: ""
@@ -156,33 +169,33 @@ server:
         do-ip4: yes
         do-ip6: no
 
-        # Interface IP(s) to bind to (listen on all interfaces 0.0.0.0 - ::0)
+        # Default Interface to Bind to (listen on all interfaces = 0.0.0.0 - ::0)
         interface-automatic: no
         interface: 127.0.0.1
         interface: ::1
 
-        # Logging settings
+        # Server Logging Options
         use-syslog: no
-        logfile: /var/log/unbound
+        logfile: /var/log/unbound.log
         log-time-ascii: yes
         verbosity: 1
 
-        # Statistics settings
+        # Statistics Options
         statistics-interval: 86400
         statistics-cumulative: no
         extended-statistics: yes
 
-        # Prefetching settings
+        # Prefetching Options
         prefetch: yes
         prefetch-key: yes
 
-        # Privacy settings
+        # Privacy Options
         hide-identity: yes
         hide-version: yes
         aggressive-nsec: yes
         qname-minimisation: yes
 
-        # System performance settings
+        # System Performance Options
         rrset-cache-slabs: 2
         msg-cache-slabs: 2
         key-cache-slabs: 2
@@ -190,12 +203,12 @@ server:
         num-threads: 2
         outgoing-range: 8192
         num-queries-per-thread: 4096
-        so-sndbuf: 425984
-        so-rcvbuf: 425984
+        so-rcvbuf: 4m
+        so-sndbuf: 4m
         do-daemonize: yes
         so-reuseport: yes
 
-        # Hardening settings
+        # Hardening Options
         harden-glue: yes
         harden-dnssec-stripped: yes
         harden-below-nxdomain: yes
@@ -204,20 +217,20 @@ server:
         serve-expired: no
         serve-expired-ttl-reset: no
 
-        # Harden against DNS cache poisoning
+        # Harden Against DNS Cache Poisoning
         unwanted-reply-threshold: 1000000
 
-        # DNS queries logging
+        # Queries Logging Options
         log-queries: yes
         log-replies: yes
         log-tag-queryreply: no
         log-servfail: yes
         log-local-actions: yes
 
-        # Timeout behaviour
+        # Timeout Behaviour Options
         infra-keep-probing: no
 
-        # Bootstrap root servers
+        # Bootstrap Root Servers Options
         root-hints: "/etc/unbound/root.hints"
 
         # Private networks for DNS Rebinding prevention (when enabled)
@@ -241,18 +254,18 @@ server:
         # Module configuration - validator must be present for DNSSEC
         module-config: "validator iterator"
 
-        # DNSSEC validation settings
+        # DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
         val-log-level: 1
 
         # DNSCrypt-proxy to work
         #do-not-query-localhost: no
 
-        # TLS settings
+        # TLS Options
         tls-cert-bundle: "/etc/ssl/certs/ca-certificates.crt"
 
 
-# Forward zones over TLS settings (Public DNS-over-TLS Upstreams)
+# Forward zones over TLS (to Public DNS-over-TLS Upstreams)
 #forward-zone:
 #        name: "."
 #        forward-tls-upstream: yes
@@ -268,7 +281,7 @@ server:
 #        forward-addr: 149.112.122.20@853#protected.canadianshield.cira.ca
 
 
-# Remote control settings
+# Remote Control Options
 remote-control:
     control-enable: yes
     control-interface: 127.0.0.1
