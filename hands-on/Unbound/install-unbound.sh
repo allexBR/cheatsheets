@@ -56,6 +56,14 @@ tar xzf unbound-*.tar.gz
 # Enter the directory extracted from the compressed file
 cd unbound-1*
 
+# Add Unbound user to the System
+if ! getent passwd unbound > /dev/null; then
+    echo "Creating unbound user..."
+    adduser --system --group --no-create-home --quiet unbound
+else
+    echo "Unbound user already exists. Skipping step."
+fi
+
 # Compile Unbound from source code
 ./configure \
   --prefix=/usr \
@@ -64,6 +72,7 @@ cd unbound-1*
   --runstatedir=/run \
   --with-run-dir=/run/unbound \
   --with-pidfile=/run/unbound.pid \
+  --with-user=unbound
   --with-libevent \
   --with-libnghttp2 \
   --with-rootkey-file=/var/lib/unbound/root.key \
@@ -87,14 +96,6 @@ make
 make install
 
 ldconfig
-
-# Add Unbound user to the System
-if ! getent passwd unbound > /dev/null; then
-    echo "Creating unbound user..."
-    adduser --system --group --no-create-home --quiet unbound
-else
-    echo "Unbound user already exists. Skipping step."
-fi
 
 # Create a log file for Unbound
 touch /var/log/unbound.log
