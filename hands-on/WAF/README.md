@@ -48,27 +48,20 @@ libgd-dev
 ### • ModSecurity compilation:
 ```
 cd /tmp
-
 git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
-
 cd ModSecurity/
-
 git submodule init
-
 git submodule update
-
 ./build.sh
-
 ./configure
-
 make
-
 make install
-
 cd ..
+```
 
+### • Compiling ModSecurity Nginx connector:
+```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
-
 nginx -v
 ```
 
