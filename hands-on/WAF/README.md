@@ -9,7 +9,7 @@
 https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 <br/>
----
+-----------------------------------------------------------------------------------------------
 
 ### INSTRUCTIONS FOR THE NGINX MODSECURITY
 <br/>
@@ -73,6 +73,9 @@ git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 
 nginx -v
 ```
+
+<br/>
+<br/>
 
 ---
 
