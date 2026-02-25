@@ -1,8 +1,8 @@
 > [!TIP]
-># Configuring a Open-Source WAF on Debian Server
->• Created by allexBR<br/>
->• Sources: https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
->https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
+> # Configuring a Open-Source WAF on Debian Server
+> • Created by allexBR<br/>
+> • Sources: https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
+>            https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
 
 <br/>
 
