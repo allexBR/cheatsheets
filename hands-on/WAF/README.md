@@ -56,7 +56,7 @@ make install
 cd ..
 ```
 
-### • Compiling ModSecurity Nginx connector:
+### • ModSecurity NGINX connector (compilation as a dynamic module):
 ```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 nginx -v
