@@ -10,10 +10,10 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 <br/>
 <br/>
+---
 
 ### INSTRUCTIONS FOR THE NGINX MODSECURITY
 <br/>
-
 <br/>
 
 > [!IMPORTANT]
