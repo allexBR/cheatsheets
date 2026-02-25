@@ -20,6 +20,8 @@ chmod +x install-nginx.sh
 
 bash install-nginx.sh
 
+
+
 #Install required libraries and packages
 apt install -y build-essential \
 apt-utils \
