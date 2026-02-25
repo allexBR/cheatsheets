@@ -74,6 +74,7 @@ git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 nginx -v
 
 
+---
 
 ## INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
 
