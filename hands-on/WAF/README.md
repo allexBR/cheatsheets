@@ -4,8 +4,9 @@
 #Created by allexBR
 
 #from: https://github.com/owasp-modsecurity/ModSecurity-nginx
-#---
-#https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
+
+
+https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 -------------------------------------------------------------------------
 
