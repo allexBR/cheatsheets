@@ -10,7 +10,7 @@
 <br/>
 <br/>
 
-> [!IMPORTANT NOTE]
+> [!IMPORTANT]
 > ### Nginx installation is required:
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
