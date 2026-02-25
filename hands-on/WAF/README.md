@@ -60,6 +60,13 @@ cd ..
 ```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 nginx -v
+wget https://nginx.org/download/nginx-1.28.2.tar.gz
+tar zxvf nginx-*.tar.gz
+cd nginx-1.*
+./configure --with-compat --add-dynamic-module=../ModSecurity-nginx
+make modules
+cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
+cd ..
 ```
 
 <br/>
