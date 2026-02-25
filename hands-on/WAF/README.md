@@ -14,7 +14,7 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 #Nginx installation is required:
  
-wget https://raw.githubusercontent.com/allexBR/guidebooks/main/hands-on/Nginx/install-nginx.sh
+wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
 
 chmod +x install-nginx.sh
 
