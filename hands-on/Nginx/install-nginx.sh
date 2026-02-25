@@ -30,7 +30,7 @@ else
     echo "No existing Nginx installation detected. Proceeding..."
 fi
 
-echo "Starting the NGINX installation. Please wait..."
+echo "Starting the new NGINX installation. Please wait..."
 
 # Initial System repositories update/upgrade
 apt clean ; apt update ; apt upgrade -y
