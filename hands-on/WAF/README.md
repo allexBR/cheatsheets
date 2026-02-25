@@ -9,9 +9,8 @@
 https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 <br/>
-
 ### INSTRUCTIONS FOR THE NGINX MODSECURITY
-
+<br/>
 > [!IMPORTANT]
 > ### Nginx installation is required:
 ```
