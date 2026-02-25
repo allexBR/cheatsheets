@@ -8,8 +8,7 @@
 
 https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
----
-<br/>
+---<br/>
 ### INSTRUCTIONS FOR THE NGINX MODSECURITY
 <br/>
 > [!IMPORTANT]
@@ -19,7 +18,7 @@ wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/i
 chmod +x install-nginx.sh
 bash install-nginx.sh
 ```
-<br/>
+
 ### • Install required libraries and packages:
 ```
 apt install -y build-essential \
