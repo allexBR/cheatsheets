@@ -1,4 +1,5 @@
 ---
+
 # Configuring a Open-Source WAF on Debian Server
 
 • Created by allexBR
@@ -10,7 +11,6 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
 
 ---
 
-<br/>
 <br/>
 
 ### INSTRUCTIONS FOR THE NGINX MODSECURITY
