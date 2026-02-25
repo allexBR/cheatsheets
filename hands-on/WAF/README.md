@@ -133,10 +133,3 @@ sudo crontab -e
 
 00 22 * * * sudo /usr/local/sbin/update-ngxblocker -e yourname@youremail.com
 
-
----
-**NOTE**
-
-It works with almost all markdown flavours (the below blank line matters).
-
----
