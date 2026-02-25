@@ -85,33 +85,46 @@ chmod +x /usr/local/sbin/install-ngxblocker
 
 
 #Step 2:
+
 cd /usr/local/sbin
+
 sudo ./install-ngxblocker
 
 
 #Step 3:
+
 cd /usr/local/sbin/
+
 sudo ./install-ngxblocker -x
 
 
 #Step 4:
+
 cd /usr/local/sbin/
+
 sudo ./setup-ngxblocker
 
 
 #Step 5:
+
 cd /usr/local/sbin/
+
 sudo ./setup-ngxblocker -x
 
   
 #Step 6:
+
 sudo nginx -t
+
 sudo nginx -t && sudo nginx -s reload
+
 sudo service nginx restart
 
 
 #Step 7:
+
 sudo crontab -e
+
 00 22 * * * sudo /usr/local/sbin/update-ngxblocker -e yourname@youremail.com
 
 
