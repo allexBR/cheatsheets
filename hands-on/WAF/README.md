@@ -13,8 +13,8 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 ## INSTRUCTIONS FOR THE NGINX MODSECURITY
 
 
-
-• Nginx installation is required:
+> [!IMPORTANT]
+> Nginx installation is required:
  
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
 
