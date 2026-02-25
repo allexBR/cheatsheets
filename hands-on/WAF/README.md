@@ -8,7 +8,7 @@
 
 https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
--------------------------------------------------------------------------
+---
 
 ## INSTRUCTIONS FOR THE NGINX MODSECURITY
 
