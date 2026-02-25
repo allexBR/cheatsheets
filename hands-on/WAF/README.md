@@ -18,9 +18,7 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
-
 chmod +x install-nginx.sh
-
 bash install-nginx.sh
 ```
 --- 
@@ -28,6 +26,7 @@ bash install-nginx.sh
 > [!NOTE]
 > • Install required libraries and packages:
 
+```
 apt install -y build-essential \
 apt-utils \
 autoconf \
@@ -47,9 +46,10 @@ pkgconf \
 zlib1g-dev \
 libxslt1-dev \
 libgd-dev
+```
 
-
-#ModSecurity compilation
+### ModSecurity compilation:
+```
 cd /tmp
 
 git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
@@ -73,7 +73,7 @@ cd ..
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 
 nginx -v
-
+```
 
 ---
 
