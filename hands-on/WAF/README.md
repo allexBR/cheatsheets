@@ -23,9 +23,7 @@ bash install-nginx.sh
 ```
 --- 
 
-> [!NOTE]
-> • Install required libraries and packages:
-
+### Install required libraries and packages:
 ```
 apt install -y build-essential \
 apt-utils \
@@ -137,3 +135,6 @@ sudo crontab -e
 > [!TIP]
 > Helpful advice for doing things better or more easily.
 > 
+
+> [!NOTE]
+> Notes...
