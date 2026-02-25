@@ -132,3 +132,7 @@ sudo crontab -e
 
 00 22 * * * sudo /usr/local/sbin/update-ngxblocker -e yourname@youremail.com
 
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+> 
