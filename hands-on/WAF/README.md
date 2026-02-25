@@ -78,9 +78,8 @@ nginx -v
 
 ## INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
 
-# Step 1:
-
-curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
+> [!Step-1]
+> curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
 
 or
 
