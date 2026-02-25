@@ -75,8 +75,11 @@ nginx -v
 
 #Step 1:
 curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
+
 or
+
 wget https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -O /usr/local/sbin/install-ngxblocker
+
 
 chmod +x /usr/local/sbin/install-ngxblocker
 
