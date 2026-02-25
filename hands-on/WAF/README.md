@@ -6,9 +6,7 @@
 • Sources: https://github.com/owasp-modsecurity/ModSecurity-nginx
 
 
-https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
-
-<br/>
+https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
 
 ---
 
