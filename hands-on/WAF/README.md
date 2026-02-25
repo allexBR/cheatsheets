@@ -10,7 +10,7 @@ https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker
 
 ---
 
-## INSTRUCTIONS FOR THE NGINX MODSECURITY
+### INSTRUCTIONS FOR THE NGINX MODSECURITY
 
 
 > [!IMPORTANT]
@@ -76,9 +76,9 @@ nginx -v
 
 ---
 
-## INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
+### INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
 
-# Step 1:
+## Step 1:
 > curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
 
 > or
@@ -89,35 +89,35 @@ nginx -v
 > chmod +x /usr/local/sbin/install-ngxblocker
 
 
-# Step 2:
+## Step 2:
 
 cd /usr/local/sbin
 
 sudo ./install-ngxblocker
 
 
-# Step 3:
+## Step 3:
 
 cd /usr/local/sbin/
 
 sudo ./install-ngxblocker -x
 
 
-# Step 4:
+## Step 4:
 
 cd /usr/local/sbin/
 
 sudo ./setup-ngxblocker
 
 
-# Step 5:
+## Step 5:
 
 cd /usr/local/sbin/
 
 sudo ./setup-ngxblocker -x
 
   
-# Step 6:
+## Step 6:
 
 sudo nginx -t
 
@@ -126,7 +126,7 @@ sudo nginx -t && sudo nginx -s reload
 sudo service nginx restart
 
 
-# Step 7:
+## Step 7:
 
 sudo crontab -e
 
