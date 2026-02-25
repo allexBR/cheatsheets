@@ -19,6 +19,7 @@ wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/i
 chmod +x install-nginx.sh
 bash install-nginx.sh
 ```
+<br/>
 
 ### • Install required libraries and packages:
 ```
