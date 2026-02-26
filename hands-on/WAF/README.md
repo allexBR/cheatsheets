@@ -136,6 +136,11 @@ load_module modules/ngx_http_modsecurity_module.so;
 <br/>
 
 ### # INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
+<br/>
+
+> [!NOTE]
+> The Ultimate Nginx Bad Bot, User-Agent, Spam Referrer Blocker, Adware, Malware and Ransomware Blocker, Clickjacking Blocker, Click Re-Directing Blocker, SEO Companies and Bad IP Blocker with Anti DDOS System, Nginx Rate Limiting and Wordpress Theme Detector Blocking. Stop and Block all kinds of bad internet traffic even Fake Googlebots from ever reaching your web sites. PLEASE SEE: Definition of Bad Bots.
+<br/>
 
 ### • Step 1:
 ```
@@ -204,5 +209,3 @@ sudo crontab -e
 
 
 
-> [!NOTE]
-> Notes...
