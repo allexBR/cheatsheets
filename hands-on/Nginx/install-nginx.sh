@@ -5,6 +5,7 @@
 # from: https://nginx.org/en/linux_packages.html#Debian
 # ------------------------------------------------------------------------------------------------
 
+
 # Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
@@ -44,25 +45,22 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
 
 echo "Verifying Nginx signing key fingerprint..."
 
-# Stores the expected fingerprint in a variable
+# O fingerprint que você deseja validar
 EXPECTED_FINGERPRINT="573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
 
-# Execute the gpg command and filter only the fingerprint from the output
-ACTUAL_FINGERPRINT=$(gpg --homedir /tmp \
---dry-run \
---quiet \
---no-keyring \
---import \
---import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg | grep -oP '([0-9A-F]{40})')
+# Extrai os fingerprints diretamente do arquivo gerado
+# O comando 'with-colons' é o padrão ouro para scripts pois o output é fixo
+ACTUAL_FINGERPRINTS=$(gpg --show-keys --with-colons /usr/share/keyrings/nginx-archive-keyring.gpg | grep '^fpr' | cut -d: -f10)
 
-echo "Fingerprint found: $ACTUAL_FINGERPRINT"
+echo "Fingerprints found:"
+echo "$ACTUAL_FINGERPRINTS"
 
-if [ "$ACTUAL_FINGERPRINT" = "$EXPECTED_FINGERPRINT" ]; then
+# Validação robusta: verifica se o fingerprint esperado existe em QUALQUER linha da variável
+if echo "$ACTUAL_FINGERPRINTS" | grep -q "$EXPECTED_FINGERPRINT"; then
     echo "Verification successful! The key is authentic."
 else
     echo "ERROR: Fingerprint mismatch!"
     echo "Expected: $EXPECTED_FINGERPRINT"
-    echo "Received: $ACTUAL_FINGERPRINT"
     exit 1
 fi
 
@@ -72,7 +70,7 @@ https://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list
 
 # Set up repository pinning
-tee /etc/apt/preferences.d/99nginx cat <<EOF
+tee /etc/apt/preferences.d/99nginx <<EOF
 Package: *
 Pin: origin nginx.org
 Pin: release o=nginx
@@ -86,4 +84,18 @@ apt update
 apt install -y nginx
 
 echo "Installation completed successfully!"
+
+# Reload System daemon
+systemctl daemon-reload
+
+# Enable automatic Nginx service startup
+systemctl enable nginx
+
+# Start Nginx service
+systemctl start nginx
+
+# Check Nginx service status
+systemctl status nginx
+
+# Check Nginx installed version
 nginx -v
