@@ -2,7 +2,8 @@
 # ------------------------------------------------------------------------------------------------
 # Installing NGINX (latest stable release) on Debian Server via Nginx Official Repo
 # Created by allexBR | https://github.com/allexBR
-# from: https://nginx.org/en/linux_packages.html#Debian
+# Source: https://nginx.org/en/linux_packages.html#Debian
+# Last review date: Thu Feb 26 15:40:21 UTC 2026
 # ------------------------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -19,10 +20,7 @@ echo "Checking for existing NGINX installations..."
 # Check and remove existing Nginx
 if dpkg -l | grep -q nginx; then
     echo "Existing Nginx installation found. Removing it to ensure a clean install..."
-    # 'purge' removes the package and configuration files
-    # 'autoremove' clears the dependencies that were left orphaned
     apt purge --auto-remove -y nginx nginx-common nginx-full nginx-core >/dev/null 2>&1
-    
     # Remove residual directories if necessary (Optional)
     rm -rf /etc/nginx /var/log/nginx
     echo "Previous version removed."
@@ -44,17 +42,16 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
 
 echo "Verifying Nginx signing key fingerprint..."
 
-# O fingerprint que você deseja validar
+# Stores the expected fingerprint in a variable
 EXPECTED_FINGERPRINT="573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
 
-# Extrai os fingerprints diretamente do arquivo gerado
-# O comando 'with-colons' é o padrão ouro para scripts pois o output é fixo
+# Execute the gpg command and filter only the fingerprint from the output
 ACTUAL_FINGERPRINTS=$(gpg --show-keys --with-colons /usr/share/keyrings/nginx-archive-keyring.gpg | grep '^fpr' | cut -d: -f10)
 
 echo "Fingerprints found:"
 echo "$ACTUAL_FINGERPRINTS"
 
-# Validação robusta: verifica se o fingerprint esperado existe em QUALQUER linha da variável
+# Checks if the expected fingerprint exists in any row of the variable
 if echo "$ACTUAL_FINGERPRINTS" | grep -q "$EXPECTED_FINGERPRINT"; then
     echo "Verification successful! The key is authentic."
 else
@@ -82,8 +79,6 @@ apt update
 # Start Nginx installation
 apt install -y nginx
 
-echo "Installation completed successfully!"
-
 # Reload System daemon
 systemctl daemon-reload
 
@@ -95,6 +90,8 @@ systemctl start nginx
 
 # Check Nginx service status
 systemctl status nginx
+
+echo "Installation completed successfully!"
 
 # Check Nginx installed version
 nginx -v
