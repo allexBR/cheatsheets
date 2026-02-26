@@ -3,7 +3,7 @@
 # Installing NGINX (latest stable release) on Debian Server via Nginx Official Repo
 # Created by allexBR | https://github.com/allexBR
 # Source: https://nginx.org/en/linux_packages.html#Debian
-# Last review date: Thu Feb 26 17:01:12 UTC 2026
+# Last review date: Thu Feb 26 17:20:1 UTC 2026
 # ------------------------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -14,7 +14,7 @@ if [ "$(id -u)" -ne 0 ]; then
     if command -v sudo >/dev/null 2>&1; then
         exec sudo bash "$0" "$@"
     else
-        echo "Enter the root password when prompted to continue."
+        echo "Enter the root password to continue."
         exec su -c "bash $0 $@"
     fi
     exit $?
