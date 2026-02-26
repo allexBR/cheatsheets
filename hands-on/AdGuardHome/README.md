@@ -34,7 +34,6 @@ https://hole.cert.pl/domains/domains.txt
 ```
 https://www.usom.gov.tr/url-list.txt
 ```
-> Backup:
 ```
 https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt
 ```
