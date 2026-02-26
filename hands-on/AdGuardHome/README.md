@@ -6,171 +6,173 @@
 
 <br/>
 
-### OPEN-SOURCE BLOCKLISTS
+### • OPEN-SOURCE BLOCKLISTS
 <br/>
 
-> ## # CyberHost Malware and Phishing
+> ### # CyberHost Malware and Phishing
 > ### # https://cyberhost.uk/malware-blocklist
 ```
 https://lists.cyberhost.uk/malware.txt
 ```
 <br/>
-> ## # FruxLabs Crack Team - Rescure Cyber Threat Intelligence Feeds
+
+> ### # FruxLabs Crack Team - Rescure Cyber Threat Intelligence Feeds
 > ### # https://rescure.me/feeds.html
 ```
 https://rescure.me/rescure_domain_blacklist.txt
 ```
 <br/>
-> ## # CERT Poland
+
+> ### # CERT Poland
 > ### # https://cert.pl/en/posts/2020/03/malicious_domains/
 ```
 https://hole.cert.pl/domains/domains.txt
 ```
 <br/>
 
-> ## # CERT Turkey
+> ### # CERT Turkey
 ```
 https://www.usom.gov.tr/url-list.txt
 ```
-> ## # Backup
+> ### # Backup
 ```
 https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt
 ```
 <br/>
 
-> ## # CERT Thailand
+> ### # CERT Thailand
 > ### # https://github.com/ttc-cert/TTC-CERT_blocklist_recommended
 ```
 https://raw.githubusercontent.com/ttc-cert/TTC-CERT_blocklist_recommended/master/domain_blocklist_recommended.txt
 ```
 <br/>
 
-> ##  # OpenPhish
+> ### # OpenPhish
 > ### # https://openphish.com/
 ```
 https://openphish.com/feed.txt
 ```
 <br/>
 
-> ## # ThreatFox
+> ### # ThreatFox
 > ### # https://threatfox.abuse.ch/
 ```
 https://threatfox.abuse.ch/downloads/hostfile
 ```
 <br/>
 
-> ## # Maltrail - A malicious traffic detection system
+> ### # Maltrail - A malicious traffic detection system
 > ### # https://github.com/stamparm/maltrail/
 ```
 https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt
 ```
 <br/>
 
-> ## # NoTrack Malware Blocklist
+> ### # NoTrack Malware Blocklist
 > ### # https://quidsup.net/notrack/blocklist.php
 ```
 https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
 ```
 <br/>
 
-> ## # OSINT Digitalside
+> ### # OSINT Digitalside
 > ### # https://osint.digitalside.it/
 ```
 https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
 ```
 <br/>
 
-> ## # abuse.ch
+> ### # abuse.ch
 ```
 https://urlhaus.abuse.ch/downloads/hostfile/
 ```
 <br/>
 
-> ## # AZORult C&C Tracker
+> ### # AZORult C&C Tracker
 > ### # https://azorult-tracker.net/
 ```
 https://azorult-tracker.net/api/list/domain?format=plain
 ```
 <br/>
 
-> ## # KADhosts(KAD host version)
+> ### # KADhosts(KAD host version)
 ```
 https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.txt
 ```
 <br/>
 
-> ## # Hexxium Creations
+> ### # Hexxium Creations
 > ### # https://hexxiumcreations.com/
 ```
 https://raw.githubusercontent.com/HexxiumCreations/threat-list/gh-pages/hosts.txt
 ```
 <br/>
 
-> ## # Secure Reloaded - Phishing
+> ### # Secure Reloaded - Phishing
 > ### # https://securereload.tech/
 ```
 https://securereload.tech/Phishing/Lists/Latest/
 ```
 <br/>
 
-> ## # Phishing Army
+> ### # Phishing Army
 ```
 https://phishing.army/download/phishing_army_blocklist_extended.txt
 ```
 <br/>
 
-> ## # Toxic Domains
+> ### # Toxic Domains
 > ### # Toxic Domains from StopForumSpam
 ```
 https://www.stopforumspam.com/downloads/toxic_domains_whole.txt
 ```
 <br/>
 
-> ## # Ethereum Phishing
+> ### # Ethereum Phishing
 ```
 https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt
 ```
 <br/>
 
-> ## # HaGeZi - Dynamic DNS Providers used for malware and phishing
+> ### # HaGeZi - Dynamic DNS Providers used for malware and phishing
 ```
 https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/dyndns.txt
 ```
 <br/>
 
-> ## # HaGeZi - internet scams, traps & fakes
+> ### # HaGeZi - internet scams, traps & fakes
 ```
 https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/fake.txt
 ```
 <br/>
 
-> ## # HaGeZi - Blocks known free hosters that also host badware
+> ### # HaGeZi - Blocks known free hosters that also host badware
 ```
 https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/hoster.txt
 ```
 <br/>
 
-> ## # ShadowWhisperer
+> ### # ShadowWhisperer
 > ### # https://github.com/ShadowWhisperer/BlockLists
 ```
 https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/master/Lists/Malware
 ```
 <br/>
 
-> ## # TheAntiSocialEngineer
+> ### # TheAntiSocialEngineer
 ```
 https://github.com/TheAntiSocialEngineer/AntiSocial-BlockList-UK-Community/raw/main/UK-Community.txt
 ```
 <br/>
 
-> ## # Phishing Domain Database
+> ### # Phishing Domain Database
 > ### # https://github.com/mitchellkrogza/Phishing.Database/tree/master
 ```
 https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt
 ```
 <br/>
 
-> ## # Zonefiles - Compromised domain list
+> ### # Zonefiles - Compromised domain list
 > ### # https://zonefiles.io/compromised-domain-list/
 ```
 https://zonefiles.io/f/compromised/domains/live/
