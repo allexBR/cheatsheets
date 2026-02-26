@@ -2,6 +2,7 @@
 # -----------------------------------------------------------------------------
 # Downloading Nginx source code based on the version installed on the system
 # Created by allexBR | https://github.com/allexBR
+# Last review date: Thu Feb 26 16:33:20 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -45,4 +46,12 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "[+] Nginx source code downloaded successfully!"
+
+# Extract files
+tar -zxf nginx-${NGINX_VER}.tar.gz
+
+echo "[+] All files were extracted successfully!"
+
+# Print extract folder
+ls -al /tmp | grep nginx
 
