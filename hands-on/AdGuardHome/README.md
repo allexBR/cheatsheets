@@ -6,11 +6,11 @@
 
 <br/>
 
-### • OPEN-SOURCE BLOCKLISTS
+## # OPEN-SOURCE BLOCKLISTS
 <br/>
 
-> ### # CyberHost Malware and Phishing
-> ### # https://cyberhost.uk/malware-blocklist
+> ### • CyberHost Malware and Phishing
+> • https://cyberhost.uk/malware-blocklist
 ```
 https://lists.cyberhost.uk/malware.txt
 ```
