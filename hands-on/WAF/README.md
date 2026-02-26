@@ -5,6 +5,7 @@
 >            https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
 >            https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
 >            https://blog.nginx.org/blog/compiling-and-installing-modsecurity-for-open-source-nginx
+---
 
 <br/>
 
@@ -139,60 +140,67 @@ load_module modules/ngx_http_modsecurity_module.so;
 ### • Step 1:
 ```
 curl -sL https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -o /usr/local/sbin/install-ngxblocker
+```
 or
+```
 wget https://raw.githubusercontent.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/master/install-ngxblocker -O /usr/local/sbin/install-ngxblocker
-
+```
+```
 chmod +x /usr/local/sbin/install-ngxblocker
 ```
 
 ### • Step 2:
 ```
 cd /usr/local/sbin
-
+```
+```
 sudo ./install-ngxblocker
 ```
 
 ### • Step 3:
 ```
 cd /usr/local/sbin/
-
+```
+```
 sudo ./install-ngxblocker -x
 ```
 
 ### • Step 4:
 ```
 cd /usr/local/sbin/
-
+```
+```
 sudo ./setup-ngxblocker
 ```
 
 ### • Step 5:
 ```
 cd /usr/local/sbin/
-
+```
+```
 sudo ./setup-ngxblocker -x
 ```
   
 ### • Step 6:
 ```
 sudo nginx -t
-
+```
+```
 sudo nginx -t && sudo nginx -s reload
-
+```
+```
 sudo service nginx restart
 ```
 
 ### • Step 7:
 ```
 sudo crontab -e
-
+```
+```
 00 22 * * * sudo /usr/local/sbin/update-ngxblocker -e yourname@youremail.com
 ```
 
 
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-> 
 
 > [!NOTE]
 > Notes...
