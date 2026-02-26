@@ -15,7 +15,7 @@
 
 > [!IMPORTANT]
 > ### Nginx installation is required:
-> If you don't have Nginx Web Server installed on your server already, install Nginx using the following command.
+> If you don't have Nginx Web Server installed on your server already, install Nginx using the following command:
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
 chmod +x install-nginx.sh
