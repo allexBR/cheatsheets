@@ -19,7 +19,11 @@
 > Install Nginx using the following command:
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
+```
+```
 chmod +x install-nginx.sh
+```
+```
 bash install-nginx.sh
 ```
 <br/>
@@ -51,14 +55,32 @@ zlib1g-dev
 >Please note that if you are working with git, don't forget to initialize and update the submodules. Here's a quick how-to:
 ```
 cd /tmp
+```
+```
 git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
+```
+```
 cd ModSecurity/
+```
+```
 git submodule init
+```
+```
 git submodule update
+```
+```
 ./build.sh
+```
+```
 ./configure
+```
+```
 make
+```
+```
 make install
+```
+```
 cd ..
 ```
 
@@ -66,13 +88,29 @@ cd ..
 > Download the source code corresponding to the installed version of NGINX (the complete sources are required even though only the dynamic module is being compiled).
 ```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
+```
+```
 nginx -v
+```
+```
 wget https://nginx.org/download/nginx-1.28.2.tar.gz
+```
+```
 tar zxvf nginx-*.tar.gz
+```
+```
 cd nginx-1.*
+```
+```
 ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx
+```
+```
 make modules
+```
+```
 cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
+```
+```
 cd ..
 ```
 
