@@ -9,7 +9,7 @@
 
 <br/>
 
-### INSTRUCTIONS FOR DEPLOY THE MODSECURITY WAF
+### # INSTRUCTIONS FOR DEPLOY THE MODSECURITY WAF
 <br/>
 
 > Libmodsecurity is one component of the ModSecurity v3 project. The library codebase serves as an interface to ModSecurity Connectors taking in web traffic and applying traditional ModSecurity processing. In general, it provides the capability to load/interpret rules written in the ModSecurity SecRules format and apply them to HTTP content provided by your application via Connectors.<br/>
@@ -199,6 +199,8 @@ sudo crontab -e
 ```
 00 22 * * * sudo /usr/local/sbin/update-ngxblocker -e yourname@youremail.com
 ```
+<br/>
+<br/>
 
 
 
