@@ -49,6 +49,7 @@ EXPECTED_FINGERPRINT="573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
 ACTUAL_FINGERPRINTS=$(gpg --show-keys --with-colons /usr/share/keyrings/nginx-archive-keyring.gpg | grep '^fpr' | cut -d: -f10)
 
 echo "Fingerprints found:"
+
 echo "$ACTUAL_FINGERPRINTS"
 
 # Checks if the expected fingerprint exists in any row of the variable
