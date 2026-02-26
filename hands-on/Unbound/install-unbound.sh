@@ -337,14 +337,14 @@ unbound-checkconf /etc/unbound/unbound.conf
 # Reload System daemon
 systemctl daemon-reload
 
-# Check Unbnound service status
-systemctl status unbound
-
 # Enable automatic Unbound service startup
 systemctl enable unbound
 
 # Start Unbound service
 systemctl start unbound
+
+# Check Unbnound service status
+systemctl status unbound
 
 
 # Display version and basic post-start test
