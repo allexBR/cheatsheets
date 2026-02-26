@@ -95,7 +95,13 @@ git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 nginx -v
 ```
 ```
-wget https://nginx.org/download/nginx-1.28.2.tar.gz
+wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/download-nginx-source-code.sh
+```
+```
+chmod +x download-nginx-source-code.sh
+```
+```
+bash download-nginx-source-code.sh
 ```
 ```
 tar zxvf nginx-*.tar.gz
