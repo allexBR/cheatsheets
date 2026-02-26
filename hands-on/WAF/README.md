@@ -50,6 +50,7 @@ libyajl-dev \
 pkgconf \
 zlib1g-dev
 ```
+<br/>
 
 ### • Download and Compile ModSecurity v3
 >Please note that if you are working with git, don't forget to initialize and update the submodules. Here's a quick how-to:
@@ -83,6 +84,7 @@ make install
 ```
 cd ..
 ```
+<br/>
 
 ### • Download and Compile ModSecurity v3 Nginx Connector (compilation as a dynamic module):
 > Download the source code corresponding to the installed version of NGINX (the complete sources are required even though only the dynamic module is being compiled).
@@ -113,7 +115,7 @@ cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
 ```
 cd ..
 ```
-
+<br/>
 
 ### • Load ModSecurity Module into Nginx:
 > Add the following load_module directive to the main (top‑level) context in /etc/nginx/nginx.conf. It instructs NGINX to load the ModSecurity dynamic module when it processes the configuration.
