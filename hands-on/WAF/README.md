@@ -11,6 +11,7 @@
 <br/>
 
 > Libmodsecurity is one component of the ModSecurity v3 project. The library codebase serves as an interface to ModSecurity Connectors taking in web traffic and applying traditional ModSecurity processing. In general, it provides the capability to load/interpret rules written in the ModSecurity SecRules format and apply them to HTTP content provided by your application via Connectors.<br/>
+<br/>
 
 > [!IMPORTANT]
 > ### Nginx installation is required:
