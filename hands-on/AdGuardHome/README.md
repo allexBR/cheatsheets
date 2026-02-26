@@ -3,11 +3,11 @@
 > # Malware Blocklists for Adguard Home
 > • Created by allexBR<br/>
 > • Sources: https://cyberhost.uk/malware-blocklists-pi-hole-adguard-home/
+---
 
 <br/>
 
 ## # OPEN-SOURCE BLOCKLISTS
----
 <br/>
 
 > ### • CyberHost Malware and Phishing
@@ -181,9 +181,6 @@ https://zonefiles.io/f/compromised/domains/live/
 <br/>
 
 
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-> 
 
 > [!NOTE]
 > Notes...
