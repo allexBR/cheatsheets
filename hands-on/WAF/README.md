@@ -62,7 +62,8 @@ make install
 cd ..
 ```
 
-### • ModSecurity NGINX connector (compilation as a dynamic module):
+### • Download and Compile ModSecurity v3 Nginx Connector (compilation as a dynamic module):
+> Download the source code corresponding to the installed version of NGINX (the complete sources are required even though only the dynamic module is being compiled):
 ```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 nginx -v
