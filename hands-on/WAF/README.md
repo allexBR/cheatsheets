@@ -135,7 +135,7 @@ load_module modules/ngx_http_modsecurity_module.so;
 <br/>
 <br/>
 
-### INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
+### # INSTRUCTIONS FOR THE NGINX BAD BOT BLOCKER
 
 ### • Step 1:
 ```
