@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # Downloading Nginx source code based on the version installed on the system
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Feb 26 17:02:40 UTC 2026
+# Last review date: Thu Feb 26 17:21:40 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -13,7 +13,7 @@ if [ "$(id -u)" -ne 0 ]; then
     if command -v sudo >/dev/null 2>&1; then
         exec sudo bash "$0" "$@"
     else
-        echo "Enter the root password when prompted to continue."
+        echo "Enter the root password to continue."
         exec su -c "bash $0 $@"
     fi
     exit $?
