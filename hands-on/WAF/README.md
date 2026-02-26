@@ -21,6 +21,7 @@ bash install-nginx.sh
 <br/>
 
 ### • Install required libraries and packages:
+> Before starting the compilation process, make sure that you have all the dependencies in place.
 ```
 apt install -y apt-utils \
 autoconf \
@@ -42,7 +43,7 @@ pkgconf \
 zlib1g-dev
 ```
 
-### • Download and Compile ModSecurity v3 (libmodsecurity)
+### • Download and Compile ModSecurity v3
 >Please note that if you are working with git, don't forget to initialize and update the submodules. Here's a quick how-to:
 ```
 cd /tmp
