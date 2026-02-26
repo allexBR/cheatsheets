@@ -1,8 +1,9 @@
 > [!TIP]
-> # Configuring a Open-Source WAF on Debian Server
+> # Configuring a Open-Source Web Application Firewall on Debian Server
 > • Created by allexBR<br/>
 > • Sources: https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
 >            https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
+>            https://blog.nginx.org/blog/compiling-and-installing-modsecurity-for-open-source-nginx
 
 <br/>
 
@@ -21,28 +22,27 @@ bash install-nginx.sh
 
 ### • Install required libraries and packages:
 ```
-apt install -y build-essential \
-apt-utils \
+apt install -y apt-utils \
 autoconf \
 automake \
+build-essential \
 git \
 libcurl4-openssl-dev \
-libpcre3-dev \
-libssl-dev \
-libxml2-dev \
+libgd-dev
 libgeoip-dev \
 liblmdb-dev \
 libpcre2-dev \
+libpcre3-dev \
+libssl-dev \
 libtool \
 libxml2-dev \
+libxslt1-dev \
 libyajl-dev \
 pkgconf \
-zlib1g-dev \
-libxslt1-dev \
-libgd-dev
+zlib1g-dev
 ```
 
-### • ModSecurity compilation:
+### • Download and Compile ModSecurity v3 (libmodsecurity)
 ```
 cd /tmp
 git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
