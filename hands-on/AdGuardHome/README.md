@@ -7,9 +7,8 @@
 <br/>
 
 ## # OPEN-SOURCE BLOCKLISTS
-<br/>
 ---
-
+<br/>
 > ### • CyberHost Malware and Phishing
 > • https://cyberhost.uk/malware-blocklist
 ```
