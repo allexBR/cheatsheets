@@ -5,10 +5,10 @@
 
 # HTTPS SAN config
 tee /etc/nginx/openssl-san.ext <<EOF
-# -----------------------------------------------------------------
-# openssl-san.ext (v3-ext)
-# X.509 extensions for adding SAN to the NGINX certificate
-# -----------------------------------------------------------------
+# -----------------------------------------------------------#
+# openssl-san.ext (v3-ext)                                   #
+# X.509 extensions for adding SAN to self-signed certificate #
+# -----------------------------------------------------------#
 
 [req]
 distinguished_name = req_distinguished_name
@@ -18,10 +18,10 @@ prompt             = no
 
 [req_distinguished_name]
 C  = US
-ST = Ohio
-L  = Columbus
-O  = Nginx
-CN = nginx.org
+ST = CA
+L  = Berkeley
+O  = Trusted-CA
+CN = Root
 
 [v3_req]
 basicConstraints = CA:FALSE
