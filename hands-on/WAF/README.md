@@ -103,7 +103,7 @@ chmod +x download-nginx-source-code.sh
 bash download-nginx-source-code.sh
 ```
 ```
-cd nginx-1.*
+cd /tmp/nginx-1.28.2
 ```
 ```
 ./configure --with-compat --add-dynamic-module=../ModSecurity-nginx
