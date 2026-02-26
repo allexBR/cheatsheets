@@ -92,6 +92,7 @@ cd ..
 ```
 git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 ```
+The [download-nginx-source-code.sh] script downloads the Nginx source code from its official repository and extracts all the files from within the .tar.gz file.
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/download-nginx-source-code.sh
 ```
@@ -100,9 +101,6 @@ chmod +x download-nginx-source-code.sh
 ```
 ```
 bash download-nginx-source-code.sh
-```
-```
-tar zxvf nginx-*.tar.gz
 ```
 ```
 cd nginx-1.*
