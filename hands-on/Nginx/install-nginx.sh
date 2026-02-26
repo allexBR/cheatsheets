@@ -3,7 +3,7 @@
 # Installing NGINX (latest stable release) on Debian Server via Nginx Official Repo
 # Created by allexBR | https://github.com/allexBR
 # Source: https://nginx.org/en/linux_packages.html#Debian
-# Last review date: Thu Feb 26 17:20:42 UTC 2026
+# Last review date: Thu Feb 26 17:31:08 UTC 2026
 # ------------------------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -100,4 +100,5 @@ systemctl status nginx
 echo "Installation completed successfully!"
 
 # Check Nginx installed version
-nginx -v
+echo "Nginx version:"
+/usr/sbin/nginx -v || true
