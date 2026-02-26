@@ -114,6 +114,7 @@ cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules
 cd ..
 ```
 
+
 ### • Load ModSecurity Module into Nginx:
 > Add the following load_module directive to the main (top‑level) context in /etc/nginx/nginx.conf. It instructs NGINX to load the ModSecurity dynamic module when it processes the configuration.
 ```
