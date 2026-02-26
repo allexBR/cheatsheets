@@ -1,7 +1,8 @@
 > [!TIP]
 > # Configuring a Open-Source Web Application Firewall on Debian
 > • Created by allexBR<br/>
-> • Sources: https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
+> • Sources: https://github.com/owasp-modsecurity/ModSecurity<br/>
+>            https://github.com/owasp-modsecurity/ModSecurity-nginx<br/>
 >            https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker<br/>
 >            https://blog.nginx.org/blog/compiling-and-installing-modsecurity-for-open-source-nginx
 
