@@ -7,7 +7,7 @@
 
 <br/>
 
-### | INSTRUCTIONS FOR DEPLOY THE NGINX MODSECURITY WAF
+### INSTRUCTIONS FOR DEPLOY THE NGINX MODSECURITY WAF
 <br/>
 <br/>
 
@@ -43,6 +43,7 @@ zlib1g-dev
 ```
 
 ### • Download and Compile ModSecurity v3 (libmodsecurity)
+>Please note that if you are working with git, don't forget to initialize and update the submodules. Here's a quick how-to:
 ```
 cd /tmp
 git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
