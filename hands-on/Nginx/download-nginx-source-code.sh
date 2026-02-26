@@ -2,15 +2,20 @@
 # -----------------------------------------------------------------------------
 # Downloading Nginx source code based on the version installed on the system
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Feb 26 16:33:20 UTC 2026
+# Last review date: Thu Feb 26 17:02:40 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script requires root privileges."
-    echo "Enter the root password when prompted to continue."
-    exec su -c "sh $0"
+    # Check if sudo is available, otherwise try su -
+    if command -v sudo >/dev/null 2>&1; then
+        exec sudo bash "$0" "$@"
+    else
+        echo "Enter the root password when prompted to continue."
+        exec su -c "bash $0 $@"
+    fi
     exit $?
 fi
 
