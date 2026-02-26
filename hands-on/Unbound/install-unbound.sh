@@ -8,10 +8,13 @@
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script requires root privileges."
-    echo "Enter the root password when prompted to continue."
-    # 'exec' Replace the current process with the command su -c
-    # '$0' refers to the current script itself
-    exec su -c "sh $0"
+    # Check if sudo is available, otherwise try su -
+    if command -v sudo >/dev/null 2>&1; then
+        exec sudo bash "$0" "$@"
+    else
+        echo "Enter the root password to continue."
+        exec su -c "bash $0 $@"
+    fi
     exit $?
 fi
 
