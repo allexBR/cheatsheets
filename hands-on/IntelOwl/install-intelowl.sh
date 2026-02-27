@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 12:54:03 UTC 2026
+# Last review date: Fri Feb 27 13:00:15 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -150,12 +150,6 @@ server {
     include errors.conf;
 }
 EOF
-
-# Check IntelOwl web server config changes
-nginx -t
-
-# Restart IntelOwl web server
-systemctl reload nginx
 
 # Start the app
 ./start prod up
