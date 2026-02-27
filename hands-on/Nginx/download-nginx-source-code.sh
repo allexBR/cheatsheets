@@ -53,7 +53,7 @@ fi
 echo "[+] Nginx source code downloaded successfully!"
 
 # Extract files
-tar -zxf nginx-${NGINX_VER}.tar.gz
+tar -xzf nginx-${NGINX_VER}.tar.gz
 
 echo "[+] All files were extracted successfully!"
 
