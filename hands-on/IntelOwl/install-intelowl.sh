@@ -109,12 +109,38 @@ chown root:root /etc/ssl/private/intelowl.key /etc/ssl/certs/intelowl.crt
 
 # IntelOwl web server config
 tee /opt/IntelOwl/configuration/nginx/https.conf <<EOF
+# the upstream component nginx needs to connect to
+upstream django {
+    server uwsgi:8001 fail_timeout=30s;
+}
+
+server {
+    listen 80;
+    server_name intelowl.honeynet.org;
+    return 301 https://intelowl.honeynet.org$request_uri;
+}
+
+limit_req_zone $binary_remote_addr zone=adminlimit:10m rate=1r/s;
+
+server {
+    listen 443 ssl;
+
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_certificate /etc/ssl/certs/intelowl.crt;
     ssl_certificate_key /etc/ssl/private/intelowl.key;
-EOF
+    #ssl_password_file /etc/ssl/private/ssl_passwords.txt;
 
-cat /opt/IntelOwl/configuration/nginx/https.conf
+    server_name intelowl.honeynet.org;
+
+    server_tokens off;
+
+    # Locations
+    include locations.conf;
+
+    # Error pages
+    include errors.conf;
+}
+EOF
 
 # Check IntelOwl web server config changes
 nginx -t
