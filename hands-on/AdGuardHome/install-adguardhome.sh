@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 10:05:21 UTC 2026
+# Last review date: Fri Feb 27 15:21:03 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
@@ -43,6 +43,7 @@ cd AdGuardHome
 sudo ./AdGuardHome -s install
 
 # HTTPS webGUI config (generate a self-signed certificate)
+# IMPORTANT: Do not use this in a prod environment, only for testing!
 tee /usr/local/etc/AdGuardHome/openssl-san.ext <<EOF
 # -----------------------------------------------------------#
 # openssl-san.ext (v3-ext)                                   #
@@ -85,17 +86,20 @@ openssl req -x509 -newkey ec \
   -config /usr/local/etc/AdGuardHome/openssl-san.ext \
   -extensions v3_req
 
-# Configure necessary permissions
-chmod 600 /etc/ssl/private/adguard.key && chmod 644 /etc/ssl/certs/adguard.crt
+# Verify that the files were actually created before changing necessary permissions
+if [ -f /etc/ssl/private/adguard.key ]; then
+    chmod 600 /etc/ssl/private/adguard.key
+    chmod 644 /etc/ssl/certs/adguard.crt
+    chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
+    echo "[V] Certificates generated successfully."
+else
+    echo "[X] Error: OpenSSL failed to generate certificates!"
+    exit 1
+fi
 
-chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
-
-# tee /usr/local/etc/AdGuardHome/AdGuardHome.yaml <<EOF
-#tls:
-#  enabled: true
-#  certificate_chain: /etc/ssl/certs/adguard.crt
-#  private_key: /etc/ssl/private/adguard.key
-#EOF
+# Add the key path to the AdGuard Home config YAML file
+echo -e "enabled: true\ncertificate_chain: /etc/ssl/certs/adguard.crt\nprivate_key: /etc/ssl/private/adguard.key" \
+    | tee -a /usr/local/etc/AdGuardHome/AdGuardHome.yaml > /dev/null
 
 # Restart AdGuard Home service
 # systemctl restart AdGuardHome
