@@ -125,17 +125,12 @@ cd ..
 load_module modules/ngx_http_modsecurity_module.so;
 ```
 > [!NOTE]
-> user nginx;
-> worker_processes auto;<br/>
-> ### load_module modules/ngx_http_modsecurity_module.so;<br/>
+> user nginx;<br/>worker_processes auto;<br/><br/>load_module modules/ngx_http_modsecurity_module.so;<br/>pid /run/nginx.pid;<br/>include /etc/nginx/modules-enabled/*.conf;<br/>
 
-> pid /run/nginx.pid;
-> include /etc/nginx/modules-enabled/*.conf;<br/>
-
-> events {
->	worker_connections 1024;
->	# multi_accept on;
->}
+events {
+	worker_connections 1024;
+	# multi_accept on;
+}
 
 <br/>
 <br/>
