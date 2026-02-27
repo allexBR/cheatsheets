@@ -2,16 +2,20 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
+# Last review date: Fri Feb 27 09:52:45 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script requires root privileges."
-    echo "Enter the root password when prompted to continue."
-    # 'exec' Replace the current process with the command su -c
-    # '$0' refers to the current script itself
-    exec su -c "sh $0"
+    # Check if sudo is available, otherwise try su -
+    if command -v sudo >/dev/null 2>&1; then
+        exec sudo bash "$0" "$@"
+    else
+        echo "Enter the root password to continue."
+        exec su -c "bash $0 $@"
+    fi
     exit $?
 fi
 
@@ -37,10 +41,10 @@ sudo ./AdGuardHome -s install
 
 # HTTPS webGUI config (generate a self-signed certificate)
 tee /usr/local/etc/AdGuardHome/openssl-san.ext <<EOF
-# -----------------------------------------------------------------
-# san_adguard_home.ext (v3-ext)
-# Extensões X.509 para adicionar SAN ao certificado do AdGuard Home
-# -----------------------------------------------------------------
+# -----------------------------------------------------------#
+# openssl-san.ext (v3-ext)                                   #
+# X.509 extensions for adding SAN to self-signed certificate #
+# -----------------------------------------------------------#
 
 [req]
 distinguished_name = req_distinguished_name
@@ -49,11 +53,11 @@ x509_extensions    = v3_req
 prompt             = no
 
 [req_distinguished_name]
-C  = CY
-ST = Limassol District
-L  = Limassol
-O  = AdGuard
-CN = adguard.com
+C  = US
+ST = CA
+L  = Berkeley
+O  = Trusted-CA
+CN = Root
 
 [v3_req]
 basicConstraints = CA:FALSE
@@ -84,10 +88,17 @@ chmod 600 /etc/ssl/private/adguard.key && chmod 644 /etc/ssl/certs/adguard.crt
 chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
 
 # nano /usr/local/etc/AdGuardHome/AdGuardHome.yaml
+#tls:
+#  enabled: true
+#  certificate_chain: /etc/ssl/certs/adguard.crt
+#  private_key: /etc/ssl/private/adguard.key
 
+# Restart AdGuard Home service
 # systemctl restart AdGuardHome
 
 #-------------------------------------------------#
 #  WebGUI first access: http://<IP-or-FQDN>:3000  #
 #-------------------------------------------------#
 
+# Uninstall AdGuard Home
+# ./AdGuardHome -s uninstall
