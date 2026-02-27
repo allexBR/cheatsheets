@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 10:02:35 UTC 2026
+# Last review date: Fri Feb 27 10:05:21 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
@@ -95,7 +95,7 @@ chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
 #  enabled: true
 #  certificate_chain: /etc/ssl/certs/adguard.crt
 #  private_key: /etc/ssl/private/adguard.key
-EOF
+#EOF
 
 # Restart AdGuard Home service
 # systemctl restart AdGuardHome
