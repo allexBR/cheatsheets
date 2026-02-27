@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 11:25:47 UTC 2026
+# Last review date: Fri Feb 27 11:32:57 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -23,10 +23,14 @@ fi
 
 echo "Starting IntelOwl installation. Please wait..."
 
-# Initial System repositories update
-apt clean ; apt update ; apt upgrade -y
+# Download and install packages required to start IntelOwl
+wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh
 
-# Define working directory
+chmod +x install-docker.sh
+
+bash install-docker.sh
+
+# Define IntelOwl working directory
 WORK_DIR="/opt"
 cd "$WORK_DIR" || exit 1
 
