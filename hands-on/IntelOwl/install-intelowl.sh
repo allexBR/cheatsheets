@@ -4,26 +4,30 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 13:28:45 UTC 2026
+# Last review date: Fri Feb 27 15:21:08 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
-    echo "This script requires root privileges."
-    # Check if sudo is available, otherwise try su -
-    if command -v sudo >/dev/null 2>&1; then
+    echo "This script requires root privileges!"
+    # Try 'su -' first (Debian default)
+    if command -v su >/dev/null 2>&1; then
+        echo "Enter the root password to continue."
+        exec su -c "bash \"$0\" $*"
+    # If 'su -' fails or doesn't exist, try 'sudo'
+    elif command -v sudo >/dev/null 2>&1; then
+        echo "SUDO: Enter your password to elevate your privileges and continue."
         exec sudo bash "$0" "$@"
     else
-        echo "Enter the root password to continue."
-        exec su -c "bash $0 $@"
+        echo "ERROR: It is not possible to elevate privileges."
+        exit 1
     fi
-    exit $?
 fi
 
 echo "Starting IntelOwl installation. Please wait..."
 
-# Download and install packages required to start IntelOwl
+# Download and install Docker (required to start IntelOwl)
 #if ! command -v docker &> /dev/null; then
 #    echo "[+] Docker not found. Installing..."
 #    wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh -O /tmp/install-docker.sh
@@ -59,7 +63,8 @@ cd IntelOwl/ || exit 1
 # Run helper script to verify installed dependencies and configure basic stuff
 ./initialize.sh
 
-# HTTPS webGUI config (generate a self-signed certificate / important: test only!)
+# HTTPS webGUI config (generate a self-signed certificate)
+# IMPORTANT: Do not use this in a prod environment, only for testing!
 tee /opt/IntelOwl/configuration/nginx/openssl-san.ext <<EOF
 # -----------------------------------------------------------#
 # openssl-san.ext (v3-ext)                                   #
@@ -102,10 +107,10 @@ openssl req -x509 -newkey ec \
   -sha256 \
   -days 36500 \
   -nodes \
-  -config ./configuration/nginx/openssl-san.ext \
+  -config /opt/IntelOwl/configuration/nginx/openssl-san.ext \
   -extensions v3_req \
 
-# Verify that the files were actually created before changing the permissions
+# Verify that the files were actually created before changing necessary permissions
 if [ -f /etc/ssl/private/intelowl.key ]; then
     chmod 600 /etc/ssl/private/intelowl.key
     chmod 644 /etc/ssl/certs/intelowl.crt
