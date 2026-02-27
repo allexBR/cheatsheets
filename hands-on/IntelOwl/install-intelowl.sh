@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 17:20:03 UTC 2026
+# Last review date: Fri Feb 27 17:31:47 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -44,7 +44,9 @@ echo "Starting IntelOwl installation. Please wait..."
 apt clean ; apt update ; apt upgrade -y
 
 # Install required dependencies
-apt install -y sudo
+apt install -y sudo python3-pip python-is-python3
+
+python -m pip install --upgrade pywin32
 
 # Define IntelOwl working directory
 WORK_DIR="/opt"
@@ -61,7 +63,7 @@ echo "[+] Operating in the directory: $WORK_DIR"
 cd IntelOwl/ || exit 1
 
 # Run helper script to verify installed dependencies and configure basic stuff
-./initialize.sh
+sudo ./initialize.sh
 
 # HTTPS webGUI config (generate a self-signed certificate)
 # IMPORTANT: Do not use this in a prod environment, only for testing!
@@ -121,11 +123,11 @@ fi
 
 # Start IntelOwl app
 # Now the application is running on http://<IP-or-FQDN>:80
-./start prod up
+sudo ./start prod up
 
 #-----------------------------------------------
 # Start IntelOwl app in https mode
-#./start prod up --https
+# sudo ./start prod up --https
 #-----------------------------------------------
 
 # Create a super user
