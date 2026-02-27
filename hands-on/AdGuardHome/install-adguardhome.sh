@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 09:52:45 UTC 2026
+# Last review date: Fri Feb 27 09:57:45 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
@@ -24,8 +24,11 @@ echo "Starting the AdGuard Home installation. Please wait..."
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
 
-# Enter to the folder where AdGuard Home will be installed
-cd /usr/local/etc/
+# Define working directory where AdGuard Home will be installed
+WORK_DIR="/usr/local/etc"
+cd "$WORK_DIR" || exit 1
+
+echo "[+] Operating in the directory: $WORK_DIR"
 
 # Download AdGuard Home (latest stable release) source code
 wget https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_amd64.tar.gz
@@ -87,11 +90,12 @@ chmod 600 /etc/ssl/private/adguard.key && chmod 644 /etc/ssl/certs/adguard.crt
 
 chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
 
-# nano /usr/local/etc/AdGuardHome/AdGuardHome.yaml
+# tee /usr/local/etc/AdGuardHome/AdGuardHome.yaml <<EOF
 #tls:
 #  enabled: true
 #  certificate_chain: /etc/ssl/certs/adguard.crt
 #  private_key: /etc/ssl/private/adguard.key
+EOF
 
 # Restart AdGuard Home service
 # systemctl restart AdGuardHome
