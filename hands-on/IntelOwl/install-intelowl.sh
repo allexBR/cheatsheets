@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 17:35:42 UTC 2026
+# Last review date: Fri Feb 27 17:59:42 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -138,8 +138,3 @@ sudo ./start prod up
 # Now you can login with the created user from http://<IP-or-FQDN>/login
 
 # Have fun!
-
-#-----------------------------------------------
-# apt install -y python3-pip python-is-python3
-#
-# python -m pip install --upgrade pywin32
