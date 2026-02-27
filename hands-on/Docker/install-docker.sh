@@ -3,7 +3,7 @@
 # Installing Docker (latest stable release) on Debian Server via Official Repo
 # Created by allexBR | https://github.com/allexBR
 # Source: https://docs.docker.com/engine/install/debian/
-# Last review date: Fri Feb 27 10:40:28 UTC 2026
+# Last review date: Fri Feb 27 10:46:18 UTC 2026
 # ------------------------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -84,7 +84,7 @@ systemctl status docker
 echo "Installation completed successfully!"
 
 # Check Docker installed version
-/usr/sbin/ docker --version || true
+docker --version || true
 
 docker compose version
 
