@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # Downloading Nginx source code based on the version installed on the system
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 09:27:03 UTC 2026
+# Last review date: Fri Feb 27 10:00:47 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
