@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 17:59:42 UTC 2026
+# Last review date: Fri Feb 27 19:17:05 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -83,8 +83,7 @@ prompt             = no
 C  = US
 ST = CA
 L  = Berkeley
-O  = Trusted-CA
-CN = Root
+CN = Trusted-CA
 
 [v3_req]
 basicConstraints = CA:FALSE
