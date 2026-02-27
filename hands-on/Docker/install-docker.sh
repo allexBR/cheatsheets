@@ -3,7 +3,7 @@
 # Installing Docker (latest stable release) on Debian Server via Official Repo
 # Created by allexBR | https://github.com/allexBR
 # Source: https://docs.docker.com/engine/install/debian/
-# Last review date: Fri Feb 27 10:38:32 UTC 2026
+# Last review date: Fri Feb 27 10:40:28 UTC 2026
 # ------------------------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -46,7 +46,7 @@ curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/doc
 
 chmod a+r /etc/apt/keyrings/docker.asc
 
-echo "Docker's official GPG key added..."
+echo "Docker's official GPG key added!"
 
 # Set up the apt repository
 tee /etc/apt/sources.list.d/docker.sources <<EOF
@@ -57,7 +57,7 @@ Components: stable
 Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 
-echo "Docker repository to Apt sources added..."
+echo "Docker repository to Apt sources added!"
 
 # Final System repositories update
 apt update
@@ -84,8 +84,7 @@ systemctl status docker
 echo "Installation completed successfully!"
 
 # Check Docker installed version
-#/usr/sbin/
-docker --version || true
+/usr/sbin/ docker --version || true
 
 docker compose version
 
