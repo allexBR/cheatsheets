@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 09:57:45 UTC 2026
+# Last review date: Fri Feb 27 09:58:05 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
