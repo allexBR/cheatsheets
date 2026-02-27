@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 15:21:08 UTC 2026
+# Last review date: Fri Feb 27 17:20:03 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -96,79 +96,43 @@ IP.1  = 127.0.0.1
 IP.2  = ::1
 EOF
 
-# Ensure that the destination directories exist
-mkdir -p /etc/ssl/private /etc/ssl/certs
-
 # Create a ECDSA self-signed IntelOwl private key and certificate using SAN
 openssl req -x509 -newkey ec \
   -pkeyopt ec_paramgen_curve:secp384r1 \
   -keyout /etc/ssl/private/intelowl.key \
-  -out /etc/ssl/certs/intelowl.crt \
+  -out /usr/local/share/ca-certificates/intelowl.crt \
   -sha256 \
   -days 36500 \
   -nodes \
   -config /opt/IntelOwl/configuration/nginx/openssl-san.ext \
-  -extensions v3_req \
+  -extensions v3_req
 
 # Verify that the files were actually created before changing necessary permissions
 if [ -f /etc/ssl/private/intelowl.key ]; then
     chmod 600 /etc/ssl/private/intelowl.key
-    chmod 644 /etc/ssl/certs/intelowl.crt
-    chown root:root /etc/ssl/private/intelowl.key /etc/ssl/certs/intelowl.crt
+    chmod 644 /usr/local/share/ca-certificates/intelowl.crt
+    chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.crt
     echo "[V] Certificates generated successfully."
 else
     echo "[X] Error: OpenSSL failed to generate certificates!"
     exit 1
 fi
 
-# IntelOwl web server https block config
-tee /opt/IntelOwl/configuration/nginx/https.conf <<EOF
-# the upstream component nginx needs to connect to
-upstream django {
-    server uwsgi:8001 fail_timeout=30s;
-}
-
-server {
-    listen 80;
-    server_name intelowl.honeynet.org;
-    return 301 https://intelowl.honeynet.org$request_uri;
-}
-
-limit_req_zone $binary_remote_addr zone=adminlimit:10m rate=1r/s;
-
-server {
-    listen 443 ssl;
-
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_certificate /etc/ssl/certs/intelowl.crt;
-    ssl_certificate_key /etc/ssl/private/intelowl.key;
-    #ssl_password_file /etc/ssl/private/ssl_passwords.txt;
-
-    server_name intelowl.honeynet.org;
-
-    server_tokens off;
-
-    # Locations
-    include locations.conf;
-
-    # Error pages
-    include errors.conf;
-}
-EOF
 
 # Start IntelOwl app
-#./start prod up
+# Now the application is running on http://<IP-or-FQDN>:80
+./start prod up
 
+#-----------------------------------------------
 # Start IntelOwl app in https mode
-./start prod up --https
-
-# Now the application is running on http://localhost:80
+#./start prod up --https
+#-----------------------------------------------
 
 # Create a super user
 # docker exec -ti intelowl_uwsgi python3 manage.py createsuperuser
 
 
-# Now you can login with the created user from http://localhost:80/login
+# Now you can login with the created user from http://<IP-or-FQDN>/login
 
 # Have fun!
 
