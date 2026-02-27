@@ -3,7 +3,8 @@
 # Created by allexBR | https://github.com/allexBR
 # -----------------------------------------------------------------------------------
 
-# HTTPS SAN config
+# HTTPS SAN config (generate a self-signed certificate)
+# IMPORTANT: Do not use this in a prod environment, only for testing!
 tee /etc/nginx/openssl-san.ext <<EOF
 # -----------------------------------------------------------#
 # openssl-san.ext (v3-ext)                                   #
@@ -20,8 +21,7 @@ prompt             = no
 C  = US
 ST = CA
 L  = Berkeley
-O  = Trusted-CA
-CN = Root
+CN  = Trusted-CA
 
 [v3_req]
 basicConstraints = CA:FALSE
@@ -58,6 +58,9 @@ chown root:root /etc/ssl/private/nginx-private.key /etc/ssl/certs/nginx-certific
 openssl dhparam -out /etc/nginx/dhparam.pem 4096
 
 cat /etc/nginx/dhparam.pem
+
+# Create Snippets folder
+mkdir -p /etc/nginx/snippets/
 
 # Nginx SSL parameters configuration
 tee /etc/nginx/snippets/ssl-params.conf <<EOF
