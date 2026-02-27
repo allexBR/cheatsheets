@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 12:19:45 UTC 2026
+# Last review date: Fri Feb 27 12:29:32 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -23,17 +23,38 @@ fi
 
 echo "Starting IntelOwl installation. Please wait..."
 
+# Download and install packages required to start IntelOwl
+if ! command -v docker &> /dev/null; then
+    echo "[+] Docker not found. Installing..."
+    wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh -O /tmp/install-docker.sh
+    chmod +x /tmp/install-docker.sh
+    bash /tmp/install-docker.sh
+    
+    # Pause to ensure the daemon has launched
+    sleep 5
+else
+    echo "[+] Docker already installed."
+fi
+
+# Initial System repositories update/upgrade
+apt clean ; apt update ; apt upgrade -y
+
+# Install required dependencies
+apt install -y sudo
+
 # Define IntelOwl working directory
 WORK_DIR="/opt"
 cd "$WORK_DIR" || exit 1
 
+if [ ! -d "IntelOwl" ]; then
+    echo "[+] Cloning IntelOwl..."
+    git clone https://github.com/intelowlproject/IntelOwl
+fi
+
 echo "[+] Operating in the directory: $WORK_DIR"
 
-# Clone the IntelOwl project repository
-git clone https://github.com/intelowlproject/IntelOwl
-
 # Enter in the project directory
-cd IntelOwl/
+cd IntelOwl/ || exit 1
 
 # Run helper script to verify installed dependencies and configure basic stuff
 ./initialize.sh
