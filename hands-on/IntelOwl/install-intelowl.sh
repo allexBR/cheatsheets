@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 13:00:15 UTC 2026
+# Last review date: Fri Feb 27 13:28:45 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -151,13 +151,11 @@ server {
 }
 EOF
 
-# Start the app
-./start prod up
+# Start IntelOwl app
+#./start prod up
 
-#---------------------------------
-# Start the app in https mode
-#./start prod up --https
-#---------------------------------
+# Start IntelOwl app in https mode
+./start prod up --https
 
 # Now the application is running on http://localhost:80
 
