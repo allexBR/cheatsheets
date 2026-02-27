@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 09:58:05 UTC 2026
+# Last review date: Fri Feb 27 10:02:35 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # --- Validating privileges and re-executing as root ---
@@ -34,7 +34,7 @@ echo "[+] Operating in the directory: $WORK_DIR"
 wget https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_amd64.tar.gz
 
 # Extract AdGuard Home source code
-tar xzf AdGuardHome_linux_amd64.tar.gz
+tar -zxf AdGuardHome_linux_amd64.tar.gz
 
 # Enter the directory extracted from the compressed file
 cd AdGuardHome
