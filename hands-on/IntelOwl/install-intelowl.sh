@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 12:52:38 UTC 2026
+# Last review date: Fri Feb 27 12:54:03 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -24,17 +24,17 @@ fi
 echo "Starting IntelOwl installation. Please wait..."
 
 # Download and install packages required to start IntelOwl
-if ! command -v docker &> /dev/null; then
-    echo "[+] Docker not found. Installing..."
-    wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh -O /tmp/install-docker.sh
-    chmod +x /tmp/install-docker.sh
-    bash /tmp/install-docker.sh
-    
-    # Pause to ensure the daemon has launched
-    sleep 5
-else
-    echo "[+] Docker already installed."
-fi
+#if ! command -v docker &> /dev/null; then
+#    echo "[+] Docker not found. Installing..."
+#    wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh -O /tmp/install-docker.sh
+#    chmod +x /tmp/install-docker.sh
+#    bash /tmp/install-docker.sh
+#    
+#    # Pause to ensure the daemon has launched
+#    sleep 5
+#else
+#    echo "[+] Docker already installed."
+#fi
 
 # Initial System repositories update/upgrade
 apt clean ; apt update ; apt upgrade -y
