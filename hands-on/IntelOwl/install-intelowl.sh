@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 12:29:32 UTC 2026
+# Last review date: Fri Feb 27 12:52:38 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -60,7 +60,7 @@ cd IntelOwl/ || exit 1
 ./initialize.sh
 
 # HTTPS webGUI config (generate a self-signed certificate / important: test only!)
-tee /opt/IntelOwl/configuration/nginx/openssl-san.conf <<EOF
+tee /opt/IntelOwl/configuration/nginx/openssl-san.ext <<EOF
 # -----------------------------------------------------------#
 # openssl-san.ext (v3-ext)                                   #
 # X.509 extensions for adding SAN to self-signed certificate #
@@ -91,6 +91,9 @@ IP.1  = 127.0.0.1
 IP.2  = ::1
 EOF
 
+# Ensure that the destination directories exist
+mkdir -p /etc/ssl/private /etc/ssl/certs
+
 # Create a ECDSA self-signed IntelOwl private key and certificate using SAN
 openssl req -x509 -newkey ec \
   -pkeyopt ec_paramgen_curve:secp384r1 \
@@ -99,15 +102,21 @@ openssl req -x509 -newkey ec \
   -sha256 \
   -days 36500 \
   -nodes \
-  -config /opt/IntelOwl/configuration/nginx/openssl-san.ext \
-  -extensions v3_req
+  -config ./configuration/nginx/openssl-san.ext \
+  -extensions v3_req \
 
-# Configure necessary permissions
-chmod 600 /etc/ssl/private/intelowl.key && chmod 644 /etc/ssl/certs/intelowl.crt
+# Verify that the files were actually created before changing the permissions
+if [ -f /etc/ssl/private/intelowl.key ]; then
+    chmod 600 /etc/ssl/private/intelowl.key
+    chmod 644 /etc/ssl/certs/intelowl.crt
+    chown root:root /etc/ssl/private/intelowl.key /etc/ssl/certs/intelowl.crt
+    echo "[V] Certificates generated successfully."
+else
+    echo "[X] Error: OpenSSL failed to generate certificates!"
+    exit 1
+fi
 
-chown root:root /etc/ssl/private/intelowl.key /etc/ssl/certs/intelowl.crt
-
-# IntelOwl web server config
+# IntelOwl web server https block config
 tee /opt/IntelOwl/configuration/nginx/https.conf <<EOF
 # the upstream component nginx needs to connect to
 upstream django {
