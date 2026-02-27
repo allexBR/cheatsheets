@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------
 # Downloading Nginx source code based on the version installed on the system
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Feb 26 17:21:40 UTC 2026
+# Last review date: Fri Feb 27 09:27:03 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -28,7 +28,7 @@ echo "[+] Operating in the directory: $WORK_DIR"
 echo "[+] Checking the current version of NGINX..."
 
 # Capture the output of nginx -v command
-NGINX_VER=$(nginx -v 2>&1 | grep -oP '\d+\.\d+\.\d+')
+NGINX_VER=$(/usr/sbin/nginx -v 2>&1 | grep -oP '\d+\.\d+\.\d+')
 
 # Checks if the variable is not empty
 if [ -z "$NGINX_VER" ]; then
