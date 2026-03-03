@@ -51,3 +51,49 @@ zeek --version
 ```
 <br/>
 
+### # INSTRUCTIONS FOR CONFIGURE THE ZEEK NETWORK MONITOR
+<br/>
+
+### • Edit the /opt/zeek/etc/node.cfg file and set the packet capture interface:
+> In this post, we use eth0.
+```
+[zeek]​
+type=standalone​
+host=localhost​
+interface=eth0
+```
+<br/>
+
+### • Edit the /opt/zeek/etc/networks.cfg file and add your network subnet:
+> Replace <NETWORK_SUBNET> with your network subnet. The content of the file will look similar to this:
+```
+# List of local networks in CIDR notation, optionally followed by a descriptive
+# tag. Private address space defined by Zeek's Site::private_address_space set
+# (see scripts/base/utils/site.zeek) is automatically considered local. You can
+# disable this auto-inclusion by setting zeekctl's PrivateAddressSpaceIsLocal
+# option to 0.
+#
+# Examples of valid prefixes:
+#
+# 1.2.3.0/24        Admin network
+# 2607:f140::/32    Student network
+<NETWORK_SUBNET>
+```
+<br/>
+
+### • Run the following command to verify your Zeek syntax:
+```
+zeekctl check
+```
+<br/>
+> [!NOTE]
+> Hint: Run the zeekctl "deploy" command to get started.<br/>
+> zeek scripts are ok.
+
+<br/>
+
+### • Start Zeek:
+```
+zeekctl deploy
+```
+<br/>
