@@ -89,6 +89,7 @@ interface=eth0
 zeekctl check
 ```
 <br/>
+
 > [!NOTE]
 > Hint: Run the zeekctl "deploy" command to get started.<br/>
 > zeek scripts are ok.
