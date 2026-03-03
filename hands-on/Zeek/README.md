@@ -67,7 +67,7 @@ interface=eth0
 ```
 <br/>
 
-### • Edit the /opt/zeek/etc/networks.cfg file and add your network subnet:
+### • Edit the /opt/zeek/etc/networks.cfg file and add your subnet:
 > Replace <NETWORK_SUBNET> with your network subnet. The content of the file will look similar to this:
 ```
 # List of local networks in CIDR notation, optionally followed by a descriptive
