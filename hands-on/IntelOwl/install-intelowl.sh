@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Feb 27 19:17:05 UTC 2026
+# Last review date: Tue Mar 03 16:58:05 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -67,7 +67,7 @@ sudo ./initialize.sh
 
 # HTTPS webGUI config (generate a self-signed certificate)
 # IMPORTANT: Do not use this in a prod environment, only for testing!
-tee /opt/IntelOwl/configuration/nginx/openssl-san.ext <<EOF
+tee /opt/IntelOwl/openssl-san.ext <<EOF
 # -----------------------------------------------------------#
 # openssl-san.ext (v3-ext)                                   #
 # X.509 extensions for adding SAN to self-signed certificate #
