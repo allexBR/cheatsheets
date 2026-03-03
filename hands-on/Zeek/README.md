@@ -130,3 +130,10 @@ zeekctl deploy
 zeekctl deploy
 ```
 <br/>
+<br/>
+
+Zeek logs such as and will now be generated in JSON format in the directory /opt/zeek/logs/current
+> conn.log  dns.log
+<img width="1079" height="814" alt="image" src="https://github.com/user-attachments/assets/a5469c6c-7a70-4ec1-8148-d93454b789a6" />
+
+
