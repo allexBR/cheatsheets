@@ -133,6 +133,7 @@ zeekctl deploy
 <br/>
 
 Zeek logs such as and will now be generated in JSON format in the directory /opt/zeek/logs/current
+> [!IMPORTANT]
 > conn.log<br/>
 > dns.log
 
