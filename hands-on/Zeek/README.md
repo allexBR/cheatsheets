@@ -115,7 +115,6 @@ zeekctl deploy
 > stopping zeek ...<br/>
 > starting ...<br/>
 > starting zeek ...
-
 <br/>
 
 ### • Enable JSON log output:
@@ -124,3 +123,10 @@ zeekctl deploy
 ```
 @load policy/tuning/json-logs.zeek
 ```
+<br/>
+
+### • Restart Zeek to apply the changes:
+```
+zeekctl deploy
+```
+<br/>
