@@ -1,5 +1,5 @@
 > [!TIP]
-> # Deploying an Open Source Network Security Monitoring with Zeek on Debian Server
+> # Deploying an Open Source Network Security Monitoring with Zeek
 > • Created by allexBR<br/>
 > • Sources: https://docs.zeek.org/en/current/<br/>
 >            https://zeek.org/get-zeek/<br/>
