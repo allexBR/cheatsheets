@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Tue Mar 03 16:58:05 UTC 2026
+# Last review date: Tue Mar 03 16:59:37 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -105,7 +105,7 @@ openssl req -x509 -newkey ec \
   -sha256 \
   -days 36500 \
   -nodes \
-  -config /opt/IntelOwl/configuration/nginx/openssl-san.ext \
+  -config /opt/IntelOwl/openssl-san.ext \
   -extensions v3_req
 
 # Verify that the files were actually created before changing necessary permissions
