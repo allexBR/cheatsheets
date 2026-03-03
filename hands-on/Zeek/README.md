@@ -8,7 +8,7 @@
 
 <br/>
 
-### # INSTRUCTIONS FOR INSTALL THE ZEEK NETWORK MONITOR
+### # INSTRUCTIONS FOR INSTALL THE ZEEK NETWORK MONITOR ON DEBIAN
 <br/>
 
 > About: Zeek is a passive, open-source network traffic analyzer. Many operators use Zeek as a network security monitor (NSM) to support investigations of suspicious or malicious activity. The first benefit a new user derives from Zeek is the extensive set of logs describing network activity. In addition to the logs, Zeek comes with built-in functionality for a range of analysis and detection tasks, including extracting files from HTTP sessions, detecting malware by interfacing to external registries, reporting vulnerable versions of software seen on the network, identifying popular web applications, detecting SSH brute-forcing, validating SSL certificate chains, and much more.<br/>
