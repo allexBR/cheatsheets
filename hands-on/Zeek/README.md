@@ -101,3 +101,26 @@ zeekctl check
 zeekctl deploy
 ```
 <br/>
+
+> [!NOTE]
+> checking configurations ...<br/>
+> installing ...<br/>
+> creating policy directories ...<br/>
+> installing site policies ...<br/>
+> generating standalone-layout.zeek ...<br/>
+> generating local-networks.zeek ...<br/>
+> generating zeekctl-config.zeek ...<br/>
+> generating zeekctl-config.sh ...<br/>
+> stopping ...<br/>
+> stopping zeek ...<br/>
+> starting ...<br/>
+> starting zeek ...
+
+<br/>
+
+### • Enable JSON log output:
+> Zeek logs are stored in TSV format by default. Add the following line to the /opt/zeek/share/zeek/site/local.zeek file to generate logs in JSON format:
+
+```
+@load policy/tuning/json-logs.zeek
+```
