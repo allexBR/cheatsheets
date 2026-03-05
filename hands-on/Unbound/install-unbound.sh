@@ -2,20 +2,25 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
+# Last review date: Thu Mar 05 19:43:02 UTC 2026
 # -----------------------------------------------------------------------------------
 
-# --- Validating privileges and re-executing as root ---
+# Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
-    echo "This script requires root privileges."
-    # Check if sudo is available, otherwise try su -
-    if command -v sudo >/dev/null 2>&1; then
+    echo "This script requires root privileges!"
+    # Try 'su -' first (Debian default)
+    if command -v su >/dev/null 2>&1; then
+        echo "Enter the root password to continue."
+        exec su -c "bash \"$0\" $*"
+    # If 'su -' fails or doesn't exist, try 'sudo'
+    elif command -v sudo >/dev/null 2>&1; then
+        echo "SUDO: Enter your password to elevate your privileges and continue."
         exec sudo bash "$0" "$@"
     else
-        echo "Enter the root password to continue."
-        exec su -c "bash $0 $@"
+        echo "ERROR: It is not possible to elevate privileges."
+        exit 1
     fi
-    exit $?
 fi
 
 echo "Starting the Unbound DNS installation. Please wait..."
@@ -24,9 +29,12 @@ echo "Starting the Unbound DNS installation. Please wait..."
 apt clean ; apt update ; apt upgrade -y
 
 # Install required dependencies
-apt install -y unbound-anchor lsb-release ca-certificates apt-transport-https curl
+apt install -y apt-transport-https ca-certificates curl lsb-release
 
-# Update System certificate authority
+# Install DNS root hints and DNSSEC trust anchor (required)
+apt install -y dns-root-data unbound-anchor
+
+# Update root certificate authority
 update-ca-certificates
 
 # Install libraries and packages required to start compiling
@@ -59,13 +67,24 @@ tar xzf unbound-*.tar.gz
 # Enter the directory extracted from the compressed file
 cd unbound-1*
 
-# Add Unbound user to the System
-if ! getent passwd unbound > /dev/null; then
-    echo "Creating unbound user..."
-    adduser --system --group --no-create-home --quiet unbound
-else
-    echo "Unbound user already exists. Skipping step."
+# Before starting the compilation...
+# Checks if the 'unbound' group exists; if not, creates it.
+if ! getent group unbound >/dev/null; then
+    echo "Creating Unbound group..."
+    groupadd unbound
 fi
+# Checks if the 'unbound' user exists; if not, creates and adds them to the group
+if ! id -u unbound >/dev/null 2>&1; then
+    echo "Creating Unbound user..."
+    useradd -g unbound -s /sbin/nologin -r unbound
+else
+    # Ensures that he is part of the group if it already exists
+    usermod -aG unbound unbound
+fi
+# Final check
+echo "The user and group Unbound are present in the system!"
+getent passwd | cut -d: -f1 | grep -w unbound
+getent group | cut -d: -f1 | grep -w unbound
 
 # Compile Unbound from source code
 ./configure \
@@ -94,10 +113,13 @@ fi
   --with-pyunbound \
   --with-pythonmodule
 
+# Compiling the source files
 make
 
+# Install created binary files
 make install
 
+# Check and recreate the index for the dynamic libraries
 ldconfig
 
 # Create a log file for Unbound
@@ -118,8 +140,8 @@ unbound-anchor -a /var/lib/unbound/root.key
 # Unbound system user must have write permission to the file
 chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
 
-# Download root.hints file from Internic.net
-curl -o /etc/unbound/root.hints https://www.internic.net/domain/named.cache
+# Create a symbolic link to the root.hints file in Unbound default path
+ln -s /usr/share/dns/root.hints /etc/unbound
 
 # Unbound system user must have write permission to the file
 chmod 644 /etc/unbound/root.hints
@@ -133,9 +155,9 @@ nameserver 127.0.0.1
 nameserver ::1
 EOF
 
-#lsattr /etc/resolv.conf
-#chattr -e /etc/resolv.conf
-#chattr +i /etc/resolv.conf
+lsattr /etc/resolv.conf
+chattr -e /etc/resolv.conf
+chattr +i /etc/resolv.conf
 
 # Add Unbound as a System service
 tee /lib/systemd/system/unbound.service <<EOF
