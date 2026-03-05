@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 05 19:43:02 UTC 2026
+# Last review date: Thu Mar 05 20:17:42 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -71,15 +71,15 @@ cd unbound-1*
 # Checks if the 'unbound' group exists; if not, creates it.
 if ! getent group unbound >/dev/null; then
     echo "Creating Unbound group..."
-    groupadd unbound
+    /usr/sbin/groupadd unbound
 fi
 # Checks if the 'unbound' user exists; if not, creates and adds them to the group
 if ! id -u unbound >/dev/null 2>&1; then
     echo "Creating Unbound user..."
-    useradd -g unbound -s /sbin/nologin -r unbound
+    /usr/sbin/useradd -g unbound -s /usr/sbin/nologin -r unbound
 else
     # Ensures that he is part of the group if it already exists
-    usermod -aG unbound unbound
+    /usr/sbin/usermod -aG unbound unbound
 fi
 # Final check
 echo "The user and group Unbound are present in the system!"
