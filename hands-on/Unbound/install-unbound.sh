@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 11:27:45 UTC 2026
+# Last review date: Fri Mar 06 15:23:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -75,18 +75,19 @@ chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/ro
 # Install libraries and packages required to start compiling
 apt install -y build-essential \
   bison \
+  expat \
   flex \
-  libssl-dev \
-  libexpat1-dev \
   libevent-dev \
-  libnghttp2-dev \
-  libsystemd-dev \
-  libsodium-dev \
+  libexpat1-dev \
   libhiredis-dev \
-  python3-dev \
-  swig \
+  libnghttp2-dev \
+  libsodium-dev \
+  libssl-dev \
+  libsystemd-dev \
+  libprotobuf-c-dev \
   protobuf-c-compiler \
-  libprotobuf-c-dev
+  python3-dev \
+  swig
 
 # Enter in the working directory where the necessary files will be downloaded
 cd /tmp
@@ -108,14 +109,13 @@ cd unbound-1*
   --runstatedir=/run \
   --with-run-dir=/run/unbound \
   --with-pidfile=/run/unbound.pid \
-  --with-user=unbound
+  --with-user=unbound \
   --with-libevent \
   --with-libnghttp2 \
   --with-rootkey-file=/var/lib/unbound/root.key \
   --disable-dependency-tracking \
   --disable-flto \
   --disable-maintainer-mode \
-  --disable-option-checking \
   --disable-rpath \
   --disable-silent-rules \
   --enable-systemd \
