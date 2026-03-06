@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 11:08:25 UTC 2026
+# Last review date: Fri Mar 06 11:27:45 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -63,6 +63,15 @@ apt install -y dns-root-data unbound-anchor
 # Point the Python interpreter to Python 3 (current default)
 apt install -y python-is-python3
 
+# Create the directory /var/lib/unbound/ and grant it the necessary permissions
+install -d -m 755 -o unbound -g unbound /var/lib/unbound/
+
+# Create Unbound root.key file
+/usr/sbin/unbound-anchor -a /var/lib/unbound/root.key
+
+# Unbound system user must have write permission to the file
+chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
+
 # Install libraries and packages required to start compiling
 apt install -y build-essential \
   bison \
@@ -78,9 +87,6 @@ apt install -y build-essential \
   swig \
   protobuf-c-compiler \
   libprotobuf-c-dev
-
-# Create the directory /var/lib/unbound/ and grant it the necessary permissions
-install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 
 # Enter in the working directory where the necessary files will be downloaded
 cd /tmp
@@ -135,15 +141,6 @@ touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
 chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
-
-# Create Unbound root.key file
-/usr/sbin/unbound-anchor -a /var/lib/unbound/root.key
-
-# Unbound system user must have write permission to the file
-chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
-
-# Show the directory that was created earlier
-ls -al /var/lib/unbound
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -318,11 +315,13 @@ remote-control:
 
 # Import custom configs: the following line includes additional
 # configuration files from the /etc/unbound/unbound.conf.d directory.
-include-toplevel: "/etc/unbound/conf.d/*.conf"
+include: "/etc/unbound/conf.d/*.conf"
 EOF
 
 # Check that all Unbound default settings are correct
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
+
+echo "No errors detected in the Unbound settings"
 
 # Creates Unbound server keys into Unbound folder
 /usr/sbin/unbound-control-setup -d /etc/unbound
@@ -342,7 +341,7 @@ nameserver 127.0.0.1
 nameserver ::1
 EOF
 
-# Read the current permissions of the resolv.conf file and change them
+# Read the current permissions of the resolv.conf file and change the attributes
 lsattr /etc/resolv.conf
 chattr -e /etc/resolv.conf
 chattr +i /etc/resolv.conf
