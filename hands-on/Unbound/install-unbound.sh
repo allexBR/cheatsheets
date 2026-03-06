@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 16:21:01 UTC 2026
+# Last review date: Fri Mar 06 16:47:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -248,7 +248,7 @@ server:
         # Queries Logging Options
         log-queries: yes
         log-replies: yes
-        log-tag-queryreply: no
+        log-tag-queryreply: yes
         log-servfail: yes
         log-local-actions: yes
 
