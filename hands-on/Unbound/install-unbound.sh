@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:51:01 UTC 2026
+# Last review date: Fri Mar 06 16:21:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -206,9 +206,10 @@ server:
         statistics-cumulative: no
         extended-statistics: yes
 
-        # Prefetching Options
+        # Prefetching settings
         prefetch: yes
         prefetch-key: yes
+        minimal-responses: yes
 
         # Privacy Options
         hide-identity: yes
@@ -216,16 +217,19 @@ server:
         aggressive-nsec: yes
         qname-minimisation: yes
 
-        # System Performance Options
-        rrset-cache-slabs: 2
+        # System performance settings
+        # 'Slabs' equal to the number of threads or a power of 2 greater
+        num-threads: 2
         msg-cache-slabs: 2
+        rrset-cache-slabs: 2
         key-cache-slabs: 2
         infra-cache-slabs: 2
-        num-threads: 2
+        msg-cache-size: 128m
+        rrset-cache-size: 256m
         outgoing-range: 8192
         num-queries-per-thread: 4096
-        so-rcvbuf: 4m
         so-sndbuf: 4m
+        so-rcvbuf: 4m
         do-daemonize: yes
         so-reuseport: yes
 
