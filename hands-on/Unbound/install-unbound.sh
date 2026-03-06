@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:26:01 UTC 2026
+# Last review date: Fri Mar 06 15:33:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -128,7 +128,7 @@ cd unbound-1*
   --with-pythonmodule
 
 # Compile Unbound from source code and convert it into binary files
-make
+make -j$(nproc)
 
 # Install created binary files
 make install
