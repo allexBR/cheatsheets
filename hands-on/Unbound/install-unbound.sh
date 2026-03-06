@@ -44,11 +44,9 @@ echo "The user and group Unbound are present in the system!"
 getent passwd | cut -d: -f1 | grep -w unbound
 getent group | cut -d: -f1 | grep -w unbound
 
-# Create the directory /var/lib/unbound/ and grant it the necessary permissions
-install -d -m 755 -o unbound -g unbound /var/lib/unbound/
-
-echo
+echo "#####################################################"
 echo "Starting the Unbound DNS installation. Please wait..."
+echo "#####################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
@@ -61,6 +59,18 @@ apt install -y dns-root-data unbound-anchor
 
 # Update the system root certification authority
 update-ca-certificates
+
+# Create the directory /var/lib/unbound/ and grant it the necessary permissions
+install -d -m 755 -o unbound -g unbound /var/lib/unbound/
+
+# Create Unbound root.key file
+unbound-anchor -a /var/lib/unbound/root.key
+
+# Unbound system user must have write permission to the file
+chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
+
+# Show the directory that was created earlier
+ls -al /var/lib/unbound
 
 # Point the Python interpreter to Python 3 (current default)
 apt install -y python-is-python3
@@ -129,7 +139,7 @@ make install
 # Check and recreate the index for the dynamic libraries
 ldconfig
 
-# Create a log file for Unbound
+# Create Unbound log file
 touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
@@ -137,12 +147,6 @@ chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
-
-# Create Unbound root.key file
-unbound-anchor -a /var/lib/unbound/root.key
-
-# Unbound system user must have write permission to the file
-chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
 
 # Create a symbolic link to the root.hints file in Unbound default path
 ln -s /usr/share/dns/root.hints /etc/unbound
