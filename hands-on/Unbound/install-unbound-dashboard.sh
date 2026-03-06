@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:51:08 UTC 2026
+# Last review date: Fri Mar 06 15:59:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -23,9 +23,9 @@ if [ "$(id -u)" -ne 0 ]; then
     fi
 fi
 
-echo "###########################################################"
-echo "Starting the Unbound Dashboard installation. Please wait..."
-echo "###########################################################"
+echo "###############################################################"
+echo "# Starting the Unbound Dashboard installation. Please wait... #"
+echo "###############################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
