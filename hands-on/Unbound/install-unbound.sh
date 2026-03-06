@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:33:01 UTC 2026
+# Last review date: Fri Mar 06 15:51:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -375,7 +375,7 @@ systemctl enable unbound
 # Start Unbound service
 systemctl start unbound
 
-# Check Unbnound service status
+# Check Unbound service status
 systemctl status unbound
 
 # Displays version and basic post-start test
