@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 05 20:17:42 UTC 2026
+# Last review date: Fri Mar 06 10:15:42 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -23,6 +23,31 @@ if [ "$(id -u)" -ne 0 ]; then
     fi
 fi
 
+# Before starting the whole process...
+# Check if the 'unbound' group exists; if not, creates it.
+if ! getent group unbound >/dev/null; then
+    echo "Creating Unbound group..."
+    /usr/sbin/groupadd unbound
+fi
+# Check if the 'unbound' user exists; if not, creates and adds them to the group
+if ! id -u unbound >/dev/null 2>&1; then
+    echo "Creating Unbound user..."
+    /usr/sbin/useradd -g unbound -s /usr/sbin/nologin -r unbound
+else
+    # Ensure that he is part of the group if it already exists
+    /usr/sbin/usermod -aG unbound unbound
+fi
+
+echo "The user and group Unbound are present in the system!"
+
+# Displays the user and group Unbound
+getent passwd | cut -d: -f1 | grep -w unbound
+getent group | cut -d: -f1 | grep -w unbound
+
+# Create the directory /var/lib/unbound/ and grant it the necessary permissions
+install -d -m 755 -o unbound -g unbound /var/lib/unbound/
+
+echo
 echo "Starting the Unbound DNS installation. Please wait..."
 
 # Initial System repositories update
@@ -34,8 +59,11 @@ apt install -y apt-transport-https ca-certificates curl lsb-release
 # Install DNS root hints and DNSSEC trust anchor (required)
 apt install -y dns-root-data unbound-anchor
 
-# Update root certificate authority
+# Update the system root certification authority
 update-ca-certificates
+
+# Point the Python interpreter to Python 3 (current default)
+apt install -y python-is-python3
 
 # Install libraries and packages required to start compiling
 apt install -y build-essential \
@@ -53,9 +81,7 @@ apt install -y build-essential \
   protobuf-c-compiler \
   libprotobuf-c-dev
 
-apt install -y python-is-python3
-
-# Enter to the folder where the necessary files will be downloaded
+# Enter in the working directory where the necessary files will be downloaded
 cd /tmp
 
 # Download Unbound (latest stable release) source code
@@ -64,29 +90,10 @@ wget https://nlnetlabs.nl/downloads/unbound/unbound-latest.tar.gz
 # Extract Unbound source code
 tar xzf unbound-*.tar.gz
 
-# Enter the directory extracted from the compressed file
+# Enter in the directory extracted from the compressed file
 cd unbound-1*
 
-# Before starting the compilation...
-# Checks if the 'unbound' group exists; if not, creates it.
-if ! getent group unbound >/dev/null; then
-    echo "Creating Unbound group..."
-    /usr/sbin/groupadd unbound
-fi
-# Checks if the 'unbound' user exists; if not, creates and adds them to the group
-if ! id -u unbound >/dev/null 2>&1; then
-    echo "Creating Unbound user..."
-    /usr/sbin/useradd -g unbound -s /usr/sbin/nologin -r unbound
-else
-    # Ensures that he is part of the group if it already exists
-    /usr/sbin/usermod -aG unbound unbound
-fi
-# Final check
-echo "The user and group Unbound are present in the system!"
-getent passwd | cut -d: -f1 | grep -w unbound
-getent group | cut -d: -f1 | grep -w unbound
-
-# Compile Unbound from source code
+# Configure the parameters to start the compilation
 ./configure \
   --prefix=/usr \
   --sysconfdir=/etc \
@@ -113,7 +120,7 @@ getent group | cut -d: -f1 | grep -w unbound
   --with-pyunbound \
   --with-pythonmodule
 
-# Compiling the source files
+# Compile Unbound from source code and convert it into binary files
 make
 
 # Install created binary files
@@ -128,11 +135,8 @@ touch /var/log/unbound.log
 # Configure permissions for the Unbound log file
 chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
 
-# Add Unbound system user permissions in required folders
+# Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
-
-# Add Unbound system user permissions in required folders
-install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 
 # Create Unbound root.key file
 unbound-anchor -a /var/lib/unbound/root.key
@@ -146,50 +150,10 @@ ln -s /usr/share/dns/root.hints /etc/unbound
 # Unbound system user must have write permission to the file
 chmod 644 /etc/unbound/root.hints
 
-# Remove default resolv.conf file from the System
-rm -f /etc/resolv.conf
-
-# Create a new resolv.conf file
-tee /etc/resolv.conf <<EOF
-nameserver 127.0.0.1
-nameserver ::1
-EOF
-
-lsattr /etc/resolv.conf
-chattr -e /etc/resolv.conf
-chattr +i /etc/resolv.conf
-
-# Add Unbound as a System service
-tee /lib/systemd/system/unbound.service <<EOF
-[Unit]
-Description=Unbound DNS Resolver
-After=network.target
-
-[Service]
-Type=simple
-ExecStart=/usr/sbin/unbound -d -c /etc/unbound/unbound.conf
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-systemd-analyze verify /lib/systemd/system/unbound.service || true
-
-# Create Unbound server keys into Unbound folder
-unbound-control-setup -d /etc/unbound
-
-# Configure permissions for the Unbound server keys
-chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
-
 # Rename default Unbound server configuration file
 mv /etc/unbound/unbound.conf /etc/unbound/unbound.conf.example
 
-# Set recursive permissions for the Unbound system user in Unbound folder
-chown -R root:unbound /etc/unbound
-
-# Create a new Unbound server configuration file
+# Creates a new custom Unbound server configuration file
 tee /etc/unbound/unbound.conf <<EOF
 ###################################################################################
 #
@@ -356,6 +320,48 @@ EOF
 # Check that all Unbound default settings are correct
 unbound-checkconf /etc/unbound/unbound.conf
 
+# Creates Unbound server keys into Unbound folder
+unbound-control-setup -d /etc/unbound
+
+# Configure permissions for the Unbound server keys
+chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
+
+# Set recursive permissions for the Unbound system user in Unbound folder
+chown -R root:unbound /etc/unbound
+
+# Remove default resolv.conf file from the System
+rm -f /etc/resolv.conf
+
+# Create a new resolv.conf file
+tee /etc/resolv.conf <<EOF
+nameserver 127.0.0.1
+nameserver ::1
+EOF
+
+# Read the current permissions of the resolv.conf file and change them
+lsattr /etc/resolv.conf
+chattr -e /etc/resolv.conf
+chattr +i /etc/resolv.conf
+
+# Add Unbound as a System service
+tee /lib/systemd/system/unbound.service <<EOF
+[Unit]
+Description=Unbound DNS Resolver
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/unbound -d -c /etc/unbound/unbound.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Analyze and debug system manager (used to access special functions useful for advanced system manager debugging)
+systemd-analyze verify /lib/systemd/system/unbound.service || true
+
 # Reload System daemon
 systemctl daemon-reload
 
@@ -368,8 +374,7 @@ systemctl start unbound
 # Check Unbnound service status
 systemctl status unbound
 
-
-# Display version and basic post-start test
+# Displays version and basic post-start test
 echo
 echo "Unbound version:"
 /usr/sbin/unbound -V || true
