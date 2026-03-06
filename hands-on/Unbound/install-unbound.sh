@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:23:01 UTC 2026
+# Last review date: Fri Mar 06 15:26:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -357,6 +357,7 @@ Type=simple
 ExecStart=/usr/sbin/unbound -d -c /etc/unbound/unbound.conf
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
+LimitNOFILE=16384
 
 [Install]
 WantedBy=multi-user.target
