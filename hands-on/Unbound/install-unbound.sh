@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 10:15:42 UTC 2026
+# Last review date: Fri Mar 06 11:08:25 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -57,23 +57,8 @@ apt install -y apt-transport-https ca-certificates curl lsb-release
 # Install DNS root hints and DNSSEC trust anchor (required)
 apt install -y dns-root-data unbound-anchor
 
-# Show the created files
-ls -al /usr/share/dns/
-
 # Update the system root certification authority
-update-ca-certificates
-
-# Create the directory /var/lib/unbound/ and grant it the necessary permissions
-install -d -m 755 -o unbound -g unbound /var/lib/unbound/
-
-# Create Unbound root.key file
-unbound-anchor -a /var/lib/unbound/root.key
-
-# Unbound system user must have write permission to the file
-chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
-
-# Show the directory that was created earlier
-ls -al /var/lib/unbound
+/usr/sbin/update-ca-certificates
 
 # Point the Python interpreter to Python 3 (current default)
 apt install -y python-is-python3
@@ -93,6 +78,9 @@ apt install -y build-essential \
   swig \
   protobuf-c-compiler \
   libprotobuf-c-dev
+
+# Create the directory /var/lib/unbound/ and grant it the necessary permissions
+install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 
 # Enter in the working directory where the necessary files will be downloaded
 cd /tmp
@@ -147,6 +135,15 @@ touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
 chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
+
+# Create Unbound root.key file
+/usr/sbin/unbound-anchor -a /var/lib/unbound/root.key
+
+# Unbound system user must have write permission to the file
+chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
+
+# Show the directory that was created earlier
+ls -al /var/lib/unbound
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -325,10 +322,10 @@ include-toplevel: "/etc/unbound/conf.d/*.conf"
 EOF
 
 # Check that all Unbound default settings are correct
-unbound-checkconf /etc/unbound/unbound.conf
+/usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
 
 # Creates Unbound server keys into Unbound folder
-unbound-control-setup -d /etc/unbound
+/usr/sbin/unbound-control-setup -d /etc/unbound
 
 # Configure permissions for the Unbound server keys
 chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
