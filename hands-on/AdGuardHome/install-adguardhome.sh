@@ -2,24 +2,30 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Feb 27 19:21:02 UTC 2026
+# Last review date: Fri Mar 06 15:55:42 UTC 2026
 # -----------------------------------------------------------------------------------
 
-# --- Validating privileges and re-executing as root ---
+# Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
-    echo "This script requires root privileges."
-    # Check if sudo is available, otherwise try su -
-    if command -v sudo >/dev/null 2>&1; then
+    echo "This script requires root privileges!"
+    # Try 'su -' first (Debian default)
+    if command -v su >/dev/null 2>&1; then
+        echo "Enter the root password to continue."
+        exec su -c "bash \"$0\" $*"
+    # If 'su -' fails or doesn't exist, try 'sudo'
+    elif command -v sudo >/dev/null 2>&1; then
+        echo "SUDO: Enter your password to elevate your privileges and continue."
         exec sudo bash "$0" "$@"
     else
-        echo "Enter the root password to continue."
-        exec su -c "bash $0 $@"
+        echo "ERROR: It is not possible to elevate privileges."
+        exit 1
     fi
-    exit $?
 fi
 
-echo "Starting the AdGuard Home installation. Please wait..."
+echo "############################################################"
+echo "#  Starting the AdGuard Home installation. Please wait...  #"
+echo "############################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
@@ -103,9 +109,9 @@ fi
 # Restart AdGuard Home service
 # systemctl restart AdGuardHome
 
-#-------------------------------------------------#
-#  WebGUI first access: http://<IP-or-FQDN>:3000  #
-#-------------------------------------------------#
+echo "###################################################"
+echo "#  WebGUI first access: http://<IP-or-FQDN>:3000  #"
+echo "###################################################"
 
 # Uninstall AdGuard Home
 # ./AdGuardHome -s uninstall
