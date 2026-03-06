@@ -57,6 +57,9 @@ apt install -y apt-transport-https ca-certificates curl lsb-release
 # Install DNS root hints and DNSSEC trust anchor (required)
 apt install -y dns-root-data unbound-anchor
 
+# Show the created files
+ls -al /usr/share/dns/
+
 # Update the system root certification authority
 update-ca-certificates
 
