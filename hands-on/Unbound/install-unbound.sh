@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 16:47:01 UTC 2026
+# Last review date: Sat Mar 07 14:30:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -24,6 +24,21 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Before starting the whole process...
+# Check if unbound package is listed in the dpkg database
+echo "Checking for existing Unbound installations..."
+if dpkg -l | grep -q unbound; then
+    echo "Existing Unbound installation found. Removing it to ensure a clean source build..."
+    # Stop the service before removing the files to avoid crashing them
+    systemctl stop unbound >/dev/null 2>&1
+    # Remove the package and dependencies that will no longer be used
+    apt purge --auto-remove -y unbound unbound-anchor unbound-host >/dev/null 2>&1
+    # Remove residual directories
+    rm -rf /etc/unbound /var/log/unbound /var/lib/unbound
+    echo "Previous version and configuration files removed."
+else
+    echo "No existing Unbound installation detected. Proceeding with compilation..."
+fi
+
 # Check if the 'unbound' group exists; if not, creates it.
 if ! getent group unbound >/dev/null; then
     echo "Creating Unbound group..."
@@ -44,9 +59,9 @@ echo "The user and group Unbound are present in the system!"
 getent passwd | cut -d: -f1 | grep -w unbound
 getent group | cut -d: -f1 | grep -w unbound
 
-echo "#####################################################"
-echo "Starting the Unbound DNS installation. Please wait..."
-echo "#####################################################"
+echo "#########################################################"
+echo "# Starting the Unbound DNS installation. Please wait... #"
+echo "#########################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
@@ -106,26 +121,36 @@ cd unbound-1*
   --prefix=/usr \
   --sysconfdir=/etc \
   --localstatedir=/var \
+  --includedir=\${prefix}/include \
+  --infodir=\${prefix}/share/info \
+  --mandir=\${prefix}/share/man \
   --runstatedir=/run \
-  --with-run-dir=/run/unbound \
-  --with-pidfile=/run/unbound.pid \
-  --with-user=unbound \
+  --with-chroot-dir= \
+  --with-dnstap-socket-path=/run/dnstap.sock \
   --with-libevent \
+  --with-libhiredis \
   --with-libnghttp2 \
+  --with-pidfile=/run/unbound.pid \
   --with-rootkey-file=/var/lib/unbound/root.key \
+  --with-run-dir=/run \
+  --with-user=unbound \
   --disable-dependency-tracking \
   --disable-flto \
   --disable-maintainer-mode \
+  --disable-option-checking \
   --disable-rpath \
   --disable-silent-rules \
-  --enable-systemd \
+  --enable-cachedb \
   --enable-dnscrypt \
+  --enable-dnstap \
+  --enable-subnet \
+  --enable-systemd \
   --enable-tfo-client \
   --enable-tfo-server \
   PYTHON=python3 \
   PYTHON_CONFIG=python3-config \
-  --with-pyunbound \
-  --with-pythonmodule
+  --with-pythonmodule \
+  --with-pyunbound
 
 # Compile Unbound from source code and convert it into binary files
 make -j$(nproc)
@@ -140,7 +165,7 @@ ldconfig
 touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
-chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
+chown unbound:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -188,18 +213,24 @@ server:
         do-udp: yes
         do-tcp: yes
         do-ip4: yes
-        do-ip6: no
+        do-ip6: yes
+        prefer-ip6: no
 
         # Default Interface to Bind to (listen on all interfaces = 0.0.0.0 - ::0)
         interface-automatic: no
         interface: 127.0.0.1
         interface: ::1
 
-        # Server Logging Options
+        # Logging Options
         use-syslog: no
         logfile: /var/log/unbound.log
+        verbosity: 0
+        log-queries: yes
+        log-replies: yes
+        log-tag-queryreply: yes
+        log-local-actions: yes
+        log-servfail: yes
         log-time-ascii: yes
-        verbosity: 1
 
         # Statistics Options
         statistics-interval: 86400
@@ -218,19 +249,21 @@ server:
         qname-minimisation: yes
 
         # System performance settings
-        # 'Slabs' equal to the number of threads or a power of 2 greater
         num-threads: 2
         msg-cache-slabs: 2
         rrset-cache-slabs: 2
         key-cache-slabs: 2
         infra-cache-slabs: 2
-        msg-cache-size: 128m
-        rrset-cache-size: 256m
+        cache-min-ttl: 0
+        cache-max-ttl: 86400
+	    msg-cache-size: 64m
+	    rrset-cache-size: 128m
         outgoing-range: 8192
         num-queries-per-thread: 4096
+	    rrset-roundrobin: yes
         so-sndbuf: 4m
         so-rcvbuf: 4m
-        do-daemonize: yes
+        do-daemonize: no
         so-reuseport: yes
 
         # Hardening Options
@@ -238,19 +271,14 @@ server:
         harden-dnssec-stripped: yes
         harden-below-nxdomain: yes
         harden-large-queries: yes
+        harden-algo-downgrade: yes
+        harden-short-bufsize: yes
         harden-referral-path: yes
         serve-expired: no
         serve-expired-ttl-reset: no
 
         # Harden Against DNS Cache Poisoning
         unwanted-reply-threshold: 1000000
-
-        # Queries Logging Options
-        log-queries: yes
-        log-replies: yes
-        log-tag-queryreply: yes
-        log-servfail: yes
-        log-local-actions: yes
 
         # Timeout Behaviour Options
         infra-keep-probing: no
@@ -278,6 +306,7 @@ server:
 
         # Module configuration - validator must be present for DNSSEC
         module-config: "validator iterator"
+        #module-config: "validator cachedb iterator"
 
         # DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
@@ -288,6 +317,16 @@ server:
 
         # TLS Options
         tls-cert-bundle: "/etc/ssl/certs/ca-certificates.crt"
+
+
+# Cache DB Module Options
+#cachedb:
+#	backend: redis
+	#secret-seed: "unbound-config"
+#	redis-server-host: 127.0.0.1
+#	redis-server-port: 6379
+#	redis-timeout: 100
+#	redis-expire-records: no
 
 
 # Forward zones over TLS (to Public DNS-over-TLS Upstreams)
@@ -309,12 +348,12 @@ server:
 # Remote Control Options
 remote-control:
     control-enable: yes
-    control-interface: 127.0.0.1
-    control-port: 8953
-    server-key-file: "/etc/unbound/unbound_server.key"
-    server-cert-file: "/etc/unbound/unbound_server.pem"
-    control-key-file: "/etc/unbound/unbound_control.key"
-    control-cert-file: "/etc/unbound/unbound_control.pem"
+    control-interface: /run/unbound.ctl
+    control-use-cert: no
+    #server-key-file: "/etc/unbound/unbound_server.key"
+    #server-cert-file: "/etc/unbound/unbound_server.pem"
+    #control-key-file: "/etc/unbound/unbound_control.key"
+    #control-cert-file: "/etc/unbound/unbound_control.pem"
 
 
 # Import custom configs: the following line includes additional
