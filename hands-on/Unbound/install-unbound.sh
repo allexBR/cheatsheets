@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 17:54:01 UTC 2026
+# Last review date: Sat Mar 07 18:56:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -177,6 +177,7 @@ make install
 ldconfig
 
 # Create Unbound log file
+mkdir -p /var/log/unbound
 touch /var/log/unbound/unbound.log
 
 # Configure permissions for the Unbound log file
