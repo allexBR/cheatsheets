@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 14:30:51 UTC 2026
+# Last review date: Sat Mar 07 16:10:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -58,6 +58,17 @@ echo "The user and group Unbound are present in the system!"
 # Displays the user and group Unbound
 getent passwd | cut -d: -f1 | grep -w unbound
 getent group | cut -d: -f1 | grep -w unbound
+
+# Redis (DB and caching layer) installation is required
+apt install lsb-release curl gpg
+
+curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
+
+apt update
+
+apt install -y redis-server
 
 echo "#########################################################"
 echo "# Starting the Unbound DNS installation. Please wait... #"
