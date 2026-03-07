@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 18:56:01 UTC 2026
+# Last review date: Sat Mar 07 18:58:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -394,7 +394,7 @@ chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
 # Set recursive permissions for the Unbound system user in Unbound folder
 chown -R root:unbound /etc/unbound
 
-# Logrotate config
+# Enable log rotation
 tee /etc/logrotate.d/unbound <<EOF
 /var/log/unbound/unbound.log {
     daily
