@@ -1,8 +1,8 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------------
-# Compiling and Installing Unbound DNS on Debian Server
+# Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 16:50:01 UTC 2026
+# Last review date: Sat Mar 07 17:54:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -59,7 +59,7 @@ echo "The user and group Unbound are present in the system!"
 getent passwd | cut -d: -f1 | grep -w unbound
 getent group | cut -d: -f1 | grep -w unbound
 
-# Redis (DB and caching layer) installation is required
+# Redis (cache DB module) installation is required
 apt install -y lsb-release curl gpg
 curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
@@ -338,12 +338,13 @@ server:
 
 # Cache DB Module Options
 cachedb:
-	backend: redis
-	#secret-seed: "unbound-config"
-	redis-server-host: 127.0.0.1
-	redis-server-port: 6379
-	redis-timeout: 100
-	redis-expire-records: no
+        backend: redis
+        #secret-seed: "unbound-config"
+        #redis-server-host: 127.0.0.1
+        #redis-server-port: 6379
+        redis-server-path: "/var/run/redis/redis.sock"
+        redis-timeout: 100
+        redis-expire-records: no
 
 
 # Forward zones over TLS (to Public DNS-over-TLS Upstreams)
@@ -364,13 +365,13 @@ cachedb:
 
 # Remote Control Options
 remote-control:
-    control-enable: yes
-    control-interface: /run/unbound.sock
-    control-use-cert: no
-    #server-key-file: "/etc/unbound/unbound_server.key"
-    #server-cert-file: "/etc/unbound/unbound_server.pem"
-    #control-key-file: "/etc/unbound/unbound_control.key"
-    #control-cert-file: "/etc/unbound/unbound_control.pem"
+        control-enable: yes
+        control-interface: /run/unbound.sock
+        control-use-cert: no
+        #server-key-file: "/etc/unbound/unbound_server.key"
+        #server-cert-file: "/etc/unbound/unbound_server.pem"
+        #control-key-file: "/etc/unbound/unbound_control.key"
+        #control-cert-file: "/etc/unbound/unbound_control.pem"
 
 
 # Import custom configs: the following line includes additional
