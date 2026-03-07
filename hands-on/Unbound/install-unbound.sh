@@ -165,7 +165,7 @@ ldconfig
 touch /var/log/unbound.log
 
 # Configure permissions for the Unbound log file
-chown unbound:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
+chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -388,6 +388,16 @@ EOF
 lsattr /etc/resolv.conf
 chattr -e /etc/resolv.conf
 chattr +i /etc/resolv.conf
+
+# Increases the system buffer limits to 4MB (4194304 bytes)
+tee -a /etc/sysctl.conf <<EOF
+# Unbound Performance Buffers
+net.core.rmem_max = 4194304
+net.core.wmem_max = 4194304
+EOF
+
+# Applies changes immediately without needing to restart
+sysctl -p
 
 # Add Unbound as a System service
 tee /lib/systemd/system/unbound.service <<EOF
