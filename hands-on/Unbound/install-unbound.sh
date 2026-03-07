@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 16:10:51 UTC 2026
+# Last review date: Sat Mar 07 16:50:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -60,15 +60,19 @@ getent passwd | cut -d: -f1 | grep -w unbound
 getent group | cut -d: -f1 | grep -w unbound
 
 # Redis (DB and caching layer) installation is required
-apt install lsb-release curl gpg
-
+apt install -y lsb-release curl gpg
 curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
-
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
-
 apt update
-
 apt install -y redis-server
+cp /etc/redis/redis.conf /etc/redis/redis.conf.example
+sed -i '$a \
+\
+# Unbound socket connection \
+unixsocket /var/run/redis/redis.sock \
+unixsocketperm 707' /etc/redis/redis.conf
+
+systemctl restart redis-server
 
 echo "#########################################################"
 echo "# Starting the Unbound DNS installation. Please wait... #"
@@ -173,10 +177,10 @@ make install
 ldconfig
 
 # Create Unbound log file
-touch /var/log/unbound.log
+touch /var/log/unbound/unbound.log
 
 # Configure permissions for the Unbound log file
-chown root:unbound /var/log/unbound.log && chmod 664 /var/log/unbound.log
+chown unbound:unbound /var/log/unbound/unbound.log && chmod 664 /var/log/unbound/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -234,7 +238,7 @@ server:
 
         # Logging Options
         use-syslog: no
-        logfile: /var/log/unbound.log
+        logfile: /var/log/unbound/unbound.log
         verbosity: 0
         log-queries: yes
         log-replies: yes
@@ -267,15 +271,17 @@ server:
         infra-cache-slabs: 2
         cache-min-ttl: 0
         cache-max-ttl: 86400
-	    msg-cache-size: 64m
-	    rrset-cache-size: 128m
+        msg-cache-size: 64m
+        rrset-cache-size: 128m
         outgoing-range: 8192
         num-queries-per-thread: 4096
-	    rrset-roundrobin: yes
+        rrset-roundrobin: yes
+        serve-expired: yes
+        serve-expired-reply-ttl: 0
         so-sndbuf: 4m
         so-rcvbuf: 4m
-        do-daemonize: no
         so-reuseport: yes
+        do-daemonize: no
 
         # Hardening Options
         harden-glue: yes
@@ -316,8 +322,8 @@ server:
         private-address: fe80::/10
 
         # Module configuration - validator must be present for DNSSEC
-        module-config: "validator iterator"
-        #module-config: "validator cachedb iterator"
+        # module-config: "validator iterator"
+        module-config: "validator cachedb iterator"
 
         # DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
@@ -331,13 +337,13 @@ server:
 
 
 # Cache DB Module Options
-#cachedb:
-#	backend: redis
+cachedb:
+	backend: redis
 	#secret-seed: "unbound-config"
-#	redis-server-host: 127.0.0.1
-#	redis-server-port: 6379
-#	redis-timeout: 100
-#	redis-expire-records: no
+	redis-server-host: 127.0.0.1
+	redis-server-port: 6379
+	redis-timeout: 100
+	redis-expire-records: no
 
 
 # Forward zones over TLS (to Public DNS-over-TLS Upstreams)
@@ -359,7 +365,7 @@ server:
 # Remote Control Options
 remote-control:
     control-enable: yes
-    control-interface: /run/unbound.ctl
+    control-interface: /run/unbound.sock
     control-use-cert: no
     #server-key-file: "/etc/unbound/unbound_server.key"
     #server-cert-file: "/etc/unbound/unbound_server.pem"
@@ -386,6 +392,22 @@ chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
 # Set recursive permissions for the Unbound system user in Unbound folder
 chown -R root:unbound /etc/unbound
 
+# Logrotate config
+tee /etc/logrotate.d/unbound <<EOF
+/var/log/unbound/unbound.log {
+    daily
+    rotate 7
+    missingok
+    notifempty
+    compress
+    delaycompress
+    sharedscripts
+    postrotate
+        /usr/sbin/unbound-control -c /etc/unbound/unbound.conf log_reopen > /dev/null 2>&1 || true
+    endscript
+}
+EOF
+
 # Remove default resolv.conf file from the System
 rm -f /etc/resolv.conf
 
@@ -402,9 +424,22 @@ chattr +i /etc/resolv.conf
 
 # Increases the system buffer limits to 4MB (4194304 bytes)
 tee -a /etc/sysctl.conf <<EOF
-# Unbound Performance Buffers
+#############################################################################
+# Unbound & Redis
+#----------------------------------------------------------------------------
+# Unbound: Performance Buffers - Increases the system buffer limits to 4MB
 net.core.rmem_max = 4194304
 net.core.wmem_max = 4194304
+#
+# Unbound: Enable TCP Fast Open - Reduces Network Latency
+net.ipv4.tcp_fastopen=3
+#
+# Redis: Recommended To Use 1 - Removes Redis Log Warning
+# Kernel Virtual Memory Overcommit Mode
+# 0 Heuristic overcommit (Default)
+# 1 Always overcommit, never check
+# 2 Always check, never overcommit
+vm.overcommit_memory=1
 EOF
 
 # Applies changes immediately without needing to restart
