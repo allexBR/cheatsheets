@@ -178,6 +178,35 @@ https://zonefiles.io/f/compromised/domains/live/
 ```
 <br/>
 
+> ### • Malware-filter - Online Malicious URL Blocklist
+> • https://gitlab.com/malware-filter/urlhaus-filter
+```
+https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-agh-online.txt
+```
+```
+https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-hosts-online.txt
+```
+<br/>
+
+> ### • Malware-filter - Phishing URL Blocklist
+> • https://gitlab.com/malware-filter/phishing-filter
+```
+https://malware-filter.gitlab.io/malware-filter/phishing-filter-agh.txt
+```
+```
+https://malware-filter.gitlab.io/malware-filter/phishing-filter-hosts.txt
+```
+<br/>
+
+> ### • Scam Blocklist by DurableNapkin
+> • https://github.com/durablenapkin/scamblocklist
+```
+https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/adguard.txt
+```
+```
+https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/hosts.txt
+```
+<br/>
 
 
 > [!NOTE]
