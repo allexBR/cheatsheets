@@ -16,13 +16,6 @@ https://lists.cyberhost.uk/malware.txt
 ```
 <br/>
 
-> ### • FruxLabs Crack Team - Rescure Cyber Threat Intelligence Feeds
-> • https://rescure.me/feeds.html
-```
-https://rescure.me/rescure_domain_blacklist.txt
-```
-<br/>
-
 > ### • CERT Poland
 > • https://cert.pl/en/posts/2020/03/malicious_domains/
 ```
@@ -39,13 +32,6 @@ https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt
 ```
 <br/>
 
-> ### • CERT Thailand
-> • https://github.com/ttc-cert/TTC-CERT_blocklist_recommended
-```
-https://raw.githubusercontent.com/ttc-cert/TTC-CERT_blocklist_recommended/master/domain_blocklist_recommended.txt
-```
-<br/>
-
 > ### • OpenPhish
 > • https://openphish.com/
 ```
@@ -53,7 +39,7 @@ https://openphish.com/feed.txt
 ```
 <br/>
 
-> ### • ThreatFox
+> ### • ThreatFox (abuse.ch)
 > • https://threatfox.abuse.ch/
 ```
 https://threatfox.abuse.ch/downloads/hostfile
@@ -74,36 +60,15 @@ https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
 ```
 <br/>
 
-> ### • OSINT Digitalside
-> • https://osint.digitalside.it/
-```
-https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
-```
-<br/>
-
-> ### • abuse.ch
+> ### • URLhaus (abuse.ch)
 ```
 https://urlhaus.abuse.ch/downloads/hostfile/
-```
-<br/>
-
-> ### • AZORult C&C Tracker
-> • https://azorult-tracker.net/
-```
-https://azorult-tracker.net/api/list/domain?format=plain
 ```
 <br/>
 
 > ### • KADhosts(KAD host version)
 ```
 https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.txt
-```
-<br/>
-
-> ### • Hexxium Creations
-> • https://hexxiumcreations.com/
-```
-https://raw.githubusercontent.com/HexxiumCreations/threat-list/gh-pages/hosts.txt
 ```
 <br/>
 
@@ -127,7 +92,7 @@ https://www.stopforumspam.com/downloads/toxic_domains_whole.txt
 ```
 <br/>
 
-> ### • Ethereum Phishing
+> ### • Ethereum Phishing Detect
 ```
 https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt
 ```
@@ -168,13 +133,6 @@ https://github.com/TheAntiSocialEngineer/AntiSocial-BlockList-UK-Community/raw/m
 > • https://github.com/mitchellkrogza/Phishing.Database/tree/master
 ```
 https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt
-```
-<br/>
-
-> ### • Zonefiles - Compromised domain list
-> • https://zonefiles.io/compromised-domain-list/
-```
-https://zonefiles.io/f/compromised/domains/live/
 ```
 <br/>
 
