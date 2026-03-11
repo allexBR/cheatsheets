@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 11 15:49:01 UTC 2026
+# Last review date: Wed Mar 11 15:53:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -62,7 +62,7 @@ STEVEN_BLOCKLIST=$BLOCKLIST_DIR/steven.hosts
 YOUTUBE_BLOCKLIST=$BLOCKLIST_DIR/youtube.hosts
 YOYO_BLOCKLIST=$BLOCKLIST_DIR/yoyo.hosts
 
-# Script
+# Blocklists
 # Other host lists can be added here, parse with sed to remove comments and blank lines
 
 ## Abuse (The Blocklist Project)
@@ -215,6 +215,5 @@ echo -e "All lists sorted & uniquely merged to Unbound blocklist format ..."
 set -x
 # Check Unbound
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
-
 # Reload Unbound
 /usr/sbin/unbound-control reload_keep_cache
