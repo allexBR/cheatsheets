@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 17 16:49:01 UTC 2026
+# Last review date: Thu Mar 17 19:17:35 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -290,35 +290,35 @@ echo -e "Host list cleaned ..."
 # Merge other host lists here to unbound blocklist
 # The `grep` command below joins the lists. If you have more lists in the future, simply add them
 grep -h "^0.0.0.0" \
-    "$ABUSE_BLOCKLIST" \
-    "$ADAWAY_BLOCKLIST" \
-    "$ADGUARD_BLOCKLIST" \
-    "$ANUDEEP_BLOCKLIST" \
-    "$BADWARE_BLOCKLIST" \
-    "$CERTPL_BLOCKLIST" \
-    "$DANPOLLOCK_BLOCKLIST" \
-    "$DANDELION_BLOCKLIST" \
-    "$DISCONNECTME_BLOCKLIST" \
-    "$ETHEREUM_BLOCKLIST" \
-    "$FROGEYE_BLOCKLIST" \
-    "$MALTRAIL_BLOCKLIST" \
-    "$MALWAREFILTER_BLOCKLIST" \
-    "$PHISHINGFILTER_BLOCKLIST" \
-    "$NOTRACK_BLOCKLIST" \
-    "$OISDBIG" \
-    "$OISDNSFW" \
-    "$PHISHINGARMY" \
-    "$PHISHINGDB" \
-    "$PRIGENTMALWARE" \
-    "$SCAM_BLOCKLIST" \
-    "$SHADOWWHISPERER" \
-    "$SNAFU_BLOCKLIST" \
-    "$SPOTIFY_BLOCKLIST" \
-    "$STEVEN_BLOCKLIST" \
-    "$STOPFORUMSPAM" \
-    "$TRCERT" \
-    "$YOUTUBE_BLOCKLIST" \
-    "$YOYO_BLOCKLIST" > "$UNBOUND_CONF_DIR"
+"$ABUSE_BLOCKLIST" \
+"$ADAWAY_BLOCKLIST" \
+"$ADGUARD_BLOCKLIST" \
+"$ANUDEEP_BLOCKLIST" \
+"$BADWARE_BLOCKLIST" \
+"$CERTPL_BLOCKLIST" \
+"$DANPOLLOCK_BLOCKLIST" \
+"$DANDELION_BLOCKLIST" \
+"$DISCONNECTME_BLOCKLIST" \
+"$ETHEREUM_BLOCKLIST" \
+"$FROGEYE_BLOCKLIST" \
+"$MALTRAIL_BLOCKLIST" \
+"$MALWAREFILTER_BLOCKLIST" \
+"$PHISHINGFILTER_BLOCKLIST" \
+"$NOTRACK_BLOCKLIST" \
+"$OISDBIG_BLOCKLIST" \
+"$OISDNSFW_BLOCKLIST" \
+"$PHISHINGARMY_BLOCKLIST" \
+"$PHISHINGDB_BLOCKLIST" \
+"$PRIGENTMALWARE_BLOCKLIST" \
+"$SCAM_BLOCKLIST" \
+"$SHADOWWHISPERER_BLOCKLIST" \
+"$SNAFU_BLOCKLIST" \
+"$SPOTIFY_BLOCKLIST" \
+"$STEVEN_BLOCKLIST" \
+"$STOPFORUMSPAM_BLOCKLIST" \
+"$TRCERT_BLOCKLIST" \
+"$YOUTUBE_BLOCKLIST" \
+"$YOYO_BLOCKLIST" > "$UNBOUND_CONF_DIR"
 
 # Sort and remove duplicates
 LC_COLLATE=C sort -uf -o $UNBOUND_CONF_DIR{,}
