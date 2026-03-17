@@ -23,7 +23,7 @@ https://hole.cert.pl/domains/domains.txt
 ```
 <br/>
 
-> ### • CERT Turkey
+> ### • CERT Turkey (USOM)
 ```
 https://www.usom.gov.tr/url-list.txt
 ```
