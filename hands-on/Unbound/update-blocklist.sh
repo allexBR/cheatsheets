@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 11 15:53:01 UTC 2026
+# Last review date: Thu Mar 17 15:15:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -48,17 +48,31 @@ UNBOUND_CONF_DIR=$UNBOUND_DIR/conf.d/dnsbl.conf
 # Blocklists path
 ABUSE_BLOCKLIST=$BLOCKLIST_DIR/abuse.hosts
 ADAWAY_BLOCKLIST=$BLOCKLIST_DIR/adaway.hosts
+ADGUARD_BLOCKLIST=$BLOCKLIST_DIR/adguard.hosts
 ANUDEEP_BLOCKLIST=$BLOCKLIST_DIR/anudeep.hosts
 BADWARE_BLOCKLIST=$BLOCKLIST_DIR/badware.hosts
+CERTPL_BLOCKLIST=$BLOCKLIST_DIR/certpl.hosts
+DAN_POLLOCK_BLOCKLIST=$BLOCKLIST_DIR/someonewhocares.hosts
+DANDELION_BLOCKLIST=$BLOCKLIST_DIR/dandelion.hosts
 DISCONNECTME_BLOCKLIST=$BLOCKLIST_DIR/disconnectme.hosts
+ETHEREUM_BLOCKLIST=$BLOCKLIST_DIR/ethereum.hosts
 FROGEYE_BLOCKLIST=$BLOCKLIST_DIR/frogeye.hosts
+MALTRAIL_BLOCKLIST=$BLOCKLIST_DIR/maltrail.hosts
 MALWAREFILTER_BLOCKLIST=$BLOCKLIST_DIR/malwarefilter.hosts
 PHISHINGFILTER_BLOCKLIST=$BLOCKLIST_DIR/phishingfilter.hosts
 NOTRACK_BLOCKLIST=$BLOCKLIST_DIR/notrack.hosts
+OISDBIG_BLOCKLIST=$BLOCKLIST_DIR/oisdbig.hosts
+OISDNSFW_BLOCKLIST=$BLOCKLIST_DIR/oisdnsfw.hosts
+PHISHINGARMY_BLOCKLIST=$BLOCKLIST_DIR/phishingarmy.hosts
+PHISHINGDB_BLOCKLIST=$BLOCKLIST_DIR/phishingdb.hosts
+PRIGENTMALWARE_BLOCKLIST=$BLOCKLIST_DIR/prigentmalware.hosts
 SCAM_BLOCKLIST=$BLOCKLIST_DIR/scam.hosts
+SHADOWWHISPERER_BLOCKLIST=$BLOCKLIST_DIR/shadowwhisperer.hosts
 SNAFU_BLOCKLIST=$BLOCKLIST_DIR/snafu.hosts
 SPOTIFY_BLOCKLIST=$BLOCKLIST_DIR/spotify.hosts
 STEVEN_BLOCKLIST=$BLOCKLIST_DIR/steven.hosts
+STOPFORUMSPAM_BLOCKLIST=$BLOCKLIST_DIR/stopforumspam.hosts
+TRCERT_BLOCKLIST=$BLOCKLIST_DIR/trcert.hosts
 YOUTUBE_BLOCKLIST=$BLOCKLIST_DIR/youtube.hosts
 YOYO_BLOCKLIST=$BLOCKLIST_DIR/yoyo.hosts
 
@@ -79,11 +93,39 @@ echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ADAWAY_BLOCKLIST
 echo -e "Host list cleaned ..."
 
+## AdGuardDNS
+{ echo -e "\e[30;48;5;248mDownloading AdGuardDNS Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$ADGUARD_BLOCKLIST" -L "https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardDNS.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ADGUARD_BLOCKLIST
+echo -e "Host list cleaned ..."
+
 ## Anudeep (Ads & Tracking)
 { echo -e "\e[30;48;5;248mDownloading Anudeep's Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$ANUDEEP_BLOCKLIST" -L "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ANUDEEP_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## CERT.PL (Domains)
+{ echo -e "\e[30;48;5;248mDownloading CERT.PL Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$CERTPL_BLOCKLIST" -L "https://hole.cert.pl/domains/v2/domains.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $CERTPL_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Dan Pollock (someonewhocares.org)
+{ echo -e "\e[30;48;5;248mDownloading Dan Pollock's Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$DAN_POLLOCK_BLOCKLIST" -L "https://someonewhocares.org/hosts/zero/hosts"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DAN_POLLOCK_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Dandelion Sprout
+{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$DANDELION_BLOCKLIST" -L "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DANDELION_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## Disconnect.me (Malvertising)
@@ -93,11 +135,25 @@ echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; /disconnect\.me/d; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; /[[:space:]]/d; /^[a-zA-Z0-9]/ s/^/0.0.0.0 /' $DISCONNECTME_BLOCKLIST
 echo -e "Host list cleaned ..."
 
+## Ethereum Phishing Detect (Phishing)
+{ echo -e "\e[30;48;5;248mDownloading Ethereum Phishing Detect Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$ETHEREUM_BLOCKLIST" -L "https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ETHEREUM_BLOCKLIST
+echo -e "Host list cleaned ..."
+
 ## Frogeye (Trackers)
 { echo -e "\e[30;48;5;248mDownloading Geoffrey Frogeye's Trackers Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$FROGEYE_BLOCKLIST" -L "https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $FROGEYE_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Maltrail (Domains)
+{ echo -e "\e[30;48;5;248mDownloading Maltrail Malware Domains Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$MALTRAIL_BLOCKLIST" -L "https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $MALTRAIL_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## Malware-Filter (Online Malicious URL)
@@ -121,11 +177,53 @@ echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $NOTRACK_BLOCKLIST
 echo -e "Host list cleaned ..."
 
+## oisd.nl Big List (Ads/Phishing/Malvertising/Malware/Spyware/Ransomware/CryptoJacking)
+{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$OISDBIG_BLOCKLIST" -L "https://big.oisd.nl/unbound"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $OISDBIG_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## oisd.nl NSFW List (Porn/Adult/Shock/Gore)
+{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$OISDNSFW_BLOCKLIST" -L "https://nsfw.oisd.nl/unbound"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $OISDNSFW_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Phishing Army (Domains)
+{ echo -e "\e[30;48;5;248mDownloading Phishing Army Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$PHISHINGARMY_BLOCKLIST" -L "https://phishing.army/download/phishing_army_blocklist_extended.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $PHISHINGARMY_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Phishing Database (Domains)
+{ echo -e "\e[30;48;5;248mDownloading Phishing Database Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$PHISHINGDB_BLOCKLIST" -L "https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $PHISHINGDB_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Prigent-Malware from Université Toulouse Capitole's malware blacklist
+{ echo -e "\e[30;48;5;248mDownloading Prigent-Malware Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$PRIGENTMALWARE_BLOCKLIST" -L "https://v.firebog.net/hosts/Prigent-Malware.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $PRIGENTMALWARE_BLOCKLIST
+echo -e "Host list cleaned ..."
+
 ## Scam Blocklist by DurableNapkin
 { echo -e "\e[30;48;5;248mDownloading Scam Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$SCAM_BLOCKLIST" -L "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/hosts.txt"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $SCAM_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## Shadow Whisperer (Malware)
+{ echo -e "\e[30;48;5;248mDownloading Shadow Whisperer Malware Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$SHADOWWHISPERER_BLOCKLIST" -L "https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/master/Lists/Malware"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $SHADOWWHISPERER_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## SNAFU (Ads & Tracking)
@@ -147,6 +245,20 @@ echo -e "Host list cleaned ..."
 curl --silent -o "$STEVEN_BLOCKLIST" -L "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $STEVEN_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## StopForumSpam (Domains)
+{ echo -e "\e[30;48;5;248mDownloading StopForumSpam Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$STOPFORUMSPAM_BLOCKLIST" -L "https://www.stopforumspam.com/downloads/toxic_domains_whole.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $STOPFORUMSPAM_BLOCKLIST
+echo -e "Host list cleaned ..."
+
+## TR-CERT (USOM)
+{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$TRCERT_BLOCKLIST" -L "https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt"
+echo -e "Host list downloaded ..."
+sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $TRCERT_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## uBlock Origin Badware
@@ -180,17 +292,31 @@ echo -e "Host list cleaned ..."
 grep -h "^0.0.0.0" \
     "$ABUSE_BLOCKLIST" \
     "$ADAWAY_BLOCKLIST" \
+    "$ADGUARD_BLOCKLIST" \
     "$ANUDEEP_BLOCKLIST" \
     "$BADWARE_BLOCKLIST" \
+    "$CERTPL_BLOCKLIST" \
+    "$DAN_POLLOCK_BLOCKLIST" \
+    "$DANDELION_BLOCKLIST" \
     "$DISCONNECTME_BLOCKLIST" \
+    "$ETHEREUM_BLOCKLIST" \
     "$FROGEYE_BLOCKLIST" \
+    "$MALTRAIL_BLOCKLIST" \
     "$MALWAREFILTER_BLOCKLIST" \
     "$PHISHINGFILTER_BLOCKLIST" \
     "$NOTRACK_BLOCKLIST" \
+    "$OISDBIG" \
+    "$OISDNSFW" \
+    "$PHISHINGARMY" \
+    "$PHISHINGDB" \
+    "$PRIGENTMALWARE" \
     "$SCAM_BLOCKLIST" \
+    "$SHADOWWHISPERER" \
     "$SNAFU_BLOCKLIST" \
     "$SPOTIFY_BLOCKLIST" \
     "$STEVEN_BLOCKLIST" \
+    "$STOPFORUMSPAM" \
+    "$TRCERT" \
     "$YOUTUBE_BLOCKLIST" \
     "$YOYO_BLOCKLIST" > "$UNBOUND_CONF_DIR"
 
