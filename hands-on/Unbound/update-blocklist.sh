@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 17 15:15:01 UTC 2026
+# Last review date: Thu Mar 17 15:55:12 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -122,7 +122,7 @@ sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:spac
 echo -e "Host list cleaned ..."
 
 ## Dandelion Sprout
-{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
+{ echo -e "\e[30;48;5;248mDownloading Dandelion Sprout's Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$DANDELION_BLOCKLIST" -L "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DANDELION_BLOCKLIST
@@ -178,15 +178,15 @@ sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:spac
 echo -e "Host list cleaned ..."
 
 ## oisd.nl Big List (Ads/Phishing/Malvertising/Malware/Spyware/Ransomware/CryptoJacking)
-{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
-curl --silent -o "$OISDBIG_BLOCKLIST" -L "https://big.oisd.nl/unbound"
+{ echo -e "\e[30;48;5;248mDownloading OISD Big Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$OISDBIG_BLOCKLIST" -L "https://big.oisd.nl/domainswild2"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $OISDBIG_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## oisd.nl NSFW List (Porn/Adult/Shock/Gore)
-{ echo -e "\e[30;48;5;248mDownloading TR-CERT Domain Blocklist\e[0m"; } 2> /dev/null
-curl --silent -o "$OISDNSFW_BLOCKLIST" -L "https://nsfw.oisd.nl/unbound"
+{ echo -e "\e[30;48;5;248mDownloading OISD NSFW Domain Blocklist\e[0m"; } 2> /dev/null
+curl --silent -o "$OISDNSFW_BLOCKLIST" -L "https://nsfw.oisd.nl/domainswild2"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $OISDNSFW_BLOCKLIST
 echo -e "Host list cleaned ..."
@@ -213,7 +213,7 @@ sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:spac
 echo -e "Host list cleaned ..."
 
 ## Scam Blocklist by DurableNapkin
-{ echo -e "\e[30;48;5;248mDownloading Scam Blocklist\e[0m"; } 2> /dev/null
+{ echo -e "\e[30;48;5;248mDownloading DurableNapkin Scam Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$SCAM_BLOCKLIST" -L "https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/hosts.txt"
 echo -e "Host list downloaded ..."
 sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $SCAM_BLOCKLIST
