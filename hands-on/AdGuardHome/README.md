@@ -72,13 +72,6 @@ https://raw.githubusercontent.com/FiltersHeroes/KADhosts/master/KADhosts.txt
 ```
 <br/>
 
-> ### • Secure Reloaded - Phishing
-> • https://securereload.tech/
-```
-https://securereload.tech/Phishing/Lists/Latest/
-```
-<br/>
-
 > ### • Phishing Army
 ```
 https://phishing.army/download/phishing_army_blocklist_extended.txt
