@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 17 16:45:01 UTC 2026
+# Last review date: Thu Mar 17 16:49:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -52,7 +52,7 @@ ADGUARD_BLOCKLIST=$BLOCKLIST_DIR/adguard.hosts
 ANUDEEP_BLOCKLIST=$BLOCKLIST_DIR/anudeep.hosts
 BADWARE_BLOCKLIST=$BLOCKLIST_DIR/badware.hosts
 CERTPL_BLOCKLIST=$BLOCKLIST_DIR/certpl.hosts
-DAN_POLLOCK_BLOCKLIST=$BLOCKLIST_DIR/someonewhocares.hosts
+DANPOLLOCK_BLOCKLIST=$BLOCKLIST_DIR/someonewhocares.hosts
 DANDELION_BLOCKLIST=$BLOCKLIST_DIR/dandelion.hosts
 DISCONNECTME_BLOCKLIST=$BLOCKLIST_DIR/disconnectme.hosts
 ETHEREUM_BLOCKLIST=$BLOCKLIST_DIR/ethereum.hosts
@@ -116,9 +116,9 @@ echo -e "Host list cleaned ..."
 
 ## Dan Pollock (someonewhocares.org)
 { echo -e "\e[30;48;5;248mDownloading Dan Pollock's Blocklist\e[0m"; } 2> /dev/null
-curl --silent -o "$DAN_POLLOCK_BLOCKLIST" -L "https://someonewhocares.org/hosts/zero/hosts"
+curl --silent -o "$DANPOLLOCK_BLOCKLIST" -L "https://someonewhocares.org/hosts/zero/hosts"
 echo -e "Host list downloaded ..."
-sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DAN_POLLOCK_BLOCKLIST
+sed -i -E '/localhost/d; /^::1/d; s/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DANPOLLOCK_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## Dandelion Sprout
@@ -296,7 +296,7 @@ grep -h "^0.0.0.0" \
     "$ANUDEEP_BLOCKLIST" \
     "$BADWARE_BLOCKLIST" \
     "$CERTPL_BLOCKLIST" \
-    "$DAN_POLLOCK_BLOCKLIST" \
+    "$DANPOLLOCK_BLOCKLIST" \
     "$DANDELION_BLOCKLIST" \
     "$DISCONNECTME_BLOCKLIST" \
     "$ETHEREUM_BLOCKLIST" \
