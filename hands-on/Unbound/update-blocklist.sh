@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 17 15:55:12 UTC 2026
+# Last review date: Thu Mar 17 16:45:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -90,7 +90,7 @@ echo -e "Host list cleaned ..."
 { echo -e "\e[30;48;5;248mDownloading AdAway Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$ADAWAY_BLOCKLIST" -L "https://adaway.org/hosts.txt"
 echo -e "Host list downloaded ..."
-sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ADAWAY_BLOCKLIST
+sed -i -E '/localhost/d; /^::1/d; s/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $ADAWAY_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## AdGuardDNS
@@ -125,7 +125,7 @@ echo -e "Host list cleaned ..."
 { echo -e "\e[30;48;5;248mDownloading Dandelion Sprout's Blocklist\e[0m"; } 2> /dev/null
 curl --silent -o "$DANDELION_BLOCKLIST" -L "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
 echo -e "Host list downloaded ..."
-sed -i -E 's/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^#/d; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DANDELION_BLOCKLIST
+sed -i -E '/localhost/d; /^::1/d; s/#.*//; s/^(127\.0\.0\.1|0\.0\.0\.0)[[:space:]]*//; /^[[:space:]]*$/d; s/^[[:space:]]*//; s/[[:space:]]*$//; s/^/0.0.0.0 /' $DANDELION_BLOCKLIST
 echo -e "Host list cleaned ..."
 
 ## Disconnect.me (Malvertising)
