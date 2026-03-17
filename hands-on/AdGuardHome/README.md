@@ -35,7 +35,7 @@ https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt
 > ### • OpenPhish
 > • https://openphish.com/
 ```
-https://openphish.com/feed.txt
+https://raw.githubusercontent.com/openphish/public_feed/main/feed.txt
 ```
 <br/>
 
