@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 12:50:08 UTC 2026
+# Last review date: Wed Mar 18 13:10:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -29,6 +29,9 @@ echo "############################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
+
+# Install required dependencies
+apt install -y sudo
 
 # Define working directory where AdGuard Home will be installed
 WORK_DIR="/usr/local/etc"
@@ -103,11 +106,13 @@ else
 fi
 
 # Add the key path to the AdGuard Home config YAML file
-#echo -e "enabled: true\ncertificate_path: /etc/ssl/certs/adguard.crt\nprivate_key_path: /etc/ssl/private/adguard.key" \
-#    | tee -a /usr/local/etc/AdGuardHome/AdGuardHome.yaml > /dev/null
+sed -i '/^tls:/,/enabled:/ s/enabled: .*/enabled: true/' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+sed -i 's|^  force_https:.*|  force_https: true|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+sed -i 's|^  certificate_path:.*|  certificate_path: /etc/ssl/certs/adguard.crt|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+sed -i 's|^  private_key_path:.*|  private_key_path: /etc/ssl/private/adguard.key|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
 
 # Restart AdGuard Home service
-# systemctl restart AdGuardHome
+systemctl restart AdGuardHome
 
 echo "###################################################"
 echo "#  WebGUI first access: http://<IP-or-FQDN>:3000  #"
