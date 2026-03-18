@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 09:09:09 UTC 2026
+# Last review date: Wed Mar 18 09:42:09 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -46,6 +46,14 @@ rpz:
     rpz-log-name: "rpz_adguard-clickthroughs"
 
 rpz:
+    name: "adguard-mailtrackers.rpz.local."
+    zonefile: "/etc/unbound/zonefiles/adguard-mailtrackers.rpz.local"
+    url: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_mail_trackers_rpz.txt
+    rpz-action-override: nxdomain
+    rpz-log: yes
+    rpz-log-name: "rpz_adguard-mailtrackers"
+
+rpz:
     name: "adguard-microsites.rpz.local."
     zonefile: "/etc/unbound/zonefiles/adguard-microsites.rpz.local"
     url: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_microsites_rpz.txt
@@ -60,14 +68,6 @@ rpz:
     rpz-action-override: nxdomain
     rpz-log: yes
     rpz-log-name: "rpz_adguard-trackers"
-
-rpz:
-    name: "adguard-mailtrackers.rpz.local."
-    zonefile: "/etc/unbound/zonefiles/adguard-mailtrackers.rpz.local"
-    url: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_mail_trackers_rpz.txt
-    rpz-action-override: nxdomain
-    rpz-log: yes
-    rpz-log-name: "rpz_adguard-mailtrackers"
 
 rpz:
 #   name: "certpl"
@@ -164,7 +164,7 @@ chown unbound:unbound /etc/unbound/zonefiles/*.rpz.local && chmod 640 /etc/unbou
 
 /usr/sbin/unbound-control status
 
-/usr/sbin/unbound-checkconf -c /etc/unbound/unbound.conf
+/usr/sbin/unbound -c /etc/unbound/unbound.conf
 
 systemctl restart unbound
 
