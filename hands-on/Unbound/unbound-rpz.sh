@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 09:42:09 UTC 2026
+# Last review date: Wed Mar 18 09:45:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -138,11 +138,11 @@ touch /etc/unbound/zonefiles/adguard-ads.rpz.local
 
 touch /etc/unbound/zonefiles/adguard-clickthroughs.rpz.local
 
+touch /etc/unbound/zonefiles/adguard-mailtrackers.rpz.local
+
 touch /etc/unbound/zonefiles/adguard-microsites.rpz.local
 
 touch /etc/unbound/zonefiles/adguard-trackers.rpz.local
-
-touch /etc/unbound/zonefiles/adguard-mailtrackers.rpz.local
 
 touch /etc/unbound/zonefiles/hagezipro.rpz.local
 
