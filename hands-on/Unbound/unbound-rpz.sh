@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 10:23:01 UTC 2026
+# Last review date: Wed Mar 18 11:02:00 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -52,22 +52,6 @@ rpz:
     rpz-action-override: nxdomain
     rpz-log: yes
     rpz-log-name: "rpz_adguard-mailtrackers"
-
-rpz:
-    name: "adguard-microsites.rpz.local."
-    zonefile: "/etc/unbound/zonefiles/adguard-microsites.rpz.local"
-    url: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_microsites_rpz.txt
-    rpz-action-override: nxdomain
-    rpz-log: yes
-    rpz-log-name: "rpz_adguard-microsites"
-
-rpz:
-    name: "adguard-trackers.rpz.local."
-    zonefile: "/etc/unbound/zonefiles/adguard-trackers.rpz.local"
-    url: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_trackers_rpz.txt
-    rpz-action-override: nxdomain
-    rpz-log: yes
-    rpz-log-name: "rpz_adguard-trackers"
 
 rpz:
 #   name: "certpl"
@@ -147,10 +131,6 @@ touch /etc/unbound/zonefiles/adguard-ads.rpz.local
 touch /etc/unbound/zonefiles/adguard-clickthroughs.rpz.local
 
 touch /etc/unbound/zonefiles/adguard-mailtrackers.rpz.local
-
-touch /etc/unbound/zonefiles/adguard-microsites.rpz.local
-
-touch /etc/unbound/zonefiles/adguard-trackers.rpz.local
 
 touch /etc/unbound/zonefiles/hagezipro.rpz.local
 
