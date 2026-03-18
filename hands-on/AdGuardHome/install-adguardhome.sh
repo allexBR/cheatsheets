@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 15:55:42 UTC 2026
+# Last review date: Wed Mar 18 12:50:08 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -103,7 +103,7 @@ else
 fi
 
 # Add the key path to the AdGuard Home config YAML file
-#echo -e "enabled: true\ncertificate_chain: /etc/ssl/certs/adguard.crt\nprivate_key: /etc/ssl/private/adguard.key" \
+#echo -e "enabled: true\ncertificate_path: /etc/ssl/certs/adguard.crt\nprivate_key_path: /etc/ssl/private/adguard.key" \
 #    | tee -a /usr/local/etc/AdGuardHome/AdGuardHome.yaml > /dev/null
 
 # Restart AdGuard Home service
