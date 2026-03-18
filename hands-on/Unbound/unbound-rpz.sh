@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 09:45:01 UTC 2026
+# Last review date: Wed Mar 18 10:13:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -110,6 +110,14 @@ rpz:
     rpz-log-name: "rpz_oisd-nsfw"
 
 rpz:
+    name: "peterlowe.rpz.local."
+    zonefile: "/etc/unbound/zonefiles/peterlowe.rpz.local"
+    url: https://pgl.yoyo.org/adservers/serverlist.php?hostformat=rpz&showintro=1&mimetype=plaintext
+    rpz-action-override: nxdomain
+    rpz-log: yes
+    rpz-log-name: "rpz_urlhaus"
+
+rpz:
 #   name: "stevenblackhosts"
     zonefile: "/etc/unbound/zonefiles/stevenblackhosts.rpz.local"
 #   url: https://scripttiger.github.io/alts/rpz/blacklist.txt
@@ -149,6 +157,8 @@ touch /etc/unbound/zonefiles/hagezipro.rpz.local
 touch /etc/unbound/zonefiles/oisd-big.rpz.local
 
 touch /etc/unbound/zonefiles/oisd-nsfw.rpz.local
+
+touch /etc/unbound/zonefiles/peterlowe.rpz.local
 
 touch /etc/unbound/zonefiles/threatfox.rpz.local
 
