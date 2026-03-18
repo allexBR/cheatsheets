@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 10:13:01 UTC 2026
+# Last review date: Wed Mar 18 10:23:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -120,7 +120,7 @@ rpz:
 rpz:
 #   name: "stevenblackhosts"
     zonefile: "/etc/unbound/zonefiles/stevenblackhosts.rpz.local"
-#   url: https://scripttiger.github.io/alts/rpz/blacklist.txt
+#   url: https://scripttiger.github.io/alts/rpz/blacklist-fp.txt
     rpz-action-override: nxdomain
     rpz-log: yes
     rpz-log-name: rpz_stevenblackhosts
@@ -168,7 +168,7 @@ curl -o /etc/unbound/zonefiles/certpl.rpz.local https://hole.cert.pl/domains/v2/
 
 curl -o /etc/unbound/zonefiles/malwarefilter.rpz.local https://malware-filter.gitlab.io/malware-filter/phishing-filter-rpz.conf
 
-curl -o /etc/unbound/zonefiles/stevenblack_hosts.rpz.local https://scripttiger.github.io/alts/rpz/blacklist.txt
+curl -o /etc/unbound/zonefiles/stevenblack_hosts.rpz.local https://scripttiger.github.io/alts/rpz/blacklist-fp.txt
 
 chown unbound:unbound /etc/unbound/zonefiles/*.rpz.local && chmod 640 /etc/unbound/zonefiles/*.rpz.local
 
