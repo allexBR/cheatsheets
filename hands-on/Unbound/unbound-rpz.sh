@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Deploy Unbound Response Policy Zone (RPZ)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 11:02:00 UTC 2026
+# Last review date: Wed Mar 18 11:20:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -150,7 +150,7 @@ curl -o /etc/unbound/zonefiles/malwarefilter.rpz.local https://malware-filter.gi
 
 curl -o /etc/unbound/zonefiles/stevenblack_hosts.rpz.local https://scripttiger.github.io/alts/rpz/blacklist-fp.txt
 
-chown unbound:unbound /etc/unbound/zonefiles/*.rpz.local && chmod 640 /etc/unbound/zonefiles/*.rpz.local
+chown unbound:unbound /etc/unbound/zonefiles/*.rpz.local && chmod 664 /etc/unbound/zonefiles/*.rpz.local
 
 /usr/sbin/unbound-control status
 
