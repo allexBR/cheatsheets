@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 19:40:23 UTC 2026
+# Last review date: Sun Mar 22 19:53:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -66,19 +66,7 @@ cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
 chmod 640 /etc/ssl/private/server.key && chmod 644 /etc/ssl/certs/server.crt
 chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
 
-# The following steps will only be applied if Nginx is installed on Debian.
-# Checks if the Nginx executable exists on the system
-if command -v nginx > /dev/null 2>&1; then
-    echo "Nginx detected! Configuring required packages..."
-    # Install required package
-    apt update && apt install -y ssl-cert
-    # Verify if Nginx user exists before modifying the group
-    if id "nginx" &>/dev/null; then
-        usermod -aG ssl-cert nginx
-        echo "Success: User 'nginx' added to the ssl-cert group!"
-    fi
-else
-    echo "Warning: Nginx not found! Skipping permissions and groups configuration."
-fi
-
 echo "The 'client' certificate and private key (self-signed) were successfully generated!"
+
+# Remove temp files
+rm -rf /tmp/certs
