@@ -1,8 +1,9 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------------
-# Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
+# Generating self-signed SSL/TLS certificates for Nginx
+# IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 18:52:01 UTC 2026
+# Last review date: Sun Mar 22 19:40:23 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
