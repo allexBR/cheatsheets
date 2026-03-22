@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 20:06:41 UTC 2026
+# Last review date: Sun Mar 22 20:16:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -100,7 +100,7 @@ rm -rf /tmp/certs
 systemctl restart AdGuardHome
 
 echo "###################################################"
-echo -e "WebGUI first access: http://<IP-or-FQDN>:3000"
+echo "#  WebGUI first access: http://<IP-or-FQDN>:3000  #"
 echo "###################################################"
 
 # Add the key path to the AdGuard Home config YAML file
