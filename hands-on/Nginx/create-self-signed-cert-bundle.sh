@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 19:53:01 UTC 2026
+# Last review date: Sun Mar 22 19:59:21 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -66,7 +66,7 @@ cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
 chmod 640 /etc/ssl/private/server.key && chmod 644 /etc/ssl/certs/server.crt
 chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
 
-echo "The 'client' certificate and private key (self-signed) were successfully generated!"
+{ echo -e "\e[30;48;5;248mThe 'client' certificate and private key (self-signed) were successfully generated!\e[0m"; } 2> /dev/null
 
 # Remove temp files
 rm -rf /tmp/certs
