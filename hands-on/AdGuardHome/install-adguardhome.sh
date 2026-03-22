@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Mar 18 13:10:51 UTC 2026
+# Last review date: Sun Mar 22 19:33:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -53,50 +53,38 @@ sudo ./AdGuardHome -s install
 
 # HTTPS webGUI config (generate a self-signed certificate)
 # IMPORTANT: Do not use this in a prod environment, only for testing!
-tee /usr/local/etc/AdGuardHome/openssl-san.ext <<EOF
-# -----------------------------------------------------------#
-# openssl-san.ext (v3-ext)                                   #
-# X.509 extensions for adding SAN to self-signed certificate #
-# -----------------------------------------------------------#
+#---------------------------------------------------------------------
 
-[req]
-distinguished_name = req_distinguished_name
-req_extensions     = v3_req
-x509_extensions    = v3_req
-prompt             = no
+# Define working directory where cert files will be generated
+mkdir -p /tmp/certs
+cd /tmp/certs
 
-[req_distinguished_name]
-C  = US
-ST = CA
-L  = Berkeley
-CN  = Trusted-CA
+# Create 'issuer' self-signed private key (Root CA)
+openssl ecparam -name secp384r1 -genkey -out TrustedCA.key
 
-[v3_req]
-basicConstraints = CA:FALSE
-keyUsage         = critical, digitalSignature, keyEncipherment, keyAgreement
-extendedKeyUsage = serverAuth
-subjectAltName   = @alt_names
+# Create 'issuer' self-signed certificate (Root CA)
+openssl req -x509 -new -nodes -key TrustedCA.key -sha384 -days 3650 \
+  -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
+  -out TrustedCA.crt
 
-[alt_names]
-DNS.1 = localhost
-IP.1  = 127.0.0.1
-IP.2  = ::1
-EOF
+# Create 'client' self-signed private key
+openssl ecparam -name secp384r1 -genkey -out adguard.key
 
-# Create a ECDSA self-signed AdGuard private key and certificate using SAN
-openssl req -x509 -newkey ec \
-  -pkeyopt ec_paramgen_curve:secp384r1 \
-  -keyout /etc/ssl/private/adguard.key \
-  -out /etc/ssl/certs/adguard.crt \
-  -sha256 \
-  -days 36500 \
-  -nodes \
-  -config /usr/local/etc/AdGuardHome/openssl-san.ext \
-  -extensions v3_req
+# Create 'client' certificate signing request (CSR) file
+openssl req -new -key adguard.key \
+  -subj "/C=CY/ST=LMS/L=Limassol/CN=AdGuard" \
+  -out adguard.csr
+
+# Create 'client' self-signed certificate
+openssl x509 -req -in adguard.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
+  -CAcreateserial -out adguard.crt -days 3650 -sha384
+
+# Copy generated files to required path
+cp adguard.crt /etc/ssl/certs/ && cp adguard.key /etc/ssl/private/
 
 # Verify that the files were actually created before changing necessary permissions
 if [ -f /etc/ssl/private/adguard.key ]; then
-    chmod 600 /etc/ssl/private/adguard.key
+    chmod 640 /etc/ssl/private/adguard.key
     chmod 644 /etc/ssl/certs/adguard.crt
     chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
     echo "[V] Certificates generated successfully."
@@ -105,18 +93,18 @@ else
     exit 1
 fi
 
-# Add the key path to the AdGuard Home config YAML file
-sed -i '/^tls:/,/enabled:/ s/enabled: .*/enabled: true/' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
-sed -i 's|^  force_https:.*|  force_https: true|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
-sed -i 's|^  certificate_path:.*|  certificate_path: /etc/ssl/certs/adguard.crt|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
-sed -i 's|^  private_key_path:.*|  private_key_path: /etc/ssl/private/adguard.key|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
-
 # Restart AdGuard Home service
 systemctl restart AdGuardHome
 
 echo "###################################################"
 echo "#  WebGUI first access: http://<IP-or-FQDN>:3000  #"
 echo "###################################################"
+
+# Add the key path to the AdGuard Home config YAML file
+#sed -i '/^tls:/,/enabled:/ s/enabled: .*/enabled: true/' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+#sed -i 's|^  force_https:.*|  force_https: true|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+#sed -i 's|^  certificate_path:.*|  certificate_path: /etc/ssl/certs/adguard.crt|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
+#sed -i 's|^  private_key_path:.*|  private_key_path: /etc/ssl/private/adguard.key|' "/usr/local/etc/AdGuardHome/AdGuardHome.yaml"
 
 # Uninstall AdGuard Home
 # ./AdGuardHome -s uninstall
