@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 20:16:01 UTC 2026
+# Last review date: Sun Mar 22 21:20:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -72,7 +72,7 @@ openssl ecparam -name secp384r1 -genkey -out adguard.key
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key adguard.key \
-  -subj "/C=CY/ST=LMS/L=Limassol/CN=AdGuard" \
+  -subj "/C=CY/ST=LMS/L=Limassol/CN=AdGuard Home" \
   -out adguard.csr
 
 # Create 'client' self-signed certificate
@@ -87,7 +87,7 @@ if [ -f /etc/ssl/private/adguard.key ]; then
     chmod 640 /etc/ssl/private/adguard.key
     chmod 644 /etc/ssl/certs/adguard.crt
     chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
-    echo "[V] Certificates generated successfully."
+    { echo -e "\e[30;48;5;248mCertificates generated successfully!\e[0m"; } 2> /dev/null
 else
     echo "[X] Error: OpenSSL failed to generate certificates!"
     exit 1
