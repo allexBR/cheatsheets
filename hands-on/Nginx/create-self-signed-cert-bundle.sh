@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 19:59:21 UTC 2026
+# Last review date: Tue Mar 24 15:18:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -24,9 +24,9 @@ if [ "$(id -u)" -ne 0 ]; then
     fi
 fi
 
-echo "############################################################"
-echo "#  Starting SSL/TLS certificates creation. Please wait...  #"
-echo "############################################################"
+echo "##############################################################"
+echo "#  Starting SSL/TLS certificates generation. Please wait...  #"
+echo "##############################################################"
 
 # Initial System repositories update
 apt clean ; apt update ; apt upgrade -y
@@ -62,11 +62,16 @@ openssl x509 -req -in server.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
 # Copy generated files to required path
 cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
 
-# Change files permissions
-chmod 640 /etc/ssl/private/server.key && chmod 644 /etc/ssl/certs/server.crt
-chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
-
-{ echo -e "\e[30;48;5;248mThe 'client' certificate and private key (self-signed) were successfully generated!\e[0m"; } 2> /dev/null
+# Verify that the files were actually created before changing necessary permissions
+if [ -f /etc/ssl/private/adguard.key ]; then
+    chmod 640 /etc/ssl/private/server.key
+    chmod 644 /etc/ssl/certs/server.crt
+    chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
+    { echo -e "\e[30;48;5;248mCertificates generated successfully!\e[0m"; } 2> /dev/null
+else
+    echo "[X] Error: OpenSSL failed to generate certificates!"
+    exit 1
+fi
 
 # Remove temp files
 rm -rf /tmp/certs
