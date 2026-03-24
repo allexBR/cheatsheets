@@ -134,3 +134,54 @@ server {
 }
 EOF
 
+
+
+
+
+#-----------------------------------#
+#  Compiling Nginx dynamic modules  #
+#-----------------------------------#
+
+
+# HTTP Headers More Filter
+
+# Download the HTTP_HEADERS_MORE_FILTER package and compile it as a dynamic module:
+cd /tmp
+git clone https://github.com/openresty/headers-more-nginx-module.git
+
+# Download the current source code corresponding to your installed version of NGINX:
+wget https://nginx.org/download/nginx-1.28.2.tar.gz
+tar zxvf nginx-1.28.2.tar.gz
+
+# Compile the dynamic module and copy it to the Nginx default modules path:
+cd nginx-1.28.2
+./configure --with-compat --add-dynamic-module=../headers-more-nginx-module
+make modules
+cp objs/ngx_http_headers_more_filter_module.so /etc/nginx/modules
+cd ..
+
+
+# Security Headers:
+server_tokens off;
+more_clear_headers Server;
+add_header Referrer-Policy: strict-origin-when-cross-origin
+add_header Strict-Transport-Security: max-age=63072000; includeSubDomains; preload 
+add_header X-Frame-Options: SAMEORIGIN
+add_header X-Content-Type-Options: nosniff
+add_header X-XSS-Protection: 1; mode=block
+
+
+--------------------------------------------------------------------------------------
+
+# GeoIP2
+
+# Download the current source code corresponding to your installed version of NGINX:
+wget https://nginx.org/download/nginx-1.28.2.tar.gz
+tar zxvf nginx-1.28.2.tar.gz
+
+# Compile the dynamic module and copy it to the Nginx default modules path:
+cd nginx-1.28.2
+./configure --with-compat --add-dynamic-module=../ngx_http_geoip2_module
+make modules
+cp objs/ngx_http_geoip2_module.so /etc/nginx/modules
+cd ..
