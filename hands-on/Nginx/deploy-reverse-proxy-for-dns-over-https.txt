@@ -167,6 +167,7 @@ wget https://nginx.org/download/nginx-1.28.2.tar.gz
 tar zxvf nginx-1.28.2.tar.gz
 
 # Compile the dynamic module and copy it to the Nginx default modules path:
+apt install -y apt-utils autoconf automake build-essential libpcre2-dev libpcre3-dev zlib1g-dev libssl-dev libgeoip-dev
 cd nginx-1.28.2
 ./configure --with-compat --add-dynamic-module=../headers-more-nginx-module
 make modules
