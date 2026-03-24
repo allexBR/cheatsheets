@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Mar 24 15:18:01 UTC 2026
+# Last review date: Tue Mar 24 15:26:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -67,7 +67,7 @@ if [ -f /etc/ssl/private/adguard.key ]; then
     chmod 640 /etc/ssl/private/server.key
     chmod 644 /etc/ssl/certs/server.crt
     chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
-    { echo -e "\e[30;48;5;248mCertificates generated successfully!\e[0m"; } 2> /dev/null
+    echo "[+] Certificates generated successfully!"
 else
     echo "[X] Error: OpenSSL failed to generate certificates!"
     exit 1
