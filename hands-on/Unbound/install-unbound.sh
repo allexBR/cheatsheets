@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Mar 07 18:58:01 UTC 2026
+# Last review date: Tue Mar 24 22:57:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -236,6 +236,13 @@ server:
         interface-automatic: no
         interface: 127.0.0.1
         interface: ::1
+
+        # Clients are allowed to make (recursive) queries to this server
+        # By default everything is refused, except for localhost
+        access-control: 127.0.0.0/8 allow
+        access-control: ::1 allow
+        access-control: ::ffff:127.0.0.1 allow
+        access-control: 192.168.0.0/16 allow
 
         # Logging Options
         use-syslog: no
