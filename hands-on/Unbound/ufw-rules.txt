@@ -22,3 +22,17 @@ COMMIT
 ufw allow in on eth0 to 127.0.0.1 port 53 proto udp
 
 ufw allow in on eth0 to 127.0.0.1 port 53 proto tcp
+
+
+
+3. Important Note
+
+# For redirection to work, make sure IP Forwarding is enabled on your Linux system.
+# You can check this with:
+sysctl net.ipv4.ip_forward
+
+# If the value is 0, enable it by editing the /etc/sysctl.conf file and uncommenting the line:
+net.ipv4.ip_forward=1
+
+# Then apply it with:
+sudo sysctl -p
