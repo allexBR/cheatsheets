@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 14:41:01 UTC 2026
+# Last review date: Thu Mar 26 14:42:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Output file path
@@ -18,7 +18,7 @@ LISTS=(
 "https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardDNS.txt"
 ## Anudeep:
 "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
-## CERT.PL
+## CERT.PL:
 "https://hole.cert.pl/domains/v2/domains.txt"
 ## Dan Pollock:
 "https://someonewhocares.org/hosts/zero/hosts"
