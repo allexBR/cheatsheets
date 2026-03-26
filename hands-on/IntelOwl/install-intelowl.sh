@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Thu Mar 26 13:49:12 UTC 2026
+# Last review date: Thu Mar 26 13:52:02 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -121,6 +121,10 @@ rm -rf /tmp/certs
 # Now the application is running on http://<IP-or-FQDN>:80
 cd /opt/IntelOwl
 sudo ./start prod up
+
+echo "#################################################"
+echo "#  WebGUI first access: http://<IP-or-FQDN>:80  #"
+echo "#################################################"
 
 #-----------------------------------------------
 # Start IntelOwl app in https mode
