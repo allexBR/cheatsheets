@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 15:57:01 UTC 2026
+# Last review date: Thu Mar 26 16:01:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -168,7 +168,7 @@ cd unbound-1*
   --with-pyunbound
 
 # Compile Unbound from source code and convert it into binary files
-make -j$(nproc)
+make -s -j$(nproc)
 
 # Install created binary files
 make install
