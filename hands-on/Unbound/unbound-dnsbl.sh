@@ -2,53 +2,72 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Mar 06 16:57:09 UTC 2026
+# Last review date: Thu Mar 26 14:41:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Output file path
-OUTPUT="/etc/unbound/conf.d/dnsblacklist.conf"
+OUTPUT="/etc/unbound/conf.d/dnsbl.conf"
 
 # Open-Source Blacklists
 LISTS=(
-"https://adaway.org/hosts.txt"
-"https://pgl.yoyo.org/adservers/serverlist.php?mimetype=plaintext&hostformat=plain"
-"https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
-"https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt"
-"https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Extension/GoodbyeAds-YouTube-AdBlock.txt"
-"https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Extension/GoodbyeAds-Spotify-AdBlock.txt"
-"https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardDNS.txt"
-"https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt"
-"https://small.oisd.nl/unbound"
-"https://big.oisd.nl/unbound"
-"https://nsfw.oisd.nl/unbound"
+## Abuse (The Blocklist Project):
 "https://blocklistproject.github.io/Lists/abuse.txt"
-"https://blocklistproject.github.io/Lists/fraud.txt"
-"https://blocklistproject.github.io/Lists/gambling.txt"
-"https://blocklistproject.github.io/Lists/malware.txt"
-"https://blocklistproject.github.io/Lists/phishing.txt"
-"https://blocklistproject.github.io/Lists/piracy.txt"
-"https://blocklistproject.github.io/Lists/ransomware.txt"
-"https://blocklistproject.github.io/Lists/scam.txt"
-"https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt"
-"https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt"
-"https://s3.amazonaws.com/lists.disconnect.me/simple_malware.txt"
-"https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"
-"https://v.firebog.net/hosts/static/w3kbl.txt"
-"https://v.firebog.net/hosts/BillStearns.txt"
-"https://v.firebog.net/hosts/Prigent-Malware.txt"
-"https://malware-filter.gitlab.io/malware-filter/phishing-filter-hosts.txt"
-"https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt"
-"https://raw.githubusercontent.com/Dawsey21/Lists/master/main-blacklist.txt"
+## AdAway:
+"https://adaway.org/hosts.txt"
+## AdGuardDNS:
+"https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardDNS.txt"
+## Anudeep:
+"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
+## CERT.PL
+"https://hole.cert.pl/domains/v2/domains.txt"
+## Dan Pollock:
 "https://someonewhocares.org/hosts/zero/hosts"
-"http://winhelp2002.mvps.org/hosts.txt"
-"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts"
-"http://sysctl.org/cameleon/hosts"
-"https://raw.githubusercontent.com/vokins/yhosts/master/hosts"
+## Dandelion Sprout:
+"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
+## Disconnect.me:
+"https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt"
+## Ethereum Phishing Detect:
+"https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt"
+## Geoffrey Frogeye:
+"https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt"
+## Maltrail:
+"https://raw.githubusercontent.com/stamparm/aux/master/maltrail-malware-domains.txt"
+## Malware-Filter (Online Malicious URL):
+"https://malware-filter.gitlab.io/malware-filter/urlhaus-filter-hosts-online.txt"
+## Malware-Filter (Phishing):
+"https://malware-filter.gitlab.io/malware-filter/phishing-filter-hosts.txt"
+## NoTrack:
 "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"
+## oisd.nl Big List:
+"https://big.oisd.nl/domainswild2"
+## oisd.nl NSFW List:
+"https://nsfw.oisd.nl/domainswild2"
+## Peter Lowe:
+"https://pgl.yoyo.org/adservers/serverlist.php?mimetype=plaintext&hostformat=plain"
+## Phishing Army:
 "https://phishing.army/download/phishing_army_blocklist_extended.txt"
-"https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt"
-"https://raw.githubusercontent.com/notracking/hosts-blocklists/master/unbound/unbound.blacklist.conf"
+## Phishing Database:
+"https://raw.githubusercontent.com/mitchellkrogza/Phishing.Database/master/phishing-domains-ACTIVE.txt"
+## Prigent-Malware from UT1 Blacklists:
+"https://v.firebog.net/hosts/Prigent-Malware.txt"
+## Scam Blocklist by DurableNapkin:
+"https://raw.githubusercontent.com/durablenapkin/scamblocklist/master/hosts.txt"
+## Shadow Whisperer:
+"https://raw.githubusercontent.com/ShadowWhisperer/BlockLists/master/Lists/Malware"
+## SNAFU:
+"https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt"
+## Spotify Ads & Trackers:
+"https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Extension/GoodbyeAds-Spotify-AdBlock.txt"
+## StevenBlack:
+"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn/hosts"
+## StopForumSpam:
+"https://www.stopforumspam.com/downloads/toxic_domains_whole.txt"
+## TR-CERT (USOM):
+"https://raw.githubusercontent.com/cenk/trcert-malware/main/trcert-domains.txt"
+## uBlock Origin Badware:
+"https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt"
+## YouTube Ads & Trackers:
+"https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Extension/GoodbyeAds-YouTube-AdBlock.txt"
 )
 
 # Clears previous file
