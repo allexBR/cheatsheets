@@ -9,7 +9,7 @@ nano /etc/ufw/before.rules
 *nat
 :PREROUTING ACCEPT [0:0]
 
-# Redireciona pacotes que chegam na eth0 (porta 53) para o IP local 127.0.0.1
+# Redirects packets arriving at eth0 (port 53) to the local IP address 127.0.0.1
 -A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 127.0.0.1:53
 -A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 127.0.0.1:53
 
