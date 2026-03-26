@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Mar 24 22:57:01 UTC 2026
+# Last review date: Thu Mar 26 15:57:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -132,7 +132,7 @@ tar xzf unbound-*.tar.gz
 cd unbound-1*
 
 # Configure the parameters to start the compilation
-./configure \
+./configure -q \
   --prefix=/usr \
   --sysconfdir=/etc \
   --localstatedir=/var \
@@ -154,10 +154,10 @@ cd unbound-1*
   --disable-maintainer-mode \
   --disable-option-checking \
   --disable-rpath \
-  --disable-silent-rules \
   --enable-cachedb \
   --enable-dnscrypt \
   --enable-dnstap \
+  --enable-silent-rules \
   --enable-subnet \
   --enable-systemd \
   --enable-tfo-client \
@@ -181,7 +181,7 @@ mkdir -p /var/log/unbound
 touch /var/log/unbound/unbound.log
 
 # Configure permissions for the Unbound log file
-chown unbound:unbound /var/log/unbound/unbound.log && chmod 664 /var/log/unbound/unbound.log
+chown -R unbound:unbound /var/log/unbound/ && chmod 664 /var/log/unbound/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
 install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
@@ -237,7 +237,7 @@ server:
         interface: 127.0.0.1
         interface: ::1
 
-        # Clients are allowed to make (recursive) queries to this server
+        # Control which clients are allowed to make (recursive) queries to this server
         # By default everything is refused, except for localhost
         access-control: 127.0.0.0/8 allow
         access-control: ::1 allow
@@ -271,12 +271,17 @@ server:
         aggressive-nsec: yes
         qname-minimisation: yes
 
-        # System performance settings
+        # System Performance Options
+        # Set num-threads equal to the number of CPU cores on the system.
+        # For 4 CPUs with 2 cores each, use 8.
+        # Set *-slabs to a power of 2 close to the num-threads value.
+        # Do this for msg-cache-slabs, rrset-cache-slabs, infra-cache-slabs and key-cache-slabs.
+        # This reduces lock contention.
         num-threads: 2
         msg-cache-slabs: 2
         rrset-cache-slabs: 2
-        key-cache-slabs: 2
         infra-cache-slabs: 2
+        key-cache-slabs: 2
         cache-min-ttl: 0
         cache-max-ttl: 86400
         msg-cache-size: 64m
@@ -308,10 +313,8 @@ server:
         # Timeout Behaviour Options
         infra-keep-probing: no
 
-        # Bootstrap Root Servers Options
-        root-hints: "/etc/unbound/root.hints"
-
         # Private networks for DNS Rebinding prevention (when enabled)
+        # Enforce privacy of these addresses. Strips them away from answers.
         private-address: 0.0.0.0/8
         private-address: 10.0.0.0/8
         private-address: 100.64.0.0/10
@@ -330,16 +333,16 @@ server:
         private-address: fe80::/10
 
         # Module configuration - validator must be present for DNSSEC
-        # module-config: "validator iterator"
+        # Default is "validator iterator"
         module-config: "validator cachedb iterator"
 
         # DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
         val-log-level: 1
 
-        # DNSCrypt-proxy to work
-        #do-not-query-localhost: no
-
+        # Bootstrap DNS Root Servers Options
+        root-hints: "/etc/unbound/root.hints"
+ 
         # TLS Options
         tls-cert-bundle: "/etc/ssl/certs/ca-certificates.crt"
 
@@ -347,9 +350,9 @@ server:
 # Cache DB Module Options
 cachedb:
         backend: redis
-        #secret-seed: "unbound-config"
         #redis-server-host: 127.0.0.1
         #redis-server-port: 6379
+        #redis-server-password: “<your-redis-password>”
         redis-server-path: "/var/run/redis/redis.sock"
         redis-timeout: 100
         redis-expire-records: no
@@ -387,10 +390,20 @@ remote-control:
 include: "/etc/unbound/conf.d/*.conf"
 EOF
 
+# Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
+tee /etc/unbound/conf.d/doh.conf <<EOF
+server:
+        interface: 127.0.0.1@8443
+        https-port: 8443
+        http-endpoint: "/dns-query"
+        http-notls-downstream: yes
+        http-max-streams: 200
+        http-query-buffer-size: 1m
+        http-response-buffer-size: 1m
+EOF
+
 # Check that all Unbound default settings are correct
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
-
-echo "No errors detected in the Unbound settings"
 
 # Creates Unbound server keys into Unbound folder
 /usr/sbin/unbound-control-setup -d /etc/unbound
