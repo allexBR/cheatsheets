@@ -2,11 +2,14 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 14:44:38 UTC 2026
+# Last review date: Thu Mar 26 16:30:29 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Output file path
 OUTPUT="/etc/unbound/conf.d/dnsbl.conf"
+
+# Temp file path
+TMPFILE=$(mktemp)
 
 # Open-Source Blacklists
 LISTS=(
@@ -70,26 +73,59 @@ LISTS=(
 "https://raw.githubusercontent.com/jerryn70/GoodbyeAds/master/Extension/GoodbyeAds-YouTube-AdBlock.txt"
 )
 
-# Clears previous file
-echo "server:" > "$OUTPUT"
+echo "Starting download and processing..."
 
-# Download lists, extract domains, remove duplicates
-TMPFILE=$(mktemp)
 for URL in "${LISTS[@]}"; do
     echo "Downloading: $URL"
-    curl -s "$URL" >> "$TMPFILE"
+    # Download and immediately remove lines that begin with # or empty spaces.
+    curl -s "$URL" | grep -v '^#' | grep -v '^\s*$' >> "$TMPFILE"
 done
+
+# Fine Tuning:
+# - Remove IPs (127.0.0.1, 0.0.0.0) if they exist at the beginning of the line
+# - Convert to lowercase
+# - Remove invalid characters
+# - Remove duplicates
+# - Format for Unbound using 'always_refuse' for better performance
+
+echo "server:" > "$OUTPUT"
+
+sed -e 's/127.0.0.1//g' -e 's/0.0.0.0//g' "$TMPFILE" | \
+    tr '[:upper:]' '[:lower:]' | \
+    grep -Eo '([a-z0-9.-]+\.[a-z]{2,})' | \
+    grep -vE '^(localhost|github.com|raw.githubusercontent.com|google.com)$' | \
+    sort -u | \
+    awk '{print "local-zone: \"" $1 "\" always_refuse"}' >> "$OUTPUT"
+
+# Cleaning up temp files
+rm "$TMPFILE"
+
+# Unbound syntax validation
+echo "Validating configuration..."
+unbound-checkconf "$OUTPUT" && echo "Success! Blacklist generated in $OUTPUT!" || echo "Error in the generated syntax!"
+
+
+#-------------------------------------------------------------------------------------------------------
+# Clears previous file
+#echo "server:" > "$OUTPUT"
+
+# Download lists, extract domains, remove duplicates
+#TMPFILE=$(mktemp)
+#for URL in "${LISTS[@]}"; do
+#    echo "Downloading: $URL"
+#    curl -s "$URL" >> "$TMPFILE"
+#done
 
 # Process:
 # - Remove comments (#)
 # - Remove IPs (keep only domains)
 # - Extract valid domains
 # - Remove duplicates
-grep -Eo '([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})' "$TMPFILE" | \
-    sort -u | \
-    sed 's/^/local-zone: "/; s/$/" refuse/' >> "$OUTPUT"
+#grep -Eo '([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})' "$TMPFILE" | \
+#    sort -u | \
+#    sed 's/^/local-zone: "/; s/$/" refuse/' >> "$OUTPUT"
 
 # Remove temp file
-rm "$TMPFILE"
+#rm "$TMPFILE"
 
-echo "Blacklist generated in $OUTPUT"
+#echo "Blacklist generated in $OUTPUT"
