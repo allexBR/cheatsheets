@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Tue Mar 03 16:59:37 UTC 2026
+# Last review date: Thu Mar 26 13:49:12 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -65,59 +65,56 @@ cd IntelOwl/ || exit 1
 # Run helper script to verify installed dependencies and configure basic stuff
 sudo ./initialize.sh
 
+
+#-------------------------------------------------------------------------
 # HTTPS webGUI config (generate a self-signed certificate)
 # IMPORTANT: Do not use this in a prod environment, only for testing!
-tee /opt/IntelOwl/openssl-san.ext <<EOF
-# -----------------------------------------------------------#
-# openssl-san.ext (v3-ext)                                   #
-# X.509 extensions for adding SAN to self-signed certificate #
-# -----------------------------------------------------------#
+#-------------------------------------------------------------------------
 
-[req]
-distinguished_name = req_distinguished_name
-req_extensions     = v3_req
-x509_extensions    = v3_req
-prompt             = no
+# Define working directory where cert files will be generated
+mkdir -p /tmp/certs
 
-[req_distinguished_name]
-C  = US
-ST = CA
-L  = Berkeley
-CN = Trusted-CA
+WORK_DIR="/tmp/certs"
+cd "$WORK_DIR" || exit 1
 
-[v3_req]
-basicConstraints = CA:FALSE
-keyUsage         = critical, digitalSignature, keyEncipherment, keyAgreement
-extendedKeyUsage = serverAuth
-subjectAltName   = @alt_names
+echo "[+] Operating in the directory: $WORK_DIR"
 
-[alt_names]
-DNS.1 = localhost
-IP.1  = 127.0.0.1
-IP.2  = ::1
-EOF
+# Create 'issuer' self-signed private key (Root CA)
+openssl ecparam -name secp384r1 -genkey -out TrustedCA.key
 
-# Create a ECDSA self-signed IntelOwl private key and certificate using SAN
-openssl req -x509 -newkey ec \
-  -pkeyopt ec_paramgen_curve:secp384r1 \
-  -keyout /etc/ssl/private/intelowl.key \
-  -out /usr/local/share/ca-certificates/intelowl.crt \
-  -sha256 \
-  -days 36500 \
-  -nodes \
-  -config /opt/IntelOwl/openssl-san.ext \
-  -extensions v3_req
+# Create 'issuer' self-signed certificate (Root CA)
+openssl req -x509 -new -nodes -key TrustedCA.key -sha384 -days 3650 \
+  -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
+  -out TrustedCA.crt
+
+# Create 'client' self-signed private key
+openssl ecparam -name secp384r1 -genkey -out server.key
+
+# Create 'client' certificate signing request (CSR) file
+openssl req -new -key server.key \
+  -subj "/C=US/ST=MA/L=Cambridge/CN=WebTrust, Inc." \
+  -out server.csr
+
+# Create 'client' self-signed certificate
+openssl x509 -req -in server.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
+  -CAcreateserial -out server.crt -days 3650 -sha384
+
+# Copy generated files to required path
+cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
 
 # Verify that the files were actually created before changing necessary permissions
 if [ -f /etc/ssl/private/intelowl.key ]; then
     chmod 600 /etc/ssl/private/intelowl.key
     chmod 644 /usr/local/share/ca-certificates/intelowl.crt
     chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.crt
-    echo "[V] Certificates generated successfully."
+    { echo -e "\e[30;48;5;248m >>> Certificates generated successfully! <<<\e[0m"; } 2> /dev/null
 else
     echo "[X] Error: OpenSSL failed to generate certificates!"
     exit 1
 fi
+
+# Remove temp files
+rm -rf /tmp/certs
 
 
 # Start IntelOwl app
