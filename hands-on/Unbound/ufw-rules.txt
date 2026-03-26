@@ -1,0 +1,23 @@
+##-------------##
+##  UFW Rules  ##
+##-------------##
+
+1. Network Redirection (NAT) Configuration
+
+nano /etc/ufw/before.rules
+
+*nat
+:PREROUTING ACCEPT [0:0]
+
+# Redireciona pacotes que chegam na eth0 (porta 53) para o IP local 127.0.0.1
+-A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 127.0.0.1:53
+-A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 127.0.0.1:53
+
+COMMIT
+
+
+
+2. Allow traffic through the firewall (allow redirect traffic to reach Unbound)
+
+ufw allow in on eth0 to 127.0.0.1 port 53 proto udp
+ufw allow in on eth0 to 127.0.0.1 port 53 proto tcp
