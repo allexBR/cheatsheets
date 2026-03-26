@@ -36,7 +36,6 @@ server {
         proxy_set_header   X-Real-IP          $remote_addr;
         proxy_set_header   X-Forwarded-For    $proxy_add_x_forwarded_for;
         proxy_set_header   X-Forwarded-Proto  $scheme;
-        #proxy_pass         http://localhost:8053/dns-query;
         proxy_ssl_verify   off;
         proxy_redirect     off;
         proxy_buffering    off;
@@ -165,12 +164,12 @@ cd /tmp
 git clone https://github.com/openresty/headers-more-nginx-module.git
 
 # Download the current source code corresponding to your installed version of NGINX:
-wget https://nginx.org/download/nginx-1.28.2.tar.gz
-tar zxvf nginx-1.28.2.tar.gz
+wget https://nginx.org/download/nginx-1.28.3.tar.gz
+tar zxvf nginx-1.28.3.tar.gz
 
 # Compile the dynamic module and copy it to the Nginx default modules path:
 apt install -y apt-utils autoconf automake build-essential libpcre2-dev libpcre3-dev zlib1g-dev libssl-dev libgeoip-dev
-cd nginx-1.28.2
+cd nginx-1.28.3
 ./configure --with-compat --add-dynamic-module=../headers-more-nginx-module
 make modules
 cp objs/ngx_http_headers_more_filter_module.so /etc/nginx/modules
@@ -192,11 +191,11 @@ add_header X-XSS-Protection: 1; mode=block
 # GeoIP2
 
 # Download the current source code corresponding to your installed version of NGINX:
-wget https://nginx.org/download/nginx-1.28.2.tar.gz
-tar zxvf nginx-1.28.2.tar.gz
+wget https://nginx.org/download/nginx-1.28.3.tar.gz
+tar zxvf nginx-1.28.3.tar.gz
 
 # Compile the dynamic module and copy it to the Nginx default modules path:
-cd nginx-1.28.2
+cd nginx-1.28.3
 ./configure --with-compat --add-dynamic-module=../ngx_http_geoip2_module
 make modules
 cp objs/ngx_http_geoip2_module.so /etc/nginx/modules
