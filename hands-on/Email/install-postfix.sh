@@ -1,8 +1,8 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------------
-# Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
+# Compiling and Installing Postfix on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 14:08:15 UTC 2026
+# Last review date: Thu Mar 26 14:09:45 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
