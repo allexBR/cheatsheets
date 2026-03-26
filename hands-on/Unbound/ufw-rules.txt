@@ -2,7 +2,7 @@
 ##  UFW Rules  ##
 ##-------------##
 
-1. Network Redirection (NAT) Configuration
+1. Network Redirection (NAT) Configuration:
 
 nano /etc/ufw/before.rules
 
@@ -17,7 +17,7 @@ COMMIT
 
 
 
-2. Allow traffic through the firewall (allow redirect traffic to reach Unbound)
+2. Allow traffic through the firewall (allow redirect traffic to reach Unbound):
 
 ufw allow in on eth0 to 127.0.0.1 port 53 proto udp
 
@@ -25,7 +25,7 @@ ufw allow in on eth0 to 127.0.0.1 port 53 proto tcp
 
 
 
-3. Important Note
+3. Important Note!
 
 # For redirection to work, make sure IP Forwarding is enabled on your Linux system.
 # You can check this with:
