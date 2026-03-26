@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 14:42:01 UTC 2026
+# Last review date: Thu Mar 26 14:44:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Output file path
