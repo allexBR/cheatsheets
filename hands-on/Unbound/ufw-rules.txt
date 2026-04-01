@@ -54,6 +54,8 @@ ufw allow in from 127.0.0.1 to 127.0.0.1 port 53 proto udp comment 'DNS Service'
 
 ufw allow in from 127.0.0.1 to 127.0.0.1 port 53 proto tcp comment 'DNS Service'
 
+ufw disable && ufw enable
+
 
 
 3. Important Note!
