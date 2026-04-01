@@ -4,24 +4,55 @@
 
 1. Network Redirection (NAT) Configuration:
 
+nano /etc/default/ufw
+
+IPV6=no
+
+DEFAULT_FORWARD_POLICY="ACCEPT"
+
+
+
+
+nano /etc/ufw/sysctl.conf
+
+net.ipv4.ip_forward=1
+#net/ipv6/conf/default/forwarding=1
+#net/ipv6/conf/all/forwarding=1
+
+
+
+
 nano /etc/ufw/before.rules
 
+#
+# rules.before
+#
+# Rules that should be run before the ufw command line added rules. Custom
+# rules should be added to one of these chains:
+#   ufw-before-input
+#   ufw-before-output
+#   ufw-before-forward
+#
+
+# NAT table rules
 *nat
 :PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
 
 # Redirects packets arriving at eth0 (port 53) to the local IP address 127.0.0.1
 -A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 127.0.0.1:53
 -A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 127.0.0.1:53
 
+# Don't delete the 'COMMIT' line or these nat table rules won't be processed
 COMMIT
 
 
 
 2. Allow traffic through the firewall (allow redirect traffic to reach Unbound):
 
-ufw allow in on eth0 to 127.0.0.1 port 53 proto udp
+ufw allow in from 127.0.0.1 to 127.0.0.1 port 53 proto udp comment 'DNS Service'
 
-ufw allow in on eth0 to 127.0.0.1 port 53 proto tcp
+ufw allow in from 127.0.0.1 to 127.0.0.1 port 53 proto tcp comment 'DNS Service'
 
 
 
