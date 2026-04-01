@@ -37,6 +37,7 @@ nano /etc/ufw/before.rules
 # NAT table rules
 *nat
 :PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
 
 # Redirects packets arriving at eth0 (port 80, 443) to the local IP address 127.0.0.1
 -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 127.0.0.1:80
