@@ -48,7 +48,7 @@ COMMIT
 
 
 
-2. Allow traffic through the firewall (allow redirect traffic to reach Unbound):
+2. Allow traffic through the firewall (allow redirect traffic to reach Nginx):
 
 ufw allow in from 127.0.0.1 to 127.0.0.1 port 80 proto tcp comment 'HTTP Service'
 
