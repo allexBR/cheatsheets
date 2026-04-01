@@ -10,8 +10,7 @@ IPV6=no
 
 DEFAULT_FORWARD_POLICY="ACCEPT"
 
-
-
+-----------------------------------------------------------------------------------------------
 
 nano /etc/ufw/sysctl.conf
 
@@ -19,8 +18,7 @@ net.ipv4.ip_forward=1
 #net/ipv6/conf/default/forwarding=1
 #net/ipv6/conf/all/forwarding=1
 
-
-
+-----------------------------------------------------------------------------------------------
 
 nano /etc/ufw/before.rules
 
