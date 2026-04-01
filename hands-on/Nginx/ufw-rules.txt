@@ -54,6 +54,8 @@ ufw allow in from 127.0.0.1 to 127.0.0.1 port 80 proto tcp comment 'HTTP Service
 
 ufw allow in from 127.0.0.1 to 127.0.0.1 port 443 proto tcp comment 'HTTP Service'
 
+ufw disable && ufw enable
+
 
 
 3. Important Note!
