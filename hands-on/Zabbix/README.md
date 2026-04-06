@@ -181,10 +181,52 @@ DBPassword=password
 <br/>
 
 ### • Configure PHP for Zabbix frontend:
+Edit file /etc/php/*/fpm/pool.d/www.conf comment and redifine 'user' and 'group' directives.
+```
+;user = www-data
+;group = www-data
+
+user = nginx
+group = nginx
+```
+
+Edit file /etc/php/*/fpm/pool.d/zabbix-php-fpm.conf and redifine 'user', 'group', 'listen' and 'listen.owner' directives.
+```
+[zabbix]
+user = nginx
+group = nginx
+
+listen = /run/php/zabbix.sock
+listen.owner = nginx
+listen.group = nginx
+listen.mode = 0660
+;listen.allowed_clients = 127.0.0.1
+
+pm = dynamic
+pm.max_children = 50
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+pm.max_requests = 200
+
+php_value[session.save_handler] = files
+php_value[session.save_path]    = /var/lib/php/sessions/
+
+php_value[max_execution_time] = 300
+php_value[memory_limit] = 128M
+php_value[post_max_size] = 16M
+php_value[upload_max_filesize] = 2M
+php_value[max_input_time] = 300
+php_value[max_input_vars] = 10000
+```
+
 Edit file /etc/zabbix/nginx.conf uncomment and set 'listen' and 'server_name' directives.
 ```
-# listen 8080;
-# server_name example.com;
+#       listen 8080;
+#       server_name example.com;
+
+        location ~ [^/]\.php(/|$) {
+                fastcgi_pass    unix:/run/php/zabbix.sock;
 ```
 <br/>
 
