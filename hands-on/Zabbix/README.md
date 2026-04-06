@@ -9,7 +9,8 @@
 ### # INSTRUCTIONS FOR INSTALL AND CONFIGURE ZABBIX ON DEBIAN
 <br/>
 
-> About: Zabbix is an open-source monitoring platform for networks, servers, virtual machines, and cloud services. It collects metrics via SNMP, IPMI, JMX, and custom agents, then stores the data in a relational database and provides alerting, visualization, and reporting through a web-based frontend.<br/>
+> ### About:
+> Zabbix is an open-source monitoring platform for networks, servers, virtual machines, and cloud services. It collects metrics via SNMP, IPMI, JMX, and custom agents, then stores the data in a relational database and provides alerting, visualization, and reporting through a web-based frontend.<br/>
 > ### Server and proxies:
 > The Zabbix server collects data from agents and other sources, evaluates trigger conditions, sends alerts, and stores data in a relational database. Supported databases include PostgreSQL, MySQL/MariaDB, Oracle, and TimescaleDB (as a PostgreSQL extension for time-series optimization). For distributed monitoring, Zabbix proxies collect data at remote sites and forward it to the central server, reducing bandwidth and providing local buffering if the connection is interrupted.<br/>
 > ### Agents:
