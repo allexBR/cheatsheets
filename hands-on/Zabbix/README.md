@@ -139,20 +139,21 @@ password
 > https://delinea.com/resources/password-generator-it-tool<br/>
 <br/>
 
+mysql>
 ```
-mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
-```
-```
-mysql> create user zabbix@localhost identified by 'password';
+create database zabbix character set utf8mb4 collate utf8mb4_bin;
 ```
 ```
-mysql> grant all privileges on zabbix.* to zabbix@localhost;
+create user zabbix@localhost identified by 'password';
 ```
 ```
-mysql> set global log_bin_trust_function_creators = 1;
+grant all privileges on zabbix.* to zabbix@localhost;
 ```
 ```
-mysql> quit;
+set global log_bin_trust_function_creators = 1;
+```
+```
+quit;
 ```
 <br/>
 
