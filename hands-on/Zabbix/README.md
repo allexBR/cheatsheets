@@ -58,7 +58,7 @@ apt clean && apt update
 <br/>
 
 ### • Install PHP (ondrej/php) DPA repository:
-PHP latest stable packages are not available in any of the current Debian or Ubuntu software repositories, the PHP packages must come from another repo.
+PHP latest stable packages are not available in any of the current Debian or Ubuntu software repositories, the PHP packages must come from third-party repositories.
 
 Ondřej Surý maintains a package archive that contains compiled binaries of all current PHP versions, for Ubuntu and Debian.
 ```
