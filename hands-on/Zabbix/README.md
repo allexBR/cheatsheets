@@ -19,6 +19,9 @@
 
 ### • Install Zabbix repository:
 ```
+cd /tmp
+```
+```
 wget https://repo.zabbix.com/zabbix/7.4/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.4+debian13_all.deb
 ```
 ```
@@ -43,9 +46,6 @@ dpkg -i mysql-apt-config_0.8.36-1_all.deb
 
 MySQL requires libaio1, which is no longer included in Debian 13.
 We can install it from the Debian 12 (Bookworm) repository:
-```
-cd /tmp
-```
 ```
 wget https://deb.debian.org/debian/pool/main/liba/libaio/libaio1_0.3.113-4_amd64.deb
 ```
