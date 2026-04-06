@@ -378,6 +378,9 @@ ServerActive=192.168.1.1
 ### Option: Hostname
 Hostname=Zabbix_endpoint_name
 ```
+<br/>
+
+Restart Zabbix-agent service.
 ```
 systemctl restart zabbix-agent
 ```
