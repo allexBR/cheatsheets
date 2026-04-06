@@ -90,94 +90,32 @@ Edit file /etc/zabbix/nginx.conf uncomment and set 'listen' and 'server_name' di
 ```
 <br/>
 
-<br/>
-<br/>
-
-### # INSTRUCTIONS FOR CONFIGURE THE ZEEK NETWORK MONITOR
-<br/>
-
-### • Edit the /opt/zeek/etc/node.cfg file and set the packet capture interface:
-> In this post, we use eth0.
+### • Start Zabbix server and agent processes:
+Start Zabbix server and agent processes and make it start at system boot.
 ```
-[zeek]​
-type=standalone​
-host=localhost​
-interface=eth0
+systemctl restart zabbix-server zabbix-agent nginx php8.4-fpm
+```
+```
+systemctl enable zabbix-server zabbix-agent nginx php8.4-fpm 
 ```
 <br/>
 
-### • Edit the /opt/zeek/etc/networks.cfg file and add your subnet:
-> Replace <NETWORK_SUBNET> with your network subnet. The content of the file will look similar to this:
-```
-# List of local networks in CIDR notation, optionally followed by a descriptive
-# tag. Private address space defined by Zeek's Site::private_address_space set
-# (see scripts/base/utils/site.zeek) is automatically considered local. You can
-# disable this auto-inclusion by setting zeekctl's PrivateAddressSpaceIsLocal
-# option to 0.
-#
-# Examples of valid prefixes:
-#
-# 1.2.3.0/24        Admin network
-# 2607:f140::/32    Student network
-<NETWORK_SUBNET>
-```
+### • Open Zabbix UI web page:
+The URL for Zabbix UI when using Nginx depends on the configuration changes you should have made.
 <br/>
 
-### • Run the following command to verify your Zeek syntax:
-```
-zeekctl check
-```
+### • Start using Zabbix:
+Read in documentation: https://www.zabbix.com/documentation/7.4/en/manual/quickstart/login
+<br/>
 <br/>
 
 > [!NOTE]
-> Hint: Run the zeekctl "deploy" command to get started.<br/>
-> zeek scripts are ok.
+> Data collection methods
+> Zabbix supports multiple data collection protocols:
 
-<br/>
-
-### • Start Zeek:
-```
-zeekctl deploy
-```
-<br/>
-
-> [!NOTE]
-> checking configurations ...<br/>
-> installing ...<br/>
-> creating policy directories ...<br/>
-> installing site policies ...<br/>
-> generating standalone-layout.zeek ...<br/>
-> generating local-networks.zeek ...<br/>
-> generating zeekctl-config.zeek ...<br/>
-> generating zeekctl-config.sh ...<br/>
-> stopping ...<br/>
-> stopping zeek ...<br/>
-> starting ...<br/>
-> starting zeek ...
-<br/>
-
-### • Enable JSON log output:
-> Zeek logs are stored in TSV format by default. Add the following line to the /opt/zeek/share/zeek/site/local.zeek file to generate logs in JSON format:
-
-```
-@load policy/tuning/json-logs.zeek
-```
-<br/>
-
-### • Restart Zeek to apply the changes:
-```
-zeekctl deploy
-```
-<br/>
-<br/>
-
-> [!IMPORTANT]
-> Zeek logs such as and will now be generated in JSON format in the directory /opt/zeek/logs/current<br/>
-> - conn.log<br/>
-> - dns.log<br/>
-> - ssl.log
-
-<img width="885" height="597" alt="image" src="https://github.com/user-attachments/assets/5400e532-827b-4876-96c2-b561f8d898ab" />
-
-
-
+    SNMP polling and traps for network equipment
+    IPMI for hardware health monitoring (temperature, fan speed, power)
+    JMX via the Java gateway for JVM metrics
+    HTTP/HTTPS for web scenario monitoring and REST API polling
+    SSH and Telnet for agentless checks on remote systems
+    Calculated and aggregated items for derived metrics
