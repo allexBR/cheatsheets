@@ -54,13 +54,13 @@ mysql> quit;
 ```
 <br/>
 
-> On Zabbix server host import initial schema and data. You will be prompted to enter your newly created password.
+On Zabbix server host import initial schema and data. You will be prompted to enter your newly created password.
 ```
 zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
 ```
 <br/>
 
-> Disable log_bin_trust_function_creators option after importing database schema.
+Disable log_bin_trust_function_creators option after importing database schema.
 ```
 mysql -uroot -p
 ```
@@ -76,14 +76,14 @@ mysql> quit;
 <br/>
 
 ### • Configure the database for Zabbix server:
-> Edit file /etc/zabbix/zabbix_server.conf
+Edit file /etc/zabbix/zabbix_server.conf
 ```
 DBPassword=password
 ```
 <br/>
 
 ### • Configure PHP for Zabbix frontend:
-> Edit file /etc/zabbix/nginx.conf uncomment and set 'listen' and 'server_name' directives.
+Edit file /etc/zabbix/nginx.conf uncomment and set 'listen' and 'server_name' directives.
 ```
 # listen 8080;
 # server_name example.com;
