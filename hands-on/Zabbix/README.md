@@ -123,7 +123,7 @@ apt clean && apt update
 
 ### • Install Zabbix server, frontend, agent:
 ```
-apt install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
+apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
 ```
 <br/>
 
