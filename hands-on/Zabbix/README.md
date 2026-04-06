@@ -242,6 +242,13 @@ systemctl enable zabbix-server zabbix-agent nginx php8.4-fpm
 
 ### • Open Zabbix UI web page:
 The URL for Zabbix UI when using Nginx depends on the configuration changes you should have made.
+```
+http://<IP-or-FQDN>:8080
+```
+This is the Zabbix welcome screen. Enter the user name Admin with password zabbix to log in as a Zabbix superuser.
+Access to all menu sections will be granted.
+
+For security reasons, it is strongly recommended to change the default password for the Admin account immediately after the first login.
 <br/>
 <br/>
 <br/>
