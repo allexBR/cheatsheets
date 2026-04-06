@@ -31,7 +31,7 @@ apt clean && apt update
 
 ### • Install Nginx repository:
 ```
-apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+apt update && apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring
 ```
 ```
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
@@ -67,7 +67,7 @@ apt clean && apt update
 
 ### • Install MySQL repository:
 ```
-apt install -y wget gnupg
+apt update && apt install -y wget gnupg
 ```
 ```
 wget https://repo.mysql.com//mysql-apt-config_0.8.36-1_all.deb
