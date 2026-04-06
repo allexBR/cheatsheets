@@ -110,11 +110,11 @@ Read in documentation: https://www.zabbix.com/documentation/7.4/en/manual/quicks
 <br/>
 
 > [!NOTE]
-> Data collection methods
-> Zabbix supports multiple data collection protocols:
-> • SNMP polling and traps for network equipment
-> • IPMI for hardware health monitoring (temperature, fan speed, power)
-> • JMX via the Java gateway for JVM metrics
-> • HTTP/HTTPS for web scenario monitoring and REST API polling
-> • SSH and Telnet for agentless checks on remote systems
-> • Calculated and aggregated items for derived metrics
+> Data collection methods<br/>
+> Zabbix supports multiple data collection protocols:<br/>
+> • SNMP polling and traps for network equipment<br/>
+> • IPMI for hardware health monitoring (temperature, fan speed, power)<br/>
+> • JMX via the Java gateway for JVM metrics<br/>
+> • HTTP/HTTPS for web scenario monitoring and REST API polling<br/>
+> • SSH and Telnet for agentless checks on remote systems<br/>
+> • Calculated and aggregated items for derived metrics<br/>
