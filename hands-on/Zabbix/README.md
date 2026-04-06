@@ -75,7 +75,7 @@ wget https://repo.mysql.com//mysql-apt-config_0.8.36-1_all.deb
 ```
 dpkg -i mysql-apt-config_0.8.36-1_all.deb
 ```
-### Fix Missing libaio1 Dependency
+#### Fix Missing libaio1 Dependency
 
 MySQL requires libaio1, which is no longer included in Debian 13.
 We can install it from the Debian 12 (Bookworm) repository:
