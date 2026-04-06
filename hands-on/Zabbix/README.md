@@ -87,6 +87,12 @@ curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 ```
 ```
+mkdir -p /root/.gnupg
+```
+```
+chown root:root /root/.gnupg && chmod 700 /root/.gnupg
+```
+```
 gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
 ```
 The output should contain the full fingerprint 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 as follows:
