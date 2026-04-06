@@ -134,6 +134,9 @@ mysql -uroot -p
 ```
 password
 ```
+> [!NOTE]
+> https://delinea.com/resources/password-generator-it-tool<br/>
+
 ```
 mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
 ```
