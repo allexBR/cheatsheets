@@ -135,7 +135,9 @@ mysql -uroot -p
 password
 ```
 > [!NOTE]
+> Use the Delinea app via the link below to generate strong passwords.<br/>
 > https://delinea.com/resources/password-generator-it-tool<br/>
+<br/>
 
 ```
 mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
