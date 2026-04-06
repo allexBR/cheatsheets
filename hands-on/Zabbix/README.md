@@ -52,10 +52,12 @@ mysql> set global log_bin_trust_function_creators = 1;
 ```
 mysql> quit;
 ```
+<br/>
 > On Zabbix server host import initial schema and data. You will be prompted to enter your newly created password.
 ```
 zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
 ```
+<br/>
 > Disable log_bin_trust_function_creators option after importing database schema.
 ```
 mysql -uroot -p
