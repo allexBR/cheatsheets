@@ -11,11 +11,11 @@
 
 > About: Zabbix is an open-source monitoring platform for networks, servers, virtual machines, and cloud services. It collects metrics via SNMP, IPMI, JMX, and custom agents, then stores the data in a relational database and provides alerting, visualization, and reporting through a web-based frontend.<br/>
 <br/>
-### Server and proxies:
-The Zabbix server collects data from agents and other sources, evaluates trigger conditions, sends alerts, and stores data in a relational database. Supported databases include PostgreSQL, MySQL/MariaDB, Oracle, and TimescaleDB (as a PostgreSQL extension for time-series optimization). For distributed monitoring, Zabbix proxies collect data at remote sites and forward it to the central server, reducing bandwidth and providing local buffering if the connection is interrupted.<br/>
+> ### Server and proxies:
+> The Zabbix server collects data from agents and other sources, evaluates trigger conditions, sends alerts, and stores data in a relational database. Supported databases include PostgreSQL, MySQL/MariaDB, Oracle, and TimescaleDB (as a PostgreSQL extension for time-series optimization). For distributed monitoring, Zabbix proxies collect data at remote sites and forward it to the central server, reducing bandwidth and providing local buffering if the connection is interrupted.<br/>
 <br/>
-### Agents
-The original Zabbix agent (written in C) runs on Linux, Unix, Windows, and macOS, collecting system metrics such as CPU, memory, disk, and network statistics. Agent2 (written in Go) supports the same platforms and adds a plugin system for extending data collection to databases, message queues, and cloud APIs without writing external scripts.<br/>
+> ### Agents:
+> The original Zabbix agent (written in C) runs on Linux, Unix, Windows, and macOS, collecting system metrics such as CPU, memory, disk, and network statistics. Agent2 (written in Go) supports the same platforms and adds a plugin system for extending data collection to databases, message queues, and cloud APIs without writing external scripts.<br/>
 <br/>
 
 ### • Install Zabbix repository:
