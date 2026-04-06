@@ -344,3 +344,41 @@ Read in documentation: https://www.zabbix.com/documentation/7.4/en/manual/quicks
 > • HTTP/HTTPS for web scenario monitoring and REST API polling<br/>
 > • SSH and Telnet for agentless checks on remote systems<br/>
 > • Calculated and aggregated items for derived metrics<br/>
+<br/>
+<br/>
+
+### • Deploy agents:
+Install Zabbix repository on network endpoints.
+```
+cd /tmp
+```
+```
+wget https://repo.zabbix.com/zabbix/7.4/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.4+debian13_all.deb
+```
+```
+dpkg -i zabbix-release_latest_7.4+debian13_all.deb
+```
+```
+apt clean && apt update && apt install -y zabbix-agent
+```
+<br/>
+
+Edit file /etc/zabbix/zabbix_agentd.conf
+```
+##### Passive checks related
+### Option: Server
+Server=192.168.1.1
+
+
+##### Active checks related
+### Option: ServerActive
+ServerActive=192.168.1.1
+
+
+### Option: Hostname
+Hostname=Zabbix_endpoint_name
+```
+```
+systemctl restart zabbix-agent
+```
+<br/>
