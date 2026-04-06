@@ -104,6 +104,7 @@ systemctl enable zabbix-server zabbix-agent nginx php8.4-fpm
 The URL for Zabbix UI when using Nginx depends on the configuration changes you should have made.
 <br/>
 <br/>
+<br/>
 
 ### • Start using Zabbix:
 Read in documentation: https://www.zabbix.com/documentation/7.4/en/manual/quickstart/login
