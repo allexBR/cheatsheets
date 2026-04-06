@@ -93,6 +93,24 @@ apt clean && apt update
 ```
 <br/>
 
+### • Install PHP repository:
+```
+apt update && apt install -y lsb-release ca-certificates curl
+```
+```
+curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+```
+```
+dpkg -i /tmp/debsuryorg-archive-keyring.deb
+```
+```
+sh -c 'echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+```
+```
+apt clean && apt update
+```
+<br/>
+
 ### • Install Zabbix server, frontend, agent:
 ```
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
