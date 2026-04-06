@@ -53,7 +53,7 @@ wget https://deb.debian.org/debian/pool/main/liba/libaio/libaio1_0.3.113-4_amd64
 apt install ./libaio1_0.3.113-4_amd64.deb
 ```
 ```
-apt clean && apt update
+apt clean && apt update && apt install -y mysql-server
 ```
 <br/>
 
