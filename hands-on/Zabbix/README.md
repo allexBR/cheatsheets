@@ -131,9 +131,6 @@ apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-
 ```
 mysql -uroot -p
 ```
-```
-password
-```
 > [!NOTE]
 > Use the Delinea app via the link below to generate strong passwords.<br/>
 > https://delinea.com/resources/password-generator-it-tool<br/>
