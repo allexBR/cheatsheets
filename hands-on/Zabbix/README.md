@@ -348,7 +348,7 @@ Read in documentation: https://www.zabbix.com/documentation/7.4/en/manual/quicks
 <br/>
 
 ### • Deploy agents:
-Install Zabbix repository on network endpoints.
+Install Zabbix repository on Linux endpoints.
 ```
 cd /tmp
 ```
