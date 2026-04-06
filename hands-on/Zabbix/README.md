@@ -248,7 +248,6 @@ The URL for Zabbix UI when using Nginx depends on the configuration changes you 
 ```
 http://<IP-or-FQDN>:8080
 ```
-<br/>
 
 Create a custom configuration file /usr/share/zabbix/ui/conf/zabbix.conf.php with the required parameters.
 ```
@@ -303,8 +302,8 @@ $IMAGE_FORMAT_DEFAULT	= IMAGE_FORMAT_PNG;
 
 // Used for SAML authentication.
 // Uncomment to override the default paths to SP private key, SP and IdP X.509 certificates, and to set extra settings.
-//$SSO['SP_KEY']			= 'conf/certs/sp.key';
-//$SSO['SP_CERT']			= 'conf/certs/sp.crt';
+//$SSO['SP_KEY']		= 'conf/certs/sp.key';
+//$SSO['SP_CERT']		= 'conf/certs/sp.crt';
 //$SSO['IDP_CERT']		= 'conf/certs/idp.crt';
 //$SSO['SETTINGS']		= [];
 
