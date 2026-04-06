@@ -55,6 +55,34 @@ apt clean && apt update
 ```
 <br/>
 
+### • Install MySQL repository:
+```
+apt install -y wget gnupg
+```
+```
+wget https://repo.mysql.com//mysql-apt-config_0.8.36-1_all.deb
+```
+```
+dpkg -i mysql-apt-config_0.8.36-1_all.deb
+```
+Fix Missing libaio1 Dependency
+
+MySQL requires libaio1, which is no longer included in Debian 13.
+We can install it from the Debian 12 (Bookworm) repository:
+```
+cd /tmp
+```
+```
+wget https://deb.debian.org/debian/pool/main/liba/libaio/libaio1_0.3.113-4_amd64.deb
+```
+```
+apt install ./libaio1_0.3.113-4_amd64.deb
+```
+```
+apt clean && apt update
+```
+<br/>
+
 ### • Install Zabbix server, frontend, agent:
 ```
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
