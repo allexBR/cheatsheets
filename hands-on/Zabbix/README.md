@@ -39,13 +39,19 @@ password
 ```
 ```
 mysql> create database zabbix character set utf8mb4 collate utf8mb4_bin;
+```
+```
 mysql> create user zabbix@localhost identified by 'password';
+```
+```
 mysql> grant all privileges on zabbix.* to zabbix@localhost;
+```
+```
 mysql> set global log_bin_trust_function_creators = 1;
+```
+```
 mysql> quit;
 ```
-<br/>
-
 > On Zabbix server host import initial schema and data. You will be prompted to enter your newly created password.
 ```
 zcat /usr/share/zabbix/sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
@@ -59,17 +65,27 @@ password
 ```
 ```
 mysql> set global log_bin_trust_function_creators = 0;
+```
+```
 mysql> quit;
 ```
 <br/>
 
 ### • Configure the database for Zabbix server:
-Edit file /etc/zabbix/zabbix_server.conf
+> Edit file /etc/zabbix/zabbix_server.conf
 ```
 DBPassword=password
 ```
-
 <br/>
+
+### • Configure PHP for Zabbix frontend:
+> Edit file /etc/zabbix/nginx.conf uncomment and set 'listen' and 'server_name' directives.
+```
+# listen 8080;
+# server_name example.com;
+```
+<br/>
+
 <br/>
 <br/>
 
