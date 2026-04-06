@@ -29,6 +29,32 @@ apt clean && apt update
 ```
 <br/>
 
+### • Install Nginx repository:
+```
+apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring
+```
+```
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+```
+```
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+https://nginx.org/packages/debian `lsb_release -cs` nginx" \
+    | tee /etc/apt/sources.list.d/nginx.list
+```
+```
+tee /etc/apt/preferences.d/99nginx <<EOF
+Package: *
+Pin: origin nginx.org
+Pin: release o=nginx
+Pin-Priority: 900
+EOF
+```
+```
+apt clean && apt update
+```
+<br/>
+
 ### • Install Zabbix server, frontend, agent:
 ```
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent
