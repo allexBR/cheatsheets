@@ -244,11 +244,6 @@ systemctl enable zabbix-server zabbix-agent nginx php8.4-fpm
 <br/>
 
 ### • Open Zabbix UI web page:
-The URL for Zabbix UI when using Nginx depends on the configuration changes you should have made.
-```
-http://<IP-or-FQDN>:8080
-```
-
 Create a custom configuration file /usr/share/zabbix/ui/conf/zabbix.conf.php with the required parameters.
 ```
 <?php
@@ -318,6 +313,11 @@ $ZBX_SERVER_TLS['CERTIFICATE_ISSUER']  = '';
 $ZBX_SERVER_TLS['CERTIFICATE_SUBJECT'] = '';
 ```
 <br/>
+
+The URL for Zabbix UI when using Nginx depends on the configuration changes you should have made.
+```
+http://<IP-or-FQDN>:8080
+```
 
 <img width="377" height="420" alt="image" src="https://github.com/user-attachments/assets/0bf0d709-07e6-4b11-91b0-60978a402e62" />
 
