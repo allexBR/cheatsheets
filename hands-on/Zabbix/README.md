@@ -164,11 +164,9 @@ Disable log_bin_trust_function_creators option after importing database schema.
 ```
 mysql -uroot -p
 ```
+mysql>
 ```
-password
-```
-```
-mysql> set global log_bin_trust_function_creators = 0;
+set global log_bin_trust_function_creators = 0;
 ```
 ```
 mysql> quit;
