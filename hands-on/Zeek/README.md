@@ -94,6 +94,12 @@ zeekctl check
 ### • Set the main network interface in promiscuous mode:
 This will allow Zeek to monitor and log events from all endpoints on the LAN.
 ```
+ip link show
+```
+```
+ip link show | grep PROMISC
+```
+```
 nano /etc/network/interfaces
 ```
 ```
@@ -105,6 +111,12 @@ iface enp0s3 inet static
     gateway 192.168.1.1
     # Put interfaces in promiscuous mode
     up ip link set enp0s3 promisc on
+```
+```
+ifdown eth0 && ifup eth0
+```
+```
+ip link show | grep PROMISC
 ```
 <br/>
 
