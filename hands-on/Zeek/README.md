@@ -33,7 +33,7 @@ gpg --dearmor | tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
 
 ### • Update the repository index and install Zeek using the following command:
 ```
-apt clean && apt update && apt install zeek
+apt clean && apt update && apt install -y zeek
 ```
 <br/>
 
