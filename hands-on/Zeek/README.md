@@ -15,6 +15,12 @@
 > Zeek is a passive, open-source network traffic analyzer. Many operators use Zeek as a network security monitor (NSM) to support investigations of suspicious or malicious activity. The first benefit a new user derives from Zeek is the extensive set of logs describing network activity. In addition to the logs, Zeek comes with built-in functionality for a range of analysis and detection tasks, including extracting files from HTTP sessions, detecting malware by interfacing to external registries, reporting vulnerable versions of software seen on the network, identifying popular web applications, detecting SSH brute-forcing, validating SSL certificate chains, and much more.<br/>
 <br/>
 
+### • Install required dependencies:
+```
+apt clean && apt update && apt install -y lsb-release curl gpg python3-websockets
+```
+<br/>
+
 ### • Run the command below to add the Zeek repository:
 ```
 echo 'deb https://download.opensuse.org/repositories/security:/zeek/Debian_13/ /' | tee /etc/apt/sources.list.d/security:zeek.list
@@ -22,9 +28,6 @@ echo 'deb https://download.opensuse.org/repositories/security:/zeek/Debian_13/ /
 <br/>
 
 ### • Download and add the GPG key for the Zeek repository:
-```
-apt install -y lsb-release curl gpg
-```
 ```
 curl -fsSL https://download.opensuse.org/repositories/security:/zeek/Debian_13/Release.key | \
 gpg --dearmor | tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
