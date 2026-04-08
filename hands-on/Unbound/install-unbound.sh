@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 08 17:45:01 UTC 2026
+# Last review date: Wed Apr 08 17:58:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -430,23 +430,9 @@ tee /etc/logrotate.d/unbound <<EOF
 }
 EOF
 
-# Remove default resolv.conf file from the System
-rm -f /etc/resolv.conf
-
-# Create a new resolv.conf file
-tee /etc/resolv.conf <<EOF
-nameserver 127.0.0.1
-nameserver ::1
-EOF
-
-# Read the current permissions of the resolv.conf file and change the attributes
-lsattr /etc/resolv.conf
-chattr -e /etc/resolv.conf
-chattr +i /etc/resolv.conf
-
 # Download sysctl.conf template to increase system performance
 if [ -f /etc/sysctl.conf ]; then
-    cp /etc/sysctl.conf /etc/sysctl.conf.backup
+    mv /etc/sysctl.conf /etc/sysctl.conf.backup
 fi
 wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Debian/sysctl.conf
 
@@ -472,6 +458,20 @@ EOF
 
 # Analyze and debug system manager (used to access special functions useful for advanced system manager debugging)
 systemd-analyze verify /lib/systemd/system/unbound.service || true
+
+# Remove default resolv.conf file from the System
+rm -f /etc/resolv.conf
+
+# Create a new resolv.conf file
+tee /etc/resolv.conf <<EOF
+nameserver 127.0.0.1
+nameserver ::1
+EOF
+
+# Read the current permissions of the resolv.conf file and change the attributes
+lsattr /etc/resolv.conf
+chattr -e /etc/resolv.conf
+chattr +i /etc/resolv.conf
 
 # Reload System daemon
 systemctl daemon-reload
