@@ -11,11 +11,9 @@
 
 > # About:
 > NTPsec is a secure, enhanced, audited, simplified, and modern version of NTP. Derived from David Mills' NTP reference implementation. Supports NTS. It is recommended to be used for both client and server roles. Note that it is not recommended to use the reference implementation available in ntp.org.<br/>
-<br/>
-
+> 
 > NTPsec is a good choice for an NTP server, but for a host that only needs the client role, it is preferable to use Chrony. NTPSec will always open a socket and serve requests on UDP port 123, that is, it will always behave like a server as well. A stateful firewall or a network that uses NAT can prevent requests from reaching the computer. NTPSec does not yet support RFC 9109, that is, all client requests also have UDP port 123 as their source port. That is, the implementation uses UDP port 123 for both the source and destination of packets. This makes firewalls more complex in order to avoid their use as a server, leaving the options of using a stateful firewall, or using static rules that only allow packets destined for UDP port 123 coming from the servers used in the configuration.<br/>
-<br/>
-
+> 
 > For GNU/Linux, FreeBSD, OpenBSD, and other Unix-based systems, use the appropriate installation method for your distribution. Here the example uses apt, used in Linux distributions such as Debian and Ubuntu. There may be alternative methods for installation, so it is recommended to consult the documentation for your distribution or operating system.<br/>
 <br/>
 
