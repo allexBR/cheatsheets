@@ -23,6 +23,9 @@ echo 'deb https://download.opensuse.org/repositories/security:/zeek/Debian_13/ /
 
 ### • Download and add the GPG key for the Zeek repository:
 ```
+apt install -y lsb-release curl gpg
+```
+```
 curl -fsSL https://download.opensuse.org/repositories/security:/zeek/Debian_13/Release.key | \
 gpg --dearmor | tee /etc/apt/trusted.gpg.d/security_zeek.gpg > /dev/null
 ```
