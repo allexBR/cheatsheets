@@ -91,6 +91,23 @@ zeekctl check
 ```
 <br/>
 
+### • Set the main network interface in promiscuous mode:
+This will allow Zeek to monitor and log events from all endpoints on the LAN.
+```
+nano /etc/network/interfaces
+```
+```
+# The primary network interface
+allow-hotplug enp0s3
+iface enp0s3 inet static
+    address 192.168.1.2
+    netmask 255.255.255.0
+    gateway 192.168.1.1
+    # Put interfaces in promiscuous mode
+    up ip link set enp0s3 promisc on
+```
+<br/>
+
 > [!NOTE]
 > Hint: Run the zeekctl "deploy" command to get started.<br/>
 > zeek scripts are ok.
