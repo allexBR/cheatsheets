@@ -1,0 +1,67 @@
+##------------------##
+##  nftables Rules  ##
+##------------------##
+
+
+systemctl status nftables
+
+
+cp /etc/nftables.conf /etc/nftables.conf.backup
+
+
+nano /etc/nftables.conf
+
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter;
+                # Deny all incoming requests
+                policy drop;
+                # Enable loopback
+                iif "lo" accept;
+                # Allow established/related connections (Stateful)
+                ct state established,related accept;
+                # Allow PING from LAN
+                ip saddr 192.168.0.0/24 icmp type echo-request accept;
+                # Allow incoming services
+                ip saddr 192.168.0.0/24 tcp dport 22 accept comment "SSH service";
+                ip saddr 192.168.0.0/24 tcp dport 80 accept comment "HTTP service";
+                ip saddr 192.168.0.0/24 tcp dport 443 accept comment "HTTPS service";
+        }
+        chain forward {
+                type filter hook forward priority filter;
+                policy drop;
+        }
+        chain output {
+                type filter hook output priority filter;
+        }
+}
+
+
+
+nft -f /etc/nftables.conf
+
+
+nft list ruleset
+
+
+systemctl enable nftables
+systemctl restart nftables
+systemctl status nftables
+
+
+
+• Important Note!
+
+# For redirection to work, make sure IP Forwarding is enabled on your Linux system.
+# You can check this with:
+sysctl net.ipv4.ip_forward
+
+# If the value is 0, enable it by editing the /etc/sysctl.conf file and uncommenting the line:
+net.ipv4.ip_forward=1
+
+# Then apply it with:
+sudo sysctl -p
