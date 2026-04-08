@@ -1,5 +1,5 @@
 > [!TIP]
-> # Deploying a NTP server
+> # Deploying a Secure NTP server
 > • Created by allexBR<br/>
 > • Sources: https://ntp.br/guia/linux/
 ---
