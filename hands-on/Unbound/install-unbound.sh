@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 16:01:01 UTC 2026
+# Last review date: Wed Apr 08 17:45:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -68,7 +68,7 @@ apt install -y redis-server
 cp /etc/redis/redis.conf /etc/redis/redis.conf.example
 sed -i '$a \
 \
-# Unbound socket connection \
+# Redis Socket Connection \
 unixsocket /var/run/redis/redis.sock \
 unixsocketperm 707' /etc/redis/redis.conf
 
@@ -247,7 +247,7 @@ server:
         # Logging Options
         use-syslog: no
         logfile: /var/log/unbound/unbound.log
-        verbosity: 0
+        verbosity: 1
         log-queries: yes
         log-replies: yes
         log-tag-queryreply: yes
@@ -256,7 +256,7 @@ server:
         log-time-ascii: yes
 
         # Statistics Options
-        statistics-interval: 86400
+        statistics-interval: 0
         statistics-cumulative: no
         extended-statistics: yes
 
@@ -352,7 +352,7 @@ cachedb:
         backend: redis
         #redis-server-host: 127.0.0.1
         #redis-server-port: 6379
-        #redis-server-password: “<your-redis-password>”
+        #redis-server-password: "<your-redis-password>"
         redis-server-path: "/var/run/redis/redis.sock"
         redis-timeout: 100
         redis-expire-records: no
@@ -444,25 +444,11 @@ lsattr /etc/resolv.conf
 chattr -e /etc/resolv.conf
 chattr +i /etc/resolv.conf
 
-# Increases the system buffer limits to 4MB (4194304 bytes)
-tee -a /etc/sysctl.conf <<EOF
-#############################################################################
-# Unbound & Redis
-#----------------------------------------------------------------------------
-# Unbound: Performance Buffers - Increases the system buffer limits to 4MB
-net.core.rmem_max = 4194304
-net.core.wmem_max = 4194304
-#
-# Unbound: Enable TCP Fast Open - Reduces Network Latency
-net.ipv4.tcp_fastopen=3
-#
-# Redis: Recommended To Use 1 - Removes Redis Log Warning
-# Kernel Virtual Memory Overcommit Mode
-# 0 Heuristic overcommit (Default)
-# 1 Always overcommit, never check
-# 2 Always check, never overcommit
-vm.overcommit_memory=1
-EOF
+# Download sysctl.conf template to increase system performance
+if [ -f /etc/sysctl.conf ]; then
+    cp /etc/sysctl.conf /etc/sysctl.conf.backup
+fi
+wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Debian/sysctl.conf
 
 # Applies changes immediately without needing to restart
 sysctl -p
