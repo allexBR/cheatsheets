@@ -29,23 +29,23 @@ touch /var/lib/ntpsec/ntp.drift
 
 The following recommendation for the configuration file for the NTP client (/etc/ntpsec/ntp.conf):
 ```
-# este é o caminho para o arquivo da base de dados de tz que lista
-# os leap seconds, verifique se na sua distribuição específica
-# ou sistema operacional o local está correto, caso não, ajuste
+# This is the path to the tz database file that lists
+# the leap seconds, check if the location is correct for your specific distribution
+# or operating system, if not, adjust it
 leapfile /usr/share/zoneinfo/leap-seconds.list
 
-# "memoria" para o erro de frequencia do seu relógio
+# "memory" for your clock's frequency error
 driftfile /var/lib/ntpsec/ntp.drift
 
-# caso deseje guardar logs detalhados
-# crie a pasta /var/log/ntpsec/ e descomente as linhas a seguir 
+# If you wish to keep detailed logs
+# Create the folder /var/log/ntpsec/ and uncomment the following lines
 # statsdir /var/log/ntpsec/
 # statistics loopstats peerstats clockstats
 # filegen loopstats file loopstats type day enable
 # filegen peerstats file peerstats type day enable
 # filegen clockstats file clockstats type day enable
 
-# servidores publicos do NTP.br com NTS disponível
+# Public NTP.br servers with NTS available
 server a.st1.ntp.br iburst nts
 server b.st1.ntp.br iburst nts
 server c.st1.ntp.br iburst nts
@@ -55,12 +55,12 @@ server gps.nu.ntp.br iburst nts
 server gps.jd.ntp.br iburst nts
 server gps.ce.ntp.br iburst nts
 
-# caso deseje pode configurar servidores adicionais com NTS, como os da cloudflare e netnod
-# nesse caso basta descomentar as linhas a seguir
+# If you wish, you can configure additional servers with NTS, such as those from Cloudflare and Netnod.
+# In this case, simply uncomment the following lines.
 # server time.cloudflare.com iburst nts
 # server nts.netnod.se iburst nts
 
-# configuracoes de restricao de acesso
+# Access restriction settings
 restrict default kod nomodify nopeer noquery limited
 restrict 127.0.0.1
 restrict ::1
