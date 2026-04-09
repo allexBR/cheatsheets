@@ -19,7 +19,7 @@ server {
 
     access_log  /var/log/nginx/doh.access.log  main;
 
-    ssl_certificate     /etc/ssl/certs/server.crt;
+    ssl_certificate     /etc/ssl/certs/server.pem;
     ssl_certificate_key /etc/ssl/private/server.key;
     #include /etc/nginx/snippets/ssl-params.conf;
 
