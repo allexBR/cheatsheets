@@ -29,6 +29,9 @@ touch /var/lib/ntpsec/ntp.drift
 
 The following recommendation for the configuration file for the NTP client:
 ```
+mv /etc/ntpsec/ntp.conf /etc/ntpsec/ntp.conf.backup
+```
+```
 nano /etc/ntpsec/ntp.conf
 ```
 ```
@@ -111,7 +114,7 @@ It is important to note that in NTPd it was necessary to add the line . It disab
 Note that NTPsec, like the original NTPd, still functions simultaneously as a client and server. In exclusive use as a client, it is important to configure a stateful firewall avoiding its use as a server. Or a static firewall that blocks all incoming packets to UDP port 123, with the exception of those originating from the servers configured in the ntp.conf file.<br/>
 To restart the service you can use the following command, or see the appropriate instructions for your distribution or operating system:
 ```
-service ntpsec restart
+systemctl restart ntpsec
 ```
 <br/>
 
