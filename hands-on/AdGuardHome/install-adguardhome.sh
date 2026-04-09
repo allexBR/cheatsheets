@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sun Mar 22 21:20:01 UTC 2026
+# Last review date: Thu Apr 09 16:50:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -63,7 +63,7 @@ cd "$WORK_DIR" || exit 1
 echo "[+] Operating in the directory: $WORK_DIR"
 
 # Create 'issuer' self-signed private key (Root CA)
-openssl ecparam -name secp384r1 -genkey -out trustedCA.key
+openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed certificate (Root CA)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
@@ -71,28 +71,47 @@ openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
   -out trustedCA.crt
 
 # Create 'client' self-signed private key
-openssl ecparam -name secp384r1 -genkey -out adguard.key
+openssl ecparam -name secp384r1 -genkey -noout -out adguard.key
+
+# Defining required variable
+SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
+
+# Create a temporary configuration file for SAN (Subject Alternative Name) extensions
+cat > adguard.ext << EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = ${SERVER_IP}
+DNS.1 = adguard.home.arpa
+EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key adguard.key \
-  -subj "/CN=AdGuard Home" \
+  -subj "/CN=adguard.home.arpa" \
   -out adguard.csr
 
 # Create 'client' self-signed certificate
 openssl x509 -req -in adguard.csr -CA trustedCA.crt -CAkey trustedCA.key \
-  -CAcreateserial -out adguard.crt -days 3650 -sha384
+  -CAcreateserial -out adguard.crt -days 3650 -sha384 -extfile adguard.ext
 
-# Copy generated files to required path
-cp adguard.crt /etc/ssl/certs/ && cp adguard.key /etc/ssl/private/
+# Create the Chain by combining the server certificate and the Root CA certificate
+cat adguard.crt trustedCA.crt > adguard.pem
 
-# Verify that the files were actually created before changing necessary permissions
-if [ -f /etc/ssl/private/adguard.key ]; then
+# Verify that the files were actually generated and copy them to the required path
+# After that, modify necessary permissions
+if [ -f adguard.crt ]; then
+    cp adguard.pem /etc/ssl/certs/
+    cp adguard.key /etc/ssl/private/
     chmod 640 /etc/ssl/private/adguard.key
     chmod 644 /etc/ssl/certs/adguard.crt
     chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
-    { echo -e "\e[30;48;5;248mCertificates generated successfully!\e[0m"; } 2> /dev/null
+    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
-    echo "[X] Error: OpenSSL failed to generate certificates!"
+    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
 
