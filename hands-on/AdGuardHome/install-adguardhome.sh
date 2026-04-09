@@ -56,27 +56,30 @@ sudo ./AdGuardHome -s install
 #---------------------------------------------------------------------
 
 # Define working directory where cert files will be generated
-mkdir -p /tmp/certs
-cd /tmp/certs
+WORK_DIR="/tmp/certs"
+mkdir -p "$WORK_DIR"
+cd "$WORK_DIR" || exit 1
+
+echo "[+] Operating in the directory: $WORK_DIR"
 
 # Create 'issuer' self-signed private key (Root CA)
-openssl ecparam -name secp384r1 -genkey -out TrustedCA.key
+openssl ecparam -name secp384r1 -genkey -out trustedCA.key
 
 # Create 'issuer' self-signed certificate (Root CA)
-openssl req -x509 -new -nodes -key TrustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
-  -out TrustedCA.crt
+openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
+  -subj "/C=US/ST=CA/L=Berkeley/O=WebSSL Corp/CN=Trusted SSL Intermediate CA" \
+  -out trustedCA.crt
 
 # Create 'client' self-signed private key
 openssl ecparam -name secp384r1 -genkey -out adguard.key
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key adguard.key \
-  -subj "/C=CY/ST=LMS/L=Limassol/CN=AdGuard Home" \
+  -subj "/CN=AdGuard Home" \
   -out adguard.csr
 
 # Create 'client' self-signed certificate
-openssl x509 -req -in adguard.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
+openssl x509 -req -in adguard.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out adguard.crt -days 3650 -sha384
 
 # Copy generated files to required path
