@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 16:44:02 UTC 2026
+# Last review date: Thu Apr 09 16:56:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -75,14 +75,17 @@ openssl req -new -key server.key \
 openssl x509 -req -in server.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out server.crt -days 3650 -sha384 -extfile https.ext
 
+# Create the Chain by combining the server certificate and the Root CA certificate
+cat server.crt trustedCA.crt > server.pem
+
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f server.crt ]; then
-    cp server.crt /etc/ssl/certs/
+    cp server.pem /etc/ssl/certs/
     cp server.key /etc/ssl/private/
     chmod 640 /etc/ssl/private/server.key
-    chmod 644 /etc/ssl/certs/server.crt
-    chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
+    chmod 644 /etc/ssl/certs/server.pem
+    chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
