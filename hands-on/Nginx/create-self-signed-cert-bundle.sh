@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 14:05:01 UTC 2026
+# Last review date: Thu Apr 09 14:09:02 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -54,7 +54,7 @@ SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
 SERVER_HOSTNAME=$(hostname -s)
 
 # Create a temporary configuration file for SAN (Subject Alternative Name) extensions
-cat > webserver.ext << EOF
+cat > https.ext << EOF
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
 keyUsage = digitalSignature, keyEncipherment
@@ -71,21 +71,22 @@ openssl req -new -key server.key \
   -subj "/C=US/ST=MA/L=Cambridge/CN=${SERVER_HOSTNAME}.home.arpa" \
   -out server.csr
 
-# Create 'client' self-signed certificate
+# Create 'client' self-signed certificate (Valid for 10 years)
 openssl x509 -req -in server.csr -CA trustedCA.crt -CAkey trustedCA.key \
-  -CAcreateserial -out server.crt -days 3650 -sha384
+  -CAcreateserial -out server.crt -days 3650 -sha384 -extfile https.ext
 
-# Copy generated files to required path
-cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
+# Verify that the files were actually generated and copy them to the required path
+# After that, modify necessary permissions
+if [ -f server.crt ]; then
+    cp server.crt /etc/ssl/certs/
+    cp server.key /etc/ssl/private/
 
-# Verify that the files were actually created before changing necessary permissions
-if [ -f /etc/ssl/private/server.key ]; then
     chmod 640 /etc/ssl/private/server.key
     chmod 644 /etc/ssl/certs/server.crt
     chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
-    { echo -e "\e[30;48;5;248m >>> Certificates generated successfully!\e[0m"; } 2> /dev/null
+    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
-    echo "[X] Error: OpenSSL failed to generate certificates!"
+    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
 
