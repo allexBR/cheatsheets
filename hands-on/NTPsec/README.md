@@ -86,14 +86,6 @@ server gps.ce.ntp.br iburst nts
 #server time.cloudflare.com iburst nts
 #server nts.netnod.se iburst nts
 
-# pool.ntp.org maps to about 1000 low-stratum NTP servers.  Your server will
-# pick a different set every time it starts up.  Please consider joining the
-# pool: <https://www.pool.ntp.org/join.html>
-#pool 0.debian.pool.ntp.org iburst
-#pool 1.debian.pool.ntp.org iburst
-#pool 2.debian.pool.ntp.org iburst
-#pool 3.debian.pool.ntp.org iburst
-
 # Access control configuration; see /usr/share/doc/ntpsec-doc/html/accopt.html
 # for details.
 #
