@@ -27,7 +27,10 @@ After installing ntp, create the ntp.drift file with the command:
 touch /var/lib/ntpsec/ntp.drift
 ```
 
-The following recommendation for the configuration file for the NTP client (/etc/ntpsec/ntp.conf):
+The following recommendation for the configuration file for the NTP client:
+```
+nano /etc/ntpsec/ntp.conf
+```
 ```
 # This is the path to the tz database file that lists
 # the leap seconds, check if the location is correct for your specific distribution
