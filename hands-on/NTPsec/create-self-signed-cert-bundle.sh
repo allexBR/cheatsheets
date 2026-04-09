@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 12:36:01 UTC 2026
+# Last review date: Thu Apr 09 12:58:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -32,15 +32,14 @@ echo "##############################################################"
 apt clean ; apt update ; apt upgrade -y
 
 # Define working directory where cert files will be generated
-mkdir -p /root/certs
-
 WORK_DIR="/root/certs"
+mkdir -p "$WORK_DIR"
 cd "$WORK_DIR" || exit 1
 
 echo "[+] Operating in the directory: $WORK_DIR"
 
-# Create 'issuer' self-signed private key (Root CA)
-openssl ecparam -name secp384r1 -genkey -out trustedCA.key
+# Create 'issuer' self-signed private key
+openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
@@ -51,8 +50,7 @@ openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
 openssl ecparam -name secp384r1 -genkey -noout -out ntp-server.key
 
 # Defining required variables
-SERVER_IP=$(hostname -I | awk '{print $1}')
-SERVER_DNS="ntp.local"
+SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
 
 # Create a temporary configuration file for SAN (Subject Alternative Name) extensions
 cat > ntp.ext << EOF
@@ -64,7 +62,7 @@ subjectAltName = @alt_names
 
 [alt_names]
 IP.1 = ${SERVER_IP}
-DNS.1 = ${SERVER_DNS}
+DNS.1 = ntp.local
 EOF
 
 # Create 'client' certificate signing request (CSR) file
@@ -83,11 +81,19 @@ cat ntp-server.crt trustedCA.crt > cert-chain.pem
 cp cert-chain.pem /etc/ntpsec/cert-chain.pem && cp ntp-server.key /etc/ntpsec/key.pem
 
 # Verify that the files were actually created before changing necessary permissions
-if [ -f /etc/ntpsec/key.pem ]; then
+if [ -f ntp-server.crt ]; then
+    cp cert-chain.pem /etc/ntpsec/cert-chain.pem
+    cp ntp-server.key /etc/ntpsec/key.pem
+    
     chmod 600 /etc/ntpsec/key.pem
+    chmod 644 /etc/ntpsec/cert-chain.pem
     chown ntpsec:ntpsec /etc/ntpsec/key.pem /etc/ntpsec/cert-chain.pem
-    { echo -e "\e[30;48;5;248m >>> Certificates generated successfully!\e[0m"; } 2> /dev/null
+    # Secure the CA private key in the /root/certs directory
+    chmod 600 "$WORK_DIR/trustedCA.key"
+    
+    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
+    echo -e "\e[33m[!] Remember to distribute the $WORK_DIR/trustedCA.crt file to your network endpoints.\e[0m"
 else
-    echo "[X] Error: OpenSSL failed to generate certificates!"
+    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
