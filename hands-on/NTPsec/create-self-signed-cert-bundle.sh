@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 15:12:01 UTC 2026
+# Last review date: Thu Apr 09 16:23:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -43,7 +43,7 @@ openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
+  -subj "/C=US/ST=CA/L=Berkeley/O=WebSSL Corp/CN=Trusted SSL Intermediate CA" \
   -out trustedCA.crt
 
 # Create 'client' self-signed private key
@@ -67,7 +67,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key ntp-server.key \
-  -subj "/C=BR/ST=CE/L=Fortaleza/CN=ntp.local" \
+  -subj "/CN=ntp.local" \
   -out ntp-server.csr
 
 # Create 'client' self-signed certificate (Valid for 2 and a half years)
