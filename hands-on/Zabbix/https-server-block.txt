@@ -19,7 +19,7 @@ server {
 
         access_log  /var/log/nginx/zabbix.access.log  main;
 
-        ssl_certificate     /etc/ssl/certs/server.crt;
+        ssl_certificate     /etc/ssl/certs/server.pem;
         ssl_certificate_key /etc/ssl/private/server.key;
 
         ssl_protocols TLSv1.2 TLSv1.3;
