@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 13:01:52 UTC 2026
+# Last review date: Thu Apr 09 14:56:02 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -77,10 +77,8 @@ openssl x509 -req -in ntp-server.csr -CA trustedCA.crt -CAkey trustedCA.key \
 # Create the Chain by combining the server certificate and the Root CA certificate
 cat ntp-server.crt trustedCA.crt > cert-chain.pem
 
-# Copy generated files to required path
-cp cert-chain.pem /etc/ntpsec/cert-chain.pem && cp ntp-server.key /etc/ntpsec/key.pem
-
-# Verify that the files were actually created before changing necessary permissions
+# Verify that the files were actually generated and copy them to the required path
+# After that, modify necessary permissions
 if [ -f ntp-server.crt ]; then
     cp cert-chain.pem /etc/ntpsec/cert-chain.pem
     cp ntp-server.key /etc/ntpsec/key.pem
@@ -105,4 +103,9 @@ fi
 # For your clients to accept the NTS connection, you need to copy the trustedCA.crt file (only the public part)
 # to the endpoints and add it to their list of trusted certificates (on Debian/Ubuntu, it is usually placed
 # in /usr/local/share/ca-certificates/ and run update-ca-certificates).
+#
+#
+# scp root@ntp-server-ip:/root/certs/trustedCA.crt /usr/local/share/ca-certificates/nts-ca.crt
+#
+# update-ca-certificates
 #--------------------------------------------------------------------------------------------------------------
