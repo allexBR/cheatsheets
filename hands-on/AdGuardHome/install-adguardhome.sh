@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 16:50:01 UTC 2026
+# Last review date: Thu Apr 09 16:52:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -108,7 +108,7 @@ if [ -f adguard.crt ]; then
     cp adguard.key /etc/ssl/private/
     chmod 640 /etc/ssl/private/adguard.key
     chmod 644 /etc/ssl/certs/adguard.crt
-    chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
+    chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
