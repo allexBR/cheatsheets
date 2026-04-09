@@ -32,23 +32,42 @@ The following recommendation for the configuration file for the NTP client:
 nano /etc/ntpsec/ntp.conf
 ```
 ```
-# This is the path to the tz database file that lists
-# the leap seconds, check if the location is correct for your specific distribution
-# or operating system, if not, adjust it
-leapfile /usr/share/zoneinfo/leap-seconds.list
+# /etc/ntpsec/ntp.conf, configuration for ntpd; see ntp.conf(5) for help
 
 # "memory" for your clock's frequency error
 driftfile /var/lib/ntpsec/ntp.drift
 
-# If you wish to keep detailed logs
-# Create the folder /var/log/ntpsec/ and uncomment the following lines
-# statsdir /var/log/ntpsec/
-# statistics loopstats peerstats clockstats
-# filegen loopstats file loopstats type day enable
-# filegen peerstats file peerstats type day enable
-# filegen clockstats file clockstats type day enable
+# This is the path to the tz database file that lists the leap seconds, 
+# check if the location is correct for your specific distribution or
+# operating system, if not, adjust it
+leapfile /usr/share/zoneinfo/leap-seconds.list
 
-# Public NTP.br servers with NTS available
+# To enable Network Time Security support as a server, obtain a certificate
+# (e.g., with Let's Encrypt), place the cert and key in the paths below, and
+# uncomment:
+# nts cert /etc/ntpsec/cert-chain.pem
+# nts key /etc/ntpsec/key.pem
+# nts enable
+
+# If you wish to keep detailed logs
+# you must create /var/log/ntpsec (owned by ntpsec:ntpsec) to enable logging
+# and uncomment the following lines
+#statsdir /var/log/ntpsec/
+#statistics loopstats peerstats clockstats
+#filegen loopstats file loopstats type day enable
+#filegen peerstats file peerstats type day enable
+#filegen clockstats file clockstats type day enable
+
+# This should be maxclock 7, but the pool entries count towards maxclock.
+tos maxclock 11
+
+# Comment this out if you have a refclock and want it to be able to discipline
+# the clock by itself (e.g. if the system is not connected to the network).
+tos minclock 4 minsane 3
+
+# Specify one or more NTP servers.
+
+# Public NTP servers supporting Network Time Security
 server a.st1.ntp.br iburst nts
 server b.st1.ntp.br iburst nts
 server c.st1.ntp.br iburst nts
@@ -58,13 +77,31 @@ server gps.nu.ntp.br iburst nts
 server gps.jd.ntp.br iburst nts
 server gps.ce.ntp.br iburst nts
 
-# If you wish, you can configure additional servers with NTS, such as those from Cloudflare and Netnod.
+# If you wish, you can configure additional servers with NTS,
+# such as those from Cloudflare and Netnod.
 # In this case, simply uncomment the following lines.
-# server time.cloudflare.com iburst nts
-# server nts.netnod.se iburst nts
+server time.cloudflare.com iburst nts
+server nts.netnod.se iburst nts
 
-# Access restriction settings
-restrict default kod nomodify nopeer noquery limited
+# pool.ntp.org maps to about 1000 low-stratum NTP servers.  Your server will
+# pick a different set every time it starts up.  Please consider joining the
+# pool: <https://www.pool.ntp.org/join.html>
+#pool 0.debian.pool.ntp.org iburst
+#pool 1.debian.pool.ntp.org iburst
+#pool 2.debian.pool.ntp.org iburst
+#pool 3.debian.pool.ntp.org iburst
+
+# Access control configuration; see /usr/share/doc/ntpsec-doc/html/accopt.html
+# for details.
+#
+# Note that "restrict" applies to both servers and clients, so a configuration
+# that might be intended to block requests from certain clients could also end
+# up blocking replies from your own upstream servers.
+
+# By default, exchange time with everybody, but don't allow configuration.
+restrict default kod nomodify noquery limited
+
+# Local users may interrogate the ntp server more closely.
 restrict 127.0.0.1
 restrict ::1
 ```
