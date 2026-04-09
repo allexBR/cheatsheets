@@ -83,8 +83,8 @@ server gps.ce.ntp.br iburst nts
 # If you wish, you can configure additional servers with NTS,
 # such as those from Cloudflare and Netnod.
 # In this case, simply uncomment the following lines.
-server time.cloudflare.com iburst nts
-server nts.netnod.se iburst nts
+#server time.cloudflare.com iburst nts
+#server nts.netnod.se iburst nts
 
 # pool.ntp.org maps to about 1000 low-stratum NTP servers.  Your server will
 # pick a different set every time it starts up.  Please consider joining the
