@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 16:19:02 UTC 2026
+# Last review date: Thu Apr 09 16:44:02 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -32,7 +32,7 @@ echo "##############################################################"
 apt clean ; apt update ; apt upgrade -y
 
 # Define working directory where cert files will be generated
-WORK_DIR="/root/certs"
+WORK_DIR="/tmp/certs"
 mkdir -p "$WORK_DIR"
 cd "$WORK_DIR" || exit 1
 
@@ -80,7 +80,6 @@ openssl x509 -req -in server.csr -CA trustedCA.crt -CAkey trustedCA.key \
 if [ -f server.crt ]; then
     cp server.crt /etc/ssl/certs/
     cp server.key /etc/ssl/private/
-
     chmod 640 /etc/ssl/private/server.key
     chmod 644 /etc/ssl/certs/server.crt
     chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.crt
