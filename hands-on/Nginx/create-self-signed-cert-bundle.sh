@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Mar 24 15:35:01 UTC 2026
+# Last review date: Thu Apr 09 14:05:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -32,31 +32,47 @@ echo "##############################################################"
 apt clean ; apt update ; apt upgrade -y
 
 # Define working directory where cert files will be generated
-mkdir -p /tmp/certs
-
-WORK_DIR="/tmp/certs"
+WORK_DIR="/root/certs"
+mkdir -p "$WORK_DIR"
 cd "$WORK_DIR" || exit 1
 
 echo "[+] Operating in the directory: $WORK_DIR"
 
-# Create 'issuer' self-signed private key (Root CA)
-openssl ecparam -name secp384r1 -genkey -out TrustedCA.key
+# Create 'issuer' self-signed private key
+openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
-# Create 'issuer' self-signed certificate (Root CA)
-openssl req -x509 -new -nodes -key TrustedCA.key -sha384 -days 3650 \
+# Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
+openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
   -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
-  -out TrustedCA.crt
+  -out trustedCA.crt
 
 # Create 'client' self-signed private key
-openssl ecparam -name secp384r1 -genkey -out server.key
+openssl ecparam -name secp384r1 -genkey -noout -out server.key
+
+# Defining required variables
+SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
+SERVER_HOSTNAME=$(hostname -s)
+
+# Create a temporary configuration file for SAN (Subject Alternative Name) extensions
+cat > webserver.ext << EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = ${SERVER_IP}
+DNS.1 = ${SERVER_HOSTNAME}.home.arpa
+EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key server.key \
-  -subj "/C=US/ST=MA/L=Cambridge/CN=WebTrust, Inc." \
+  -subj "/C=US/ST=MA/L=Cambridge/CN=${SERVER_HOSTNAME}.home.arpa" \
   -out server.csr
 
 # Create 'client' self-signed certificate
-openssl x509 -req -in server.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
+openssl x509 -req -in server.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out server.crt -days 3650 -sha384
 
 # Copy generated files to required path
