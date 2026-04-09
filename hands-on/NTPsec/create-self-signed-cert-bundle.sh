@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 12:58:01 UTC 2026
+# Last review date: Thu Apr 09 13:01:52 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -97,3 +97,12 @@ else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
+
+
+#--------------------------------------------------------------------------------------------------------------
+# Important Note!
+#
+# For your clients to accept the NTS connection, you need to copy the trustedCA.crt file (only the public part)
+# to the endpoints and add it to their list of trusted certificates (on Debian/Ubuntu, it is usually placed
+# in /usr/local/share/ca-certificates/ and run update-ca-certificates).
+#--------------------------------------------------------------------------------------------------------------
