@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 10:41:01 UTC 2026
+# Last review date: Fri Apr 10 10:43:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -49,7 +49,7 @@ openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
 # Create 'client' self-signed private key
 openssl ecparam -name secp384r1 -genkey -noout -out ntp-server.key
 
-# Defining required variables
+# Defining required variable
 SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
 
 # Create a temporary configuration file for SAN (Subject Alternative Name) extensions
