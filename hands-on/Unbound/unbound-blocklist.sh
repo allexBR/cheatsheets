@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Mar 26 16:30:58 UTC 2026
+# Last review date: Fri Apr 10 15:12:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Output file path
@@ -91,11 +91,14 @@ done
 echo "server:" > "$OUTPUT"
 
 sed -e 's/127.0.0.1//g' -e 's/0.0.0.0//g' "$TMPFILE" | \
-    tr '[:upper:]' '[:lower:]' | \
-    grep -Eo '([a-z0-9.-]+\.[a-z]{2,})' | \
-    grep -vE '^(localhost|github.com|raw.githubusercontent.com|google.com)$' | \
-    sort -u | \
-    awk '{print "local-zone: \"" $1 "\" always_refuse"}' >> "$OUTPUT"
+tr '[:upper:]' '[:lower:]' | \
+grep -oE '([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}' | \
+grep -vE '^(localhost|github.com|raw.githubusercontent.com|google.com)$' | \
+grep -vE '^\.' | \
+grep -vE '\.(js|css|png|jpg|jpeg|gif|svg|json|map|txt)$' | \
+grep -vE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | \
+sort -u | \
+awk '{print "local-zone: \"" $1 "\" always_refuse"}' >> "$OUTPUT"
 
 # Cleaning up temp files
 rm "$TMPFILE"
