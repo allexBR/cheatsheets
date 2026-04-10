@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 08 17:58:01 UTC 2026
+# Last review date: Fri Apr 10 12:09:15 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -68,8 +68,8 @@ apt install -y redis-server
 cp /etc/redis/redis.conf /etc/redis/redis.conf.example
 sed -i '$a \
 \
-# Redis Socket Connection \
-unixsocket /var/run/redis/redis.sock \
+# Redis Unix Socket \
+unixsocket /run/redis/redis.sock \
 unixsocketperm 707' /etc/redis/redis.conf
 
 systemctl restart redis-server
@@ -118,6 +118,15 @@ apt install -y build-essential \
   protobuf-c-compiler \
   python3-dev \
   swig
+
+# Download sysctl.conf template to increase system performance
+if [ -f /etc/sysctl.conf ]; then
+    mv /etc/sysctl.conf /etc/sysctl.conf.backup
+fi
+wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Debian/sysctl.conf
+
+# Applies changes immediately without needing to restart
+sysctl -p
 
 # Enter in the working directory where the necessary files will be downloaded
 cd /tmp
@@ -353,7 +362,7 @@ cachedb:
         #redis-server-host: 127.0.0.1
         #redis-server-port: 6379
         #redis-server-password: "<your-redis-password>"
-        redis-server-path: "/var/run/redis/redis.sock"
+        redis-server-path: "/run/redis/redis.sock"
         redis-timeout: 100
         redis-expire-records: no
 
@@ -429,15 +438,6 @@ tee /etc/logrotate.d/unbound <<EOF
     endscript
 }
 EOF
-
-# Download sysctl.conf template to increase system performance
-if [ -f /etc/sysctl.conf ]; then
-    mv /etc/sysctl.conf /etc/sysctl.conf.backup
-fi
-wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Debian/sysctl.conf
-
-# Applies changes immediately without needing to restart
-sysctl -p
 
 # Add Unbound as a System service
 tee /lib/systemd/system/unbound.service <<EOF
