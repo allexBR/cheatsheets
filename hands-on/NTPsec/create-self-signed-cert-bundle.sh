@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 16:23:01 UTC 2026
+# Last review date: Fri Apr 10 10:41:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -43,7 +43,7 @@ openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=CA/L=Berkeley/O=WebSSL Corp/CN=Trusted SSL Intermediate CA" \
+  -subj "/C=US/ST=Texas/L=Houston/O=WebSSL Corp/CN=Trusted SSL CA" \
   -out trustedCA.crt
 
 # Create 'client' self-signed private key
@@ -82,13 +82,11 @@ cat ntp-server.crt trustedCA.crt > cert-chain.pem
 if [ -f ntp-server.crt ]; then
     cp cert-chain.pem /etc/ntpsec/cert-chain.pem
     cp ntp-server.key /etc/ntpsec/key.pem
-    
     chmod 600 /etc/ntpsec/key.pem
     chmod 644 /etc/ntpsec/cert-chain.pem
     chown ntpsec:ntpsec /etc/ntpsec/key.pem /etc/ntpsec/cert-chain.pem
     # Secure the CA private key in the /root/certs directory
     chmod 600 "$WORK_DIR/trustedCA.key"
-    
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
     echo -e "\e[33m[!] Remember to distribute the $WORK_DIR/trustedCA.crt file to your network endpoints.\e[0m"
 else
