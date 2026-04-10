@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Thu Mar 26 13:54:01 UTC 2026
+# Last review date: Fri Apr 10 11:01:50 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -72,44 +72,63 @@ sudo ./initialize.sh
 #-------------------------------------------------------------------------
 
 # Define working directory where cert files will be generated
-mkdir -p /tmp/certs
-
 WORK_DIR="/tmp/certs"
+mkdir -p "$WORK_DIR"
 cd "$WORK_DIR" || exit 1
 
 echo "[+] Operating in the directory: $WORK_DIR"
 
-# Create 'issuer' self-signed private key (Root CA)
-openssl ecparam -name secp384r1 -genkey -out TrustedCA.key
+# Create 'issuer' self-signed private key
+openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
-# Create 'issuer' self-signed certificate (Root CA)
-openssl req -x509 -new -nodes -key TrustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=CA/L=Berkeley/CN=Trusted Root CA" \
-  -out TrustedCA.crt
+# Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
+openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
+  -subj "/C=US/ST=Texas/L=Houston/O=WebSSL Corp/CN=Trusted SSL CA" \
+  -out trustedCA.crt
 
 # Create 'client' self-signed private key
-openssl ecparam -name secp384r1 -genkey -out server.key
+openssl ecparam -name secp384r1 -genkey -noout -out intelowl.key
+
+# Defining required variables
+SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
+SERVER_HOSTNAME=$(hostname -s)
+
+# Create a temporary configuration file for SAN (Subject Alternative Name) extensions
+cat > https.ext << EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = ${SERVER_IP}
+DNS.1 = ${SERVER_HOSTNAME}.home.arpa
+EOF
 
 # Create 'client' certificate signing request (CSR) file
-openssl req -new -key server.key \
-  -subj "/C=US/ST=MA/L=Cambridge/CN=WebTrust, Inc." \
-  -out server.csr
+openssl req -new -key intelowl.key \
+  -subj "/CN=WebTrust, Inc." \
+  -out intelowl.csr
 
-# Create 'client' self-signed certificate
-openssl x509 -req -in server.csr -CA TrustedCA.crt -CAkey TrustedCA.key \
-  -CAcreateserial -out server.crt -days 3650 -sha384
+# Create 'client' self-signed certificate (Valid for 10 years)
+openssl x509 -req -in intelowl.csr -CA trustedCA.crt -CAkey trustedCA.key \
+  -CAcreateserial -out intelowl.crt -days 3650 -sha384 -extfile https.ext
 
-# Copy generated files to required path
-cp server.crt /etc/ssl/certs/ && cp server.key /etc/ssl/private/
+# Create the Chain by combining the server certificate and the Root CA certificate
+cat intelowl.crt trustedCA.crt > intelowl.pem
 
-# Verify that the files were actually created before changing necessary permissions
-if [ -f /etc/ssl/private/intelowl.key ]; then
+# Verify that the files were actually generated and copy them to the required path
+# After that, modify necessary permissions
+if [ -f intelowl.crt ]; then
+    cp intelowl.key /etc/ssl/private/
+    cp intelowl.pem /usr/local/share/ca-certificates/
     chmod 600 /etc/ssl/private/intelowl.key
-    chmod 644 /usr/local/share/ca-certificates/intelowl.crt
-    chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.crt
-    { echo -e "\e[30;48;5;248m >>> Certificates generated successfully! <<<\e[0m"; } 2> /dev/null
+    chmod 644 /usr/local/share/ca-certificates/intelowl.pem
+    chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.pem
+    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
-    echo "[X] Error: OpenSSL failed to generate certificates!"
+    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
 
