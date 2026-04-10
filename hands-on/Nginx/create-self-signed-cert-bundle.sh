@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 10:42:01 UTC 2026
+# Last review date: Fri Apr 10 11:43:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -68,7 +68,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key server.key \
-  -subj "/CN=${SERVER_HOSTNAME}.home.arpa" \
+  -subj "/CN=WebTrust, Inc." \
   -out server.csr
 
 # Create 'client' self-signed certificate (Valid for 10 years)
@@ -81,9 +81,9 @@ cat server.crt trustedCA.crt > server.pem
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f server.crt ]; then
-    cp server.pem /etc/ssl/certs/
     cp server.key /etc/ssl/private/
-    chmod 640 /etc/ssl/private/server.key
+    cp server.pem /etc/ssl/certs/
+    chmod 600 /etc/ssl/private/server.key
     chmod 644 /etc/ssl/certs/server.pem
     chown root:root /etc/ssl/private/server.key /etc/ssl/certs/server.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
