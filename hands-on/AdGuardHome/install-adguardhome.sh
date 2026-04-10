@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 09 16:57:09 UTC 2026
+# Last review date: Fri Apr 10 11:49:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -62,12 +62,12 @@ cd "$WORK_DIR" || exit 1
 
 echo "[+] Operating in the directory: $WORK_DIR"
 
-# Create 'issuer' self-signed private key (Root CA)
+# Create 'issuer' self-signed private key
 openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed certificate (Root CA)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=CA/L=Berkeley/O=WebSSL Corp/CN=Trusted SSL Intermediate CA" \
+  -subj "/C=US/ST=Texas/L=Houston/O=WebSSL Corp/CN=Trusted SSL CA" \
   -out trustedCA.crt
 
 # Create 'client' self-signed private key
@@ -91,7 +91,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key adguard.key \
-  -subj "/CN=adguard.home.arpa" \
+  -subj "/CN=Adguard Home" \
   -out adguard.csr
 
 # Create 'client' self-signed certificate
@@ -104,9 +104,9 @@ cat adguard.crt trustedCA.crt > adguard.pem
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f adguard.crt ]; then
-    cp adguard.pem /etc/ssl/certs/
     cp adguard.key /etc/ssl/private/
-    chmod 640 /etc/ssl/private/adguard.key
+    cp adguard.pem /etc/ssl/certs/
+    chmod 600 /etc/ssl/private/adguard.key
     chmod 644 /etc/ssl/certs/adguard.pem
     chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
