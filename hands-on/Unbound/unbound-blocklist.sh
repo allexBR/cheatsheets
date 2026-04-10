@@ -2,8 +2,30 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 15:12:38 UTC 2026
+# Last review date: Fri Apr 10 15:55:28 UTC 2026
 # -----------------------------------------------------------------------------------
+
+# Validating privileges and re-executing as root
+# Check if the script is already running as root (UID 0)
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script requires root privileges!"
+    # Try 'su -' first (Debian default)
+    if command -v su >/dev/null 2>&1; then
+        echo "Enter the root password to continue."
+        exec su -c "bash \"$0\" $*"
+    # If 'su -' fails or doesn't exist, try 'sudo'
+    elif command -v sudo >/dev/null 2>&1; then
+        echo "SUDO: Enter your password to elevate your privileges and continue."
+        exec sudo bash "$0" "$@"
+    else
+        echo "ERROR: It is not possible to elevate privileges."
+        exit 1
+    fi
+fi
+
+echo "###########################################################"
+echo "#  Starting Unbound blocklist generation. Please wait...  #"
+echo "###########################################################"
 
 # Output file path
 OUTPUT="/etc/unbound/conf.d/dnsbl.conf"
@@ -75,20 +97,15 @@ LISTS=(
 
 echo "Starting download and processing..."
 
+TMPFILE=$(mktemp)
+TMP_OUT=$(mktemp)
+
 for URL in "${LISTS[@]}"; do
     echo "Downloading: $URL"
-    # Download and immediately remove lines that begin with # or empty spaces.
-    curl -s "$URL" | grep -v '^#' | grep -v '^\s*$' >> "$TMPFILE"
+    curl -fsSL "$URL" | grep -v '^#' | grep -v '^[[:space:]]*$' >> "$TMPFILE"
 done
 
-# Fine Tuning:
-# - Remove IPs (127.0.0.1, 0.0.0.0) if they exist at the beginning of the line
-# - Convert to lowercase
-# - Remove invalid characters
-# - Remove duplicates
-# - Format for Unbound using 'always_refuse' for better performance
-
-echo "server:" > "$OUTPUT"
+echo "server:" > "$TMP_OUT"
 
 sed -e 's/127.0.0.1//g' -e 's/0.0.0.0//g' "$TMPFILE" | \
 tr '[:upper:]' '[:lower:]' | \
@@ -97,38 +114,19 @@ grep -vE '^(localhost|github.com|raw.githubusercontent.com|google.com)$' | \
 grep -vE '^\.' | \
 grep -vE '\.(js|css|png|jpg|jpeg|gif|svg|json|map|txt)$' | \
 grep -vE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | \
+grep -vE '^[[:space:]]*$' | \
 sort -u | \
-awk '{print "local-zone: \"" $1 "\" always_refuse"}' >> "$OUTPUT"
+awk '{print "local-zone: \"" $1 "\" always_refuse"}' >> "$TMP_OUT"
 
-# Cleaning up temp files
+mv "$TMP_OUT" "$OUTPUT"
 rm "$TMPFILE"
 
-# Unbound syntax validation
 echo "Validating configuration..."
-unbound-checkconf "$OUTPUT" && echo "Success! Blacklist generated in $OUTPUT!" || echo "Error in the generated syntax!"
+unbound-checkconf "$OUTPUT" && echo "Check Configuration: OK!" || echo "Error!"
 
-
-#-------------------------------------------------------------------------------------------------------
-# Clears previous file
-#echo "server:" > "$OUTPUT"
-
-# Download lists, extract domains, remove duplicates
-#TMPFILE=$(mktemp)
-#for URL in "${LISTS[@]}"; do
-#    echo "Downloading: $URL"
-#    curl -s "$URL" >> "$TMPFILE"
-#done
-
-# Process:
-# - Remove comments (#)
-# - Remove IPs (keep only domains)
-# - Extract valid domains
-# - Remove duplicates
-#grep -Eo '([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})' "$TMPFILE" | \
-#    sort -u | \
-#    sed 's/^/local-zone: "/; s/$/" refuse/' >> "$OUTPUT"
-
-# Remove temp file
-#rm "$TMPFILE"
-
-#echo "Blacklist generated in $OUTPUT"
+if [ -f "$OUTPUT" ]; then
+    echo "Fixing permissions..."
+    chown root:unbound "$OUTPUT"
+    chmod 644 "$OUTPUT"
+fi
+echo -e "\e[32m>>> Process completed successfully! <<<\e[0m"
