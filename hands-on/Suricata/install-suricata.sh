@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 19:25:42 UTC 2026
+# Last review date: Sat Apr 11 19:30:12 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -54,6 +54,10 @@ tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-componen
 
 # Remove the compressed file
 rm /tmp/emerging.rules.tar.gz
+
+# Required permissions
+chown -R suricata:suricata /var/lib/suricata/rules/
+chmod -R 640 /var/lib/suricata/rules/*.rules
 
 # Start Suricata using the main network interface
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
