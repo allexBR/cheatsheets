@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 19:34:01 UTC 2026
+# Last review date: Sat Apr 11 20:23:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -55,16 +55,18 @@ tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-componen
 # Remove the compressed file
 rm /tmp/emerging.rules.tar.gz
 
-# Required permissions
-chown -R suricata:suricata /var/lib/suricata/rules/
-chmod -R 640 /var/lib/suricata/rules/*.rules
+# Creates the unified file in the format that Suricata uses
+cat /var/lib/suricata/rules/*.rules > /var/lib/suricata/rules/suricata.rules
+
+# Removes all .rules files EXCEPT suricata.rules
+find /var/lib/suricata/rules/ -type f -name "*.rules" ! -name "suricata.rules" -delete
 
 # Start Suricata using the main network interface
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
 if [ -z "$INTERFACE" ]; then
-    echo "Erro: Não foi possível detectar a interface de rede principal."
+    echo "Error: The main network interface could not be detected!"
     exit 1
 fi
 echo "Starting Suricata on the network interface: $INTERFACE"
-/usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE"
+/usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE" -D
 
