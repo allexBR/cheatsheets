@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 21:09:41 UTC 2026
+# Last review date: Sat Apr 11 21:18:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -47,7 +47,7 @@ apt -y install -t trixie-backports suricata
 systemctl stop suricata                                                                                                        
 
 # Download Suricata ET open rules file
-wget -P /tmp https://rules.emergingthreats.net/open/suricata-7.0.3/emerging.rules.tar.gz
+wget -P /tmp https://rules.emergingthreats.net/open/suricata-8.0.4/emerging.rules.tar.gz
 
 # Extract the rules from downloaded file and copy them to the required path
 tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
