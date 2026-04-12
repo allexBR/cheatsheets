@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 20:23:38 UTC 2026
+# Last review date: Sat Apr 11 21:09:41 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -46,10 +46,10 @@ apt -y install -t trixie-backports suricata
 # Check that the Suricata service is actually down
 systemctl stop suricata                                                                                                        
 
-# Download the community rules file
+# Download Suricata ET open rules file
 wget -P /tmp https://rules.emergingthreats.net/open/suricata-7.0.3/emerging.rules.tar.gz
 
-# Extract the rules from the downloaded file and copy them to the required path
+# Extract the rules from downloaded file and copy them to the required path
 tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
 
 # Remove the compressed file
@@ -68,5 +68,18 @@ if [ -z "$INTERFACE" ]; then
     exit 1
 fi
 echo "Starting Suricata on the network interface: $INTERFACE"
-/usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE" -D
 
+# Performs a backup of the original 'suricata.yaml' file
+cp /etc/suricata/suricata.yaml /etc/suricata/suricata.yaml.bak
+
+# Changes eth0 value in Suricata config file to detected network interface
+sed -i "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
+
+# Start Suricata service
+systemctl enable suricata && systemctl start suricata
+
+#-----------------------------------------------------------------------------
+# Start Suricata (manual mode)
+#INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+#/usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE" -D
+#-----------------------------------------------------------------------------
