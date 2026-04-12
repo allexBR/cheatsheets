@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 21:18:51 UTC 2026
+# Last review date: Sat Apr 11 21:21:41 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -74,6 +74,9 @@ cp /etc/suricata/suricata.yaml /etc/suricata/suricata.yaml.bak
 
 # Changes eth0 value in Suricata config file to detected network interface
 sed -i "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
+
+# Check for rule updates
+suricata-update
 
 # Start Suricata service
 systemctl enable suricata && systemctl start suricata
