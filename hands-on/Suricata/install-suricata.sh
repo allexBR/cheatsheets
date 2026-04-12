@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 21:21:41 UTC 2026
+# Last review date: Sat Apr 11 22:37:08 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -78,11 +78,100 @@ sed -i "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
 # Check for rule updates
 suricata-update
 
-# Start Suricata service
-systemctl enable suricata && systemctl start suricata
+# Reload System daemon
+systemctl daemon-reload
 
-#-----------------------------------------------------------------------------
+# Enable automatic Suricata service startup
+systemctl enable suricata
+
+# Start Suricata service
+systemctl start suricata
+
+# Check Suricata service status
+systemctl status suricata
+
+
+
+#------------------------------------------------------------------------------------
+#---------------------------------IMPORTANT-NOTES------------------------------------
+#
 # Start Suricata (manual mode)
-#INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-#/usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE" -D
-#-----------------------------------------------------------------------------
+# INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+# /usr/bin/suricata -c /etc/suricata/suricata.yaml -i "$INTERFACE" -D
+#
+#
+#
+# Start Suricata in IPS Mode
+#
+# 1. nftables Firewall Rules
+#
+# Create a specific table for Suricata
+#--------------------------------------
+# nft add table inet suricata_ips
+#
+#
+# Add the INPUT and OUTPUT chains
+#---------------------------------
+# nft add chain inet suricata_ips input { type filter hook input priority 0 \; }
+# nft add chain inet suricata_ips forward { type filter hook forward priority 0 \; }
+# nft add chain inet suricata_ips output { type filter hook output priority 0 \; }
+#
+#
+# Sends traffic to NFQUEUE 0
+# With the bypass, if Suricata is not running, the packet goes
+# straight through instead of getting stuck in the queue
+#--------------------------------------------------------------
+# nft add rule inet suricata_ips input queue num 0 bypass
+# nft add rule inet suricata_ips forward queue num 0 bypass
+# nft add rule inet suricata_ips output queue num 0 bypass
+#
+#
+#
+# Applies nftables firewall rules
+#---------------------------------
+# nft -f /etc/nftables.conf
+#
+#
+# cat /etc/nftables.conf
+#
+# table inet suricata_ips {
+#    chain input {
+#        type filter hook input priority 0; policy accept;
+#        queue num 0 bypass
+#    }
+#    chain forward {
+#        type filter hook forward priority 0; policy accept;
+#        queue num 0 bypass
+#    }
+#    chain output {
+#        type filter hook output priority 0; policy accept;
+#        queue num 0 bypass
+#    }
+# }
+#
+#
+#
+# 2. Transforms all alerts into 'drops' in the main rules file
+# sed -i 's/^alert/drop/g' /var/lib/suricata/rules/suricata.rules
+#
+#
+#
+# 3. Start Suricata in q (queue) mode via Systemd
+# systemctl stop suricata
+#
+# mkdir -p /etc/systemd/system/suricata.service.d/
+#
+# cat > /etc/systemd/system/suricata.service.d/ips.conf <<EOF 
+# [Service]
+# Type=simple
+# ExecStart=
+# ExecStart=/usr/bin/suricata -q 0 -c /etc/suricata/suricata.yaml --pidfile /var/run/suricata/suricata.pid
+# EOF
+#
+#
+#
+# 4. Reload Systemd and restart Suricata in IPS mode (-q 0)
+# systemctl daemon-reload
+# systemctl restart suricata
+#
+#------------------------------------------------------------------------------------
