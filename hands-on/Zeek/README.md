@@ -113,7 +113,8 @@ iface enp0s3 inet static
     netmask 255.255.255.0
     gateway 192.168.1.1
     # Put interfaces in promiscuous mode
-    up ip link set enp0s3 promisc on
+    up ip link set $IFACE up
+    up ip link set $IFACE promisc on
 ```
 ```
 ifdown eth0 && ifup eth0
