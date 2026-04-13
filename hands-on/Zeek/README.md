@@ -169,6 +169,7 @@ zeekctl deploy
 > Zeek logs are stored in TSV format by default. Add the following line to the /opt/zeek/share/zeek/site/local.zeek file to generate logs in JSON format:
 
 ```
+# Generate logs in JSON format
 @load policy/tuning/json-logs.zeek
 ```
 <br/>
