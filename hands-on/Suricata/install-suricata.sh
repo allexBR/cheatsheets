@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Mon Apr 13 19:37:41 UTC 2026
+# Last review date: Mon Apr 13 19:38:18 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
