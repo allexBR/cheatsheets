@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Create Unbound DNS Blacklists (DNSBL)
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 15:55:28 UTC 2026
+# Last review date: Mon Apr 13 19:10:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -122,7 +122,7 @@ mv "$TMP_OUT" "$OUTPUT"
 rm "$TMPFILE"
 
 echo "Validating configuration..."
-unbound-checkconf "$OUTPUT" && echo "Check Configuration: OK!" || echo "Error!"
+/usr/sbin/unbound-checkconf "$OUTPUT" && echo "Check Configuration: OK!" || echo "Error!"
 
 if [ -f "$OUTPUT" ]; then
     echo "Fixing permissions..."
