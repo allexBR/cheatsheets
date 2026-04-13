@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Sat Apr 11 22:37:08 UTC 2026
+# Last review date: Mon Apr 13 18:51:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -46,8 +46,18 @@ apt -y install -t trixie-backports suricata
 # Check that the Suricata service is actually down
 systemctl stop suricata                                                                                                        
 
-# Download Suricata ET open rules file
-wget -P /tmp https://rules.emergingthreats.net/open/suricata-8.0.4/emerging.rules.tar.gz
+# Capture the output of Suricata version
+SURICATA_VER=$(/usr/bin/suricata -V 2>&1 | grep -oP '\d+\.\d+\.\d+')
+
+# Checks if the variable is not empty
+if [ -z "$SURICATA_VER" ]; then
+    echo "[-] Error: Suricata not found or version not identified."
+    exit 1
+fi
+echo "[+] Version detected: $SURICATA_VER"
+
+# Performs download using the currently installed version of Suricata
+wget -P /tmp https://rules.emergingthreats.net/open/suricata-${SURICATA_VER}/emerging.rules.tar.gz
 
 # Extract the rules from downloaded file and copy them to the required path
 tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
@@ -55,11 +65,8 @@ tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-componen
 # Remove the compressed file
 rm /tmp/emerging.rules.tar.gz
 
-# Creates the unified file in the format that Suricata uses
-cat /var/lib/suricata/rules/*.rules > /var/lib/suricata/rules/suricata.rules
-
-# Removes all .rules files EXCEPT suricata.rules
-find /var/lib/suricata/rules/ -type f -name "*.rules" ! -name "suricata.rules" -delete
+# Adjusts read permissions for Suricata downloaded rules
+find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} +
 
 # Start Suricata using the main network interface
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
@@ -69,11 +76,11 @@ if [ -z "$INTERFACE" ]; then
 fi
 echo "Starting Suricata on the network interface: $INTERFACE"
 
-# Performs a backup of the original 'suricata.yaml' file
-cp /etc/suricata/suricata.yaml /etc/suricata/suricata.yaml.bak
-
-# Changes eth0 value in Suricata config file to detected network interface
-sed -i "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
+# Performs a copy of the suricata.yaml original file and apply the changes
+# Changes eth0 default value to detected network interface
+sed -i.bak "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
+# Changes rule-files default value (suricata.rules) to "*.rules"
+sed -i 's/- \*\.rules/- "*.rules"/' /etc/suricata/suricata.yaml
 
 # Check for rule updates
 suricata-update
