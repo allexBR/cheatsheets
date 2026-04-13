@@ -14,7 +14,8 @@ iface eth0 inet static
     netmask 255.255.255.0
     gateway 192.168.1.1
     # Put interfaces in promiscuous mode
-    up ip link set eth0 promisc on
+    up ip link set $IFACE up
+    up ip link set $IFACE promisc on
 
 #auto eth0:1
 #iface eth0:1 inet static
