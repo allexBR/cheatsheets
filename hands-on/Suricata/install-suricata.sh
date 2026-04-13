@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Mon Apr 13 18:51:01 UTC 2026
+# Last review date: Mon Apr 13 18:53:41 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -108,7 +108,7 @@ systemctl status suricata
 #
 #
 #
-# Start Suricata in IPS Mode
+# Start Suricata in HIPS Mode
 #
 # 1. nftables Firewall Rules
 #
