@@ -88,6 +88,20 @@ interface=eth0
 ```
 <br/>
 
+### • Edit the /opt/zeek/share/zeek/site/local-networks.zeek file and add the follow subnets:
+> The following file should be created during Zeek installation. However, it may be blank, without any default settings.
+> The content of the file will look similar to this:
+```
+cat > /opt/zeek/share/zeek/site/local-networks.zeek <<EOF
+redef Site::local_nets = {
+    192.168.0.0/16,
+    172.16.0.0/12,
+    10.0.0.0/8
+};
+EOF
+```
+<br/>
+
 ### • Run the following command to verify your Zeek syntax:
 ```
 zeekctl check
