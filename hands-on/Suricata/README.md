@@ -21,6 +21,9 @@
 > • Monitor a network infrastructure via SNMP<br/>
 >
 > The main difference between ntopng and a traffic collector, is that ntopng not only reports traffic statistics but it also analizes the traffic, draws conclusions on observed traffic type and reports cybersecurity metrics.<br/>
+>
+> <img width="1577" height="1086" alt="image" src="https://github.com/user-attachments/assets/3fd57fa0-c9c5-453e-a831-74c128697529" />
+
 <br/>
 
 > [!IMPORTANT]
