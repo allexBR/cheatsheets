@@ -190,5 +190,3 @@ zeekctl deploy
 <img width="885" height="597" alt="image" src="https://github.com/user-attachments/assets/5400e532-827b-4876-96c2-b561f8d898ab" />
 
 <br/>
-<br/>
-
