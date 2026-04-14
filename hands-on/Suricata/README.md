@@ -13,7 +13,8 @@
 
 > # About:
 > ntopng® is a free software for monitoring traffic on a computer network. Is a web-based network traffic monitoring application released under GPLv3. It is the new incarnation of the original ntop written in 1998, and now revamped in terms of performance, usability, and features.<br/>
-> ntopng is able to:<br/>
+>
+> ntopng® is able to:<br/>
 > • Passive monitor traffic by passively capturing network traffic<br/>
 > • Collect network flows (NetFlow, sFlow and IPFIX)<br/>
 > • Actively monitor selected network devices<br/>
