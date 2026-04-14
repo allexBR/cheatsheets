@@ -27,8 +27,8 @@
 <br/>
 
 > [!IMPORTANT]
-> ### Nginx installation is required:
-> Install Nginx using the following command:
+> Before installing the ntop repository make sure to edit /etc/apt/sources.list
+> and add 'contrib' at the end of each line that begins with 'deb' and 'deb-src'.
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
 ```
