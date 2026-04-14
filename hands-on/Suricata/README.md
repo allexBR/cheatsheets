@@ -25,6 +25,7 @@
 > <img width="1577" height="1086" alt="image" src="https://github.com/user-attachments/assets/3fd57fa0-c9c5-453e-a831-74c128697529" />
 
 <br/>
+<br/>
 
 > [!IMPORTANT]
 > Before installing the ntop repository make sure to edit /etc/apt/sources.list
@@ -32,7 +33,7 @@
 > 
 <br/>
 
-### • Add ntop repository
+### • Add ntop repository:
 ```
 cd /tmp && wget https://packages.ntop.org/apt-stable/trixie/all/apt-ntop-stable.deb
 ```
@@ -41,7 +42,7 @@ apt install ./apt-ntop-stable.deb
 ```
 <br/>
 
-### • Add Redis repository
+### • Add Redis repository:
 ```
 apt install -y lsb-release curl gpg
 ```
@@ -56,15 +57,56 @@ apt update
 ```
 <br/>
 
-### • Install ntopng and required packages
-> Once the ntop repository has been added, you can run the following commands (as root) to install ntop packages
+### • Install ntopng and required packages:
+> Once the ntop repository has been added, you can run the following commands (as root) to install ntop packages.
 ```
 apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cento ntap
 ```
 <br/>
 
-### • Download and Compile ModSecurity v3 Nginx Connector (compilation as a dynamic module):
-> Download the source code corresponding to the installed version of NGINX (the complete sources are required even though only the dynamic module is being compiled).
+### • Configure Ntopng to use the main network interface:
 ```
-git clone --depth 1 https://github.com/owasp-modsecurity/ModSecurity-nginx.git
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+
+echo "Starting Ntopng on the network interface: $INTERFACE"
 ```
+<br/>
+
+### • Create a syslog interface in ntopng.conf file:
+> Performs a copy of the ntopng.yaml original file and apply the changes.
+```
+sed -i.bak \
+    -e "/^-i=eth1/s/^/#/; /^-i=eth2/s/^/#/" \
+    -e "/^#-i=eth2/a\-i=syslog:\/\/127.0.0.1:5140\n-i=$INTERFACE" \
+    /etc/ntopng/ntopng.conf
+```
+<br/>
+
+### • Changes default values (filetype and facility) in suricata.yaml:
+```
+sed -i \
+    -e "/eve-log:/,/filetype:/ s/filetype: regular/filetype: syslog/" \
+    -e "/eve-log:/,/facility:/ s/^[[:space:]]*#[[:space:]]*facility: local5/      facility: local0/" \
+    /etc/suricata/suricata.yaml
+```
+<br/>
+
+### • Rsyslog:
+```
+aapt install -y rsyslog
+```
+```
+cat > /etc/rsyslog.d/99-suricata.conf <<EOF
+if (\$syslogfacility-text == "local0") then {
+    action(type="omfwd"
+           target="127.0.0.1"
+           port="5140"
+           protocol="tcp"
+           action.resumeRetryCount="100"
+           queue.type="linkedList"
+           queue.size="10000")
+    stop
+}
+EOF
+```
+<br/>
