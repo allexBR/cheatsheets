@@ -29,18 +29,19 @@
 > [!IMPORTANT]
 > Before installing the ntop repository make sure to edit /etc/apt/sources.list
 > and add 'contrib' at the end of each line that begins with 'deb' and 'deb-src'.
+> 
+<br/>
+
+### • Add ntop repository
 ```
-wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
+cd /tmp && wget https://packages.ntop.org/apt-stable/trixie/all/apt-ntop-stable.deb
 ```
 ```
-chmod +x install-nginx.sh
-```
-```
-bash install-nginx.sh
+apt install ./apt-ntop-stable.deb
 ```
 <br/>
 
-### • Install required libraries and packages:
+### • Add Redis repository
 > Before starting the compilation process, make sure that you have all the dependencies in place.
 ```
 apt install -y apt-utils \
