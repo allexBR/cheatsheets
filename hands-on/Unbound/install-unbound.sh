@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 12:09:15 UTC 2026
+# Last review date: Mon Apr 13 22:05:45 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -70,7 +70,7 @@ sed -i '$a \
 \
 # Redis Unix Socket \
 unixsocket /run/redis/redis.sock \
-unixsocketperm 707' /etc/redis/redis.conf
+unixsocketperm 700' /etc/redis/redis.conf
 
 systemctl restart redis-server
 
@@ -128,17 +128,19 @@ wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/m
 # Applies changes immediately without needing to restart
 sysctl -p
 
-# Enter in the working directory where the necessary files will be downloaded
-cd /tmp
-
 # Download Unbound (latest stable release) source code
-wget https://nlnetlabs.nl/downloads/unbound/unbound-latest.tar.gz
+wget -P /tmp https://nlnetlabs.nl/downloads/unbound/unbound-latest.tar.gz || \
+    { echo "[ERROR] Failed to download Unbound source code."; exit 1; }
 
 # Extract Unbound source code
-tar xzf unbound-*.tar.gz
+tar xzf unbound-latest.tar.gz
+
+# Captures the name of the extracted folder
+UNBOUND_DIR=$(tar -tf unbound-latest.tar.gz | head -1 | cut -f1 -d"/")
 
 # Enter in the directory extracted from the compressed file
-cd unbound-1*
+cd "$UNBOUND_DIR" || \
+    { echo "[ERROR] Failed to enter directory $UNBOUND_DIR"; exit 1; }
 
 # Configure the parameters to start the compilation
 ./configure -q \
@@ -186,8 +188,7 @@ make install
 ldconfig
 
 # Create Unbound log file
-mkdir -p /var/log/unbound
-touch /var/log/unbound/unbound.log
+mkdir -p /var/log/unbound && touch /var/log/unbound/unbound.log
 
 # Configure permissions for the Unbound log file
 chown -R unbound:unbound /var/log/unbound/ && chmod 664 /var/log/unbound/unbound.log
