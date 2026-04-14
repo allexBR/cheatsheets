@@ -3,7 +3,7 @@
 # Launch Zeek Network Security Monitor via Systemd on Debian Server
 # Created by allexBR | https://github.com/allexBR
 # Source: https://github.com/awelzel/zeekctl-systemd
-# Last review date: Mon Apr 13 21:38:42 UTC 2026
+# Last review date: Mon Apr 13 21:40:02 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -83,10 +83,10 @@ ls -ahl /usr/lib/systemd/system/zeek-*
 ls -ahl /etc/systemd/system/zeek.target.wants/
 ls -ahl /etc/systemd/system/zeek-*@*.d/*
 
-# Reloads the systemd daemon to recognize new files.
+# Reloads the systemd daemon to recognize new files
 systemctl daemon-reload
 
-# Start the Zeek cluster (zeekctl start) would work too.
+# Start the Zeek cluster (zeekctl start) would work too
 systemctl start zeek.target
 
 # Status the Zeek cluster
