@@ -42,60 +42,24 @@ apt install ./apt-ntop-stable.deb
 <br/>
 
 ### • Add Redis repository
-> Before starting the compilation process, make sure that you have all the dependencies in place.
 ```
-apt install -y apt-utils \
-autoconf \
-automake \
-build-essential \
-git \
-libcurl4-openssl-dev \
-libgd-dev
-libgeoip-dev \
-liblmdb-dev \
-libpcre2-dev \
-libpcre3-dev \
-libssl-dev \
-libtool \
-libxml2-dev \
-libxslt1-dev \
-libyajl-dev \
-pkgconf \
-zlib1g-dev
+apt install -y lsb-release curl gpg
+```
+```
+curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+```
+```
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
+```
+```
+apt update
 ```
 <br/>
 
-### • Download and Compile ModSecurity v3
->Please note that if you are working with git, don't forget to initialize and update the submodules. Here's a quick how-to:
+### • Install ntopng and required packages
+> Once the ntop repository has been added, you can run the following commands (as root) to install ntop packages
 ```
-cd /tmp
-```
-```
-git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
-```
-```
-cd ModSecurity/
-```
-```
-git submodule init
-```
-```
-git submodule update
-```
-```
-./build.sh
-```
-```
-./configure
-```
-```
-make
-```
-```
-make install
-```
-```
-cd ..
+apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cento ntap
 ```
 <br/>
 
