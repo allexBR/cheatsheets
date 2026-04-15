@@ -89,6 +89,18 @@ echo "$INTERFACE"
 ```
 <br/>
 
+### • Grant that ntopng is running in Community Edition version:
+```
+sed -i '1i --community\n' /etc/ntopng/ntopng.conf
+```
+```
+systemctl restart ntopng
+```
+```
+systemctl status ntopng
+```
+<br/>
+
 ### • Create a syslog interface in ntopng.conf file:
 > Performs a copy of the ntopng.yaml original file and apply the changes.
 ```
@@ -143,3 +155,36 @@ systemctl restart rsyslog ntopng suricata
 rsyslogd -N1
 ```
 <br/>
+
+### • Configure HTTPS in ntopng:
+> The certificate should be installed under the ntopng share directory, usually located at /usr/share/ntopng or at /usr/local/share/ntopng.
+> The next instructions assume it’s located at /usr/share/ntopng/httpdocs/ssl (default path).
+```
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/ntopng-https.sh
+```
+```
+chmod +x ntopng-https.sh
+```
+```
+bash ntopng-https.sh
+```
+<br/>
+
+### • Add support for port 443/HTTPS to the ntopng config file:
+```
+sed -i '/-w=/a --http-port=0\n--https-port=443' /etc/ntopng/ntopng.conf
+```
+<br/>
+
+### • Check if the TLS/SSL certificate is OK:
+```
+openssl ec -in /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem -check
+```
+<br/>
+
+### • Restart ntopng again to apply all the changes made:
+```
+systemctl restart ntopng
+```
+<br/>
+
