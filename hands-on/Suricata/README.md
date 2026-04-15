@@ -12,8 +12,8 @@
 <br/>
 
 > [!WARNING]
-> To proceed with the steps below, will need to install Suricata first!
-> To do this, use the automated installation script available in this repository!
+> To proceed with the steps below, will need to install Suricata first!<br/>
+> To do this, use the automated installation script available in this repository!<br/>
 <br/>
 <br/>
 
