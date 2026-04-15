@@ -131,3 +131,9 @@ if (\$syslogfacility-text == "local0") then {
 EOF
 ```
 <br/>
+
+### • Restart the applications after configuration:
+```
+systemctl restart rsyslog ntopng suricata
+```
+<br/>
