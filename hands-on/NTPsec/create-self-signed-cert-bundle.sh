@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for NTPsec
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 10:43:01 UTC 2026
+# Last review date: Wed Apr 15 15:37:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -75,7 +75,7 @@ openssl x509 -req -in ntp-server.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out ntp-server.crt -days 910 -sha384 -extfile ntp.ext
 
 # Create the Chain by combining the server certificate and the Root CA certificate
-cat ntp-server.crt trustedCA.crt > cert-chain.pem
+cat ntp-server.key ntp-server.crt trustedCA.crt > cert-chain.pem
 
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
