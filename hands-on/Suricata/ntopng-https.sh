@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for ntopng
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 15 15:27:06 UTC 2026
+# Last review date: Wed Apr 15 17:56:22 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -63,7 +63,7 @@ subjectAltName = @alt_names
 
 [alt_names]
 IP.1 = ${SERVER_IP}
-DNS.1 = ntopng.home.arpa
+DNS.1 = ntopng.local
 EOF
 
 # Create 'client' certificate signing request (CSR) file
@@ -76,14 +76,14 @@ openssl x509 -req -in ntopng.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out ntopng.crt -days 3650 -sha384 -extfile https.ext
 
 # Create the Chain by combining the server certificate and the Root CA certificate
-cat ntopng.key ntopng.crt trustedCA.crt > /etc/ntopng/ntopng.pem
+cat ntopng.key ntopng.crt trustedCA.crt > ntopng-cert.pem
 
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
-if [ -f ntopng.crt ]; then
-    cp ntopng.pem /etc/ntopng/
-    chmod 400 /etc/ntopng/ntopng.pem
-    chown ntopng /etc/ntopng/ntopng.pem
+if [ -f ntopng-cert.pem ]; then
+    cp ntopng-cert.pem /usr/share/ntopng/httpdocs/ssl/
+    chmod 600 /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem
+    chown root:root /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
