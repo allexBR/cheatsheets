@@ -53,7 +53,7 @@ bash install-suricata.sh
 cd /tmp && wget https://packages.ntop.org/apt-stable/trixie/all/apt-ntop-stable.deb
 ```
 ```
-apt install ./apt-ntop-stable.deb
+apt install -y ./apt-ntop-stable.deb
 ```
 <br/>
 
