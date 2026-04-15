@@ -113,7 +113,7 @@ sed -i \
 > The log producer should be configured to send logs to that endpoint.In some cases (e.g. an IDS running on the same host)<br/>
 > a syslog client like rsyslog should be installed and configured to export logs to ntopng.
 ```
-aapt install -y rsyslog
+apt update && apt install -y rsyslog
 ```
 ```
 cat > /etc/rsyslog.d/99-remote.conf <<EOF
