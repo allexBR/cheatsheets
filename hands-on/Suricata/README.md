@@ -59,7 +59,7 @@ apt install -y ./apt-ntop-stable.deb
 
 ### • Add Redis repository:
 ```
-apt install -y lsb-release curl gpg
+apt update && apt install -y lsb-release curl gpg
 ```
 ```
 curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
