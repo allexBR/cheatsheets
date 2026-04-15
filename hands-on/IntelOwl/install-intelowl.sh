@@ -4,7 +4,7 @@
 # Created by allexBR | https://github.com/allexBR
 # Sources: https://intelowlproject.github.io/
 #          https://github.com/intelowlproject/IntelOwl
-# Last review date: Fri Apr 10 11:01:50 UTC 2026
+# Last review date: Wed Apr 15 15:43:30 UTC 2026
 # -----------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -115,17 +115,14 @@ openssl req -new -key intelowl.key \
 openssl x509 -req -in intelowl.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out intelowl.crt -days 3650 -sha384 -extfile https.ext
 
-# Create the Chain by combining the server certificate and the Root CA certificate
-cat intelowl.crt trustedCA.crt > intelowl.pem
-
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f intelowl.crt ]; then
     cp intelowl.key /etc/ssl/private/
-    cp intelowl.pem /usr/local/share/ca-certificates/
+    cp intelowl.crt /usr/local/share/ca-certificates/
     chmod 600 /etc/ssl/private/intelowl.key
-    chmod 644 /usr/local/share/ca-certificates/intelowl.pem
-    chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.pem
+    chmod 644 /usr/local/share/ca-certificates/intelowl.crt
+    chown root:root /etc/ssl/private/intelowl.key /usr/local/share/ca-certificates/intelowl.crt
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
