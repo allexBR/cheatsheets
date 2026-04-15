@@ -27,7 +27,7 @@ bash install-suricata.sh
 <br/>
 
 > # About:
-> ntopng® is a free software for monitoring traffic on a computer network. Is a web-based network traffic monitoring application released under GPLv3. It is the new incarnation of the original ntop written in 1998, and now revamped in terms of performance, usability, and features.<br/>
+> The ntopng® is a free software for monitoring traffic on a computer network. Is a web-based network traffic monitoring application released under GPLv3. It is the new incarnation of the original ntop written in 1998, and now revamped in terms of performance, usability, and features.<br/>
 >
 > ntopng is able to:<br/>
 > • Passive monitor traffic by passively capturing network traffic<br/>
@@ -43,7 +43,7 @@ bash install-suricata.sh
 <br/>
 
 > [!IMPORTANT]
-> Before installing the ntop repository make sure to edit /etc/apt/sources.list
+> Before installing the ntop repository make sure to edit /etc/apt/sources.list<br/>
 > and add 'contrib' (without quotation marks '') at the end of each line that begins with 'deb' and 'deb-src'.
 > 
 <br/>
