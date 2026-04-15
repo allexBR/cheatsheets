@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 15 13:09:16 UTC 2026
+# Last review date: Wed Apr 15 13:11:46 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -63,7 +63,7 @@ subjectAltName = @alt_names
 
 [alt_names]
 IP.1 = ${SERVER_IP}
-DNS.1 = ${SERVER_HOSTNAME}.home.arpa
+DNS.1 = ntopng.home.arpa
 EOF
 
 # Create 'client' certificate signing request (CSR) file
