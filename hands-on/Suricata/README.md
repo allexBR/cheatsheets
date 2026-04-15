@@ -74,7 +74,9 @@ apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cen
 ### • Configure ntopng to use the main network interface:
 ```
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-echo "The ntopng will be configured on the network interface: $INTERFACE"
+```
+```
+echo "$INTERFACE"
 ```
 <br/>
 
