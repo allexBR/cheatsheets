@@ -70,10 +70,9 @@ apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cen
 ```
 <br/>
 
-### • Configure Ntopng to use the main network interface:
+### • Configure ntopng to use the main network interface:
 ```
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-
 echo "Starting Ntopng on the network interface: $INTERFACE"
 ```
 <br/>
@@ -97,12 +96,16 @@ sed -i \
 ```
 <br/>
 
-### • Rsyslog:
+### • Install Rsyslog and configure it to forward Suricata logs:
+> ntopng already includes a daemon able to listen for syslog logs on TCP or UDP at one (or more) configured endpoint.<br/>
+> The log producer should be configured to send logs to that endpoint.In some cases (e.g. an IDS running on the same host)<br/>
+> a syslog client like rsyslog should be installed and configured to export logs to ntopng.
 ```
 aapt install -y rsyslog
 ```
 ```
-cat > /etc/rsyslog.d/99-suricata.conf <<EOF
+cat > /etc/rsyslog.d/99-remote.conf <<EOF
+# Send Suricata alerts to ntopng
 if (\$syslogfacility-text == "local0") then {
     action(type="omfwd"
            target="127.0.0.1"
