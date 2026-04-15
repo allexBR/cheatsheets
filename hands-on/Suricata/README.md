@@ -11,7 +11,7 @@
 ### # INSTRUCTIONS FOR DEPLOY SURICATA + NTOPNG
 <br/>
 
-> [!ATTENTION]
+> [!WARNING]
 > To proceed with the steps below, will need to install Suricata first!
 > To do this, use the automated installation script available in this repository!
 <br/>
