@@ -137,3 +137,9 @@ EOF
 systemctl restart rsyslog ntopng suricata
 ```
 <br/>
+
+### • Validate Rsyslog settings:
+```
+rsyslogd -N1
+```
+<br/>
