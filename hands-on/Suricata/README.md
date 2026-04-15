@@ -20,7 +20,7 @@
 > # About:
 > ntopng® is a free software for monitoring traffic on a computer network. Is a web-based network traffic monitoring application released under GPLv3. It is the new incarnation of the original ntop written in 1998, and now revamped in terms of performance, usability, and features.<br/>
 >
-> ntopng® is able to:<br/>
+> ntopng is able to:<br/>
 > • Passive monitor traffic by passively capturing network traffic<br/>
 > • Collect network flows (NetFlow, sFlow and IPFIX)<br/>
 > • Actively monitor selected network devices<br/>
@@ -73,7 +73,7 @@ apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cen
 ### • Configure ntopng to use the main network interface:
 ```
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-echo "Starting Ntopng on the network interface: $INTERFACE"
+echo "The ntopng will be configured on the network interface: $INTERFACE"
 ```
 <br/>
 
@@ -97,7 +97,7 @@ sed -i \
 <br/>
 
 ### • Install Rsyslog and configure it to forward Suricata logs:
-> ntopng already includes a daemon able to listen for syslog logs on TCP or UDP at one (or more) configured endpoint.<br/>
+> The ntopng already includes a daemon able to listen for syslog logs on TCP or UDP at one (or more) configured endpoint.<br/>
 > The log producer should be configured to send logs to that endpoint.In some cases (e.g. an IDS running on the same host)<br/>
 > a syslog client like rsyslog should be installed and configured to export logs to ntopng.
 ```
