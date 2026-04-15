@@ -80,15 +80,6 @@ apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cen
 ```
 <br/>
 
-### • Configure ntopng to use the main network interface:
-```
-INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-```
-```
-echo "$INTERFACE"
-```
-<br/>
-
 ### • Grant that ntopng is running in Community Edition version:
 ```
 sed -i '1i --community\n' /etc/ntopng/ntopng.conf
@@ -98,6 +89,16 @@ systemctl restart ntopng
 ```
 ```
 systemctl status ntopng
+```
+<br/>
+
+### • Configure ntopng to use the main network interface:
+> INTERFACE variable declaration is required for automatic configuration of the default network interface in the following steps.
+```
+INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
+```
+```
+echo "$INTERFACE"
 ```
 <br/>
 
