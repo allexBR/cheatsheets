@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing AdGuard Home on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Fri Apr 10 11:49:01 UTC 2026
+# Last review date: Wed Apr 15 15:45:51 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -99,16 +99,16 @@ openssl x509 -req -in adguard.csr -CA trustedCA.crt -CAkey trustedCA.key \
   -CAcreateserial -out adguard.crt -days 3650 -sha384 -extfile adguard.ext
 
 # Create the Chain by combining the server certificate and the Root CA certificate
-cat adguard.crt trustedCA.crt > adguard.pem
+#cat adguard.key adguard.crt trustedCA.crt > adguard.pem
 
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f adguard.crt ]; then
     cp adguard.key /etc/ssl/private/
-    cp adguard.pem /etc/ssl/certs/
+    cp adguard.crt /etc/ssl/certs/
     chmod 600 /etc/ssl/private/adguard.key
-    chmod 644 /etc/ssl/certs/adguard.pem
-    chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.pem
+    chmod 644 /etc/ssl/certs/adguard.crt
+    chown root:root /etc/ssl/private/adguard.key /etc/ssl/certs/adguard.crt
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
