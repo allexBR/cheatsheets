@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for ntopng
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 16 10:51:08 UTC 2026
+# Last review date: Thu Apr 16 14:12:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
