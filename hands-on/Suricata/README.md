@@ -211,7 +211,7 @@ Default Password: admin
 > <br/>
 > On the 'Settings' screen, check the 'Mirrored Traffic' option.<br/>
 > <br/>
-> Select: syslog://127.0.0.1:5140 in the 'Companion Interface' option.<br/>
+> Select syslog://127.0.0.1:5140 in the 'Companion Interface' option.<br/>
 > <br/>
 > And click in Save Settings button.<br/>
 > <br/>
