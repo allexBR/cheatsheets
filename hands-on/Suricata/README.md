@@ -177,7 +177,7 @@ sed -i '/-w=/a --http-port=0\n--https-port=443' /etc/ntopng/ntopng.conf
 ```
 <br/>
 
-### • Check if the TLS/SSL certificate is OK:
+### • Check if the SSL/TLS certificate is OK:
 ```
 openssl ec -in /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem -check
 ```
@@ -188,4 +188,14 @@ openssl ec -in /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem -check
 systemctl restart ntopng
 ```
 <br/>
+<br/>
 
+> Done! The ntopng web interface is now accessible via port 443/HTTPS!<br/>
+```
+https://<FQDN-or-SERVER-IP>
+```
+<br/>
+```
+Default Username: admin
+Default Password: admin
+```
