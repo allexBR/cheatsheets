@@ -74,13 +74,13 @@ apt update
 <br/>
 
 ### • Install ntopng and required packages:
-> Once the ntop repository has been added, you can run the following commands (as root) to install ntop packages.
+> After adding the required repositories above, you must run the following commands (as root) to install the necessary applications.
 ```
 apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cento ntap
 ```
 <br/>
 
-### • Grant that ntopng is running in Community Edition version:
+### • Ensure that ntopng is running the Community Edition version:
 ```
 sed -i '1i --community\n' /etc/ntopng/ntopng.conf
 ```
@@ -161,7 +161,7 @@ rsyslogd -N1
 > The certificate should be installed under the ntopng share directory, usually located at /usr/share/ntopng or at /usr/local/share/ntopng.
 > The next instructions assume it’s located at /usr/share/ntopng/httpdocs/ssl (default path).
 ```
-cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/ntopng-https.sh
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/create-ntopng-ssl-cert.sh
 ```
 ```
 chmod +x ntopng-https.sh
