@@ -76,7 +76,7 @@ apt update
 ### • Install ntopng and required packages:
 > After adding the required repositories above, you must run the following commands (as root) to install the necessary applications.
 ```
-apt clean all ; apt update ; apt install -y pfring-dkms nprobe ntopng n2disk cento ntap
+apt clean all ; apt update ; apt install -y cento n2disk ndpi nprobe ntap ntopng ntopng-data pfring pfring-dkms
 ```
 <br/>
 
