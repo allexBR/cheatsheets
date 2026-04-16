@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for ntopng
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 16 10:27:01 UTC 2026
+# Last review date: Thu Apr 16 10:51:08 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -43,7 +43,7 @@ openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
 
 # Create 'issuer' self-signed Root CA certificate (Valid for 10 years)
 openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
-  -subj "/C=US/ST=Texas/L=Houston/O=WebSSL Corp/CN=Trusted SSL CA" \
+  -subj "/C=US/ST=Texas/L=Houston/O=UnlimitedSSL Corporation/CN=Global Trusted CA" \
   -out trustedCA.crt
 
 # Create 'client' self-signed private key
@@ -68,7 +68,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key ntopng.key \
-  -subj "/CN=WebTrust, Inc." \
+  -subj "/CN=ntopng®" \
   -out ntopng.csr
 
 # Create 'client' self-signed certificate (Valid for 10 years)
