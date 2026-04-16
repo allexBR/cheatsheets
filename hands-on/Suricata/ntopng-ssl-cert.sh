@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for ntopng
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 16 14:12:38 UTC 2026
+# Last review date: Thu Apr 16 14:25:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -68,7 +68,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key ntopng.key \
-  -subj "/CN=ntopng®" \
+  -subj "/CN=Ntopng Community Edition" \
   -out ntopng.csr
 
 # Create 'client' self-signed certificate (Valid for 10 years)
