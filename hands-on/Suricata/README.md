@@ -188,13 +188,13 @@ openssl ec -in /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem -check
 systemctl restart ntopng
 ```
 <br/>
-<br/>
 
-> Done! The ntopng web interface is now accessible via port 443/HTTPS!<br/>
+Done! The ntopng web interface is now accessible via port 443/HTTPS!<br/>
 ```
 https://<FQDN-or-SERVER-IP>
 ```
 <br/>
+
 ```
 Default Username: admin
 Default Password: admin
