@@ -164,10 +164,10 @@ rsyslogd -N1
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/ntopng-ssl-cert.sh
 ```
 ```
-chmod +x ntopng-https.sh
+chmod +x ntopng-ssl-cert.sh
 ```
 ```
-bash ntopng-https.sh
+bash ntopng-ssl-cert.sh
 ```
 <br/>
 
