@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Mon Apr 13 19:38:18 UTC 2026
+# Last review date: Thu Apr 16 12:03:28 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -66,7 +66,7 @@ tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-componen
 rm /tmp/emerging.rules.tar.gz
 
 # # Unify all rules into a single suricata.rules file safely
-cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
+#cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
 
 # Adjusts read permissions for Suricata downloaded rules
 find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} +
@@ -80,11 +80,11 @@ fi
 echo "Starting Suricata on the network interface: $INTERFACE"
 
 # Performs a copy of the suricata.yaml original file and apply the changes
-# Changes eth0 default value to detected network interface
-sed -i.bak "s/interface: .*/interface: $INTERFACE/g" /etc/suricata/suricata.yaml
-
-# Check for rule updates
-suricata-update
+# Changes eth0 default value to detected network interface and
+# Changes the Suricata rules template (suricata.rules) to a generic format.
+sed -i.bak -e "s/interface: .*/interface: $INTERFACE/g" \
+           -e 's/^[[:space:]]*- suricata.rules/#  - suricata.rules\n  - "*.rules"/' \
+           /etc/suricata/suricata.yaml
 
 # Reload System daemon
 systemctl daemon-reload
@@ -97,6 +97,9 @@ systemctl start suricata
 
 # Check Suricata service status
 systemctl status suricata
+
+# Check for rule updates
+#suricata-update
 
 
 
