@@ -204,6 +204,7 @@ Default Password: admin
 ### • Now starts the required configurations via ntopng web interface:
 > Go to ntopng GUI → Policies → Behavioural Checks<br/>
 > Type 'Suricata' in 'Search Script' box and make sure that 'External Alert' and 'Suricata' options are enabled.<br/>
+> <br/>
 > <img width="1891" height="713" alt="image" src="https://github.com/user-attachments/assets/a9d71a22-cb1b-4dbc-b92f-471457a256d8" />
 
 <br/>
