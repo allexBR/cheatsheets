@@ -202,6 +202,12 @@ Default Password: admin
 <br/>
 
 ### • Now, start the required configurations via ntopng web interface:
+> Go to ntopng GUI → Interface → Details<br/>
+> <br/>
+> Select your default network interface (displayed in the upper left corner) → Settings<br/>
+> <br/>
+> <img width="1918" height="637" alt="image" src="https://github.com/user-attachments/assets/902cf592-916c-4e00-833a-c2cb8b4d48c8" />
+> <br/>
 > Go to ntopng GUI → Policies → Behavioural Checks<br/>
 > <br/>
 > Type 'Suricata' in 'Search Script' box and make sure that 'External Alert' and 'Suricata' options are enabled.<br/>
