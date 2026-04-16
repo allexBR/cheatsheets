@@ -211,7 +211,7 @@ Default Password: admin
 > <br/>
 > On the 'Settings' screen, check the 'Mirrored Traffic' option.<br/>
 > <br/>
-> In the 'Companion Interface' option, select: syslog://127.0.0.1:5140<br/>
+> Select: syslog://127.0.0.1:5140 in the 'Companion Interface' option.<br/>
 > <br/>
 > And click in Save Settings button.<br/>
 > <br/>
@@ -223,6 +223,7 @@ Default Password: admin
 > Type 'Suricata' in 'Search Script' box and make sure that 'External Alert' and 'Suricata' options are enabled.<br/>
 > <br/>
 > <img width="1891" height="713" alt="image" src="https://github.com/user-attachments/assets/a9d71a22-cb1b-4dbc-b92f-471457a256d8" />
+> <br/>
 > <br/>
 > Done!<br/>
 
