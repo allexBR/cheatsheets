@@ -121,7 +121,7 @@ sed -i \
 ```
 <br/>
 
-### • Install Rsyslog and configure it to forward Suricata logs:
+### • Install Rsyslog and configure it to forward Suricata logs to ntopng:
 > The ntopng already includes a daemon able to listen for syslog logs on TCP or UDP at one (or more) configured endpoint.<br/>
 > The log producer should be configured to send logs to that endpoint.In some cases (e.g. an IDS running on the same host)<br/>
 > a syslog client like rsyslog should be installed and configured to export logs to ntopng.
@@ -161,7 +161,7 @@ rsyslogd -N1
 > The certificate should be installed under the ntopng share directory, usually located at /usr/share/ntopng or at /usr/local/share/ntopng.
 > The next instructions assume it’s located at /usr/share/ntopng/httpdocs/ssl (default path).
 ```
-cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/create-ntopng-ssl-cert.sh
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/ntopng-ssl-cert.sh
 ```
 ```
 chmod +x ntopng-https.sh
