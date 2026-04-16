@@ -199,3 +199,9 @@ https://<FQDN-or-SERVER-IP>
 Default Username: admin
 Default Password: admin
 ```
+<br/>
+
+### • Now starts the required configurations via ntopng web interface:
+> Go to ntopng GUI → Policies → Behavioural Checks<br/>
+> 
+<br/>
