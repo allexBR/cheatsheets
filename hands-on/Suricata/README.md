@@ -211,9 +211,11 @@ Default Password: admin
 > <br/>
 > On the 'Settings' screen, check the 'Mirrored Traffic' option<br/>
 > <br/>
-> In 'Companion Interface' option select: syslog://127.0.0.1:5140
+> In 'Companion Interface' option select: syslog://127.0.0.1:5140<br/>
 > <br/>
 > And click in Save Settings button<br/>
+> <br/>
+> <img width="1906" height="808" alt="image" src="https://github.com/user-attachments/assets/30a871b1-decd-421e-92cb-17f34169d508" />
 > <br/>
 > <br/>
 > Go to ntopng GUI → Policies → Behavioural Checks<br/>
