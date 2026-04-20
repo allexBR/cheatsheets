@@ -16,7 +16,7 @@
 <br/>
 
 ```
-wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/OpenVAS/openvas_install.sh
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/OpenVAS/openvas_install.sh
 ```
 ```
 chmod +x openvas_install.sh
