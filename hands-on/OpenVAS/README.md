@@ -1,7 +1,7 @@
 > [!TIP]
 > # Building a Powerful Open Source Vulnerability Scanner
 > <br/>
-> • Sources: https://github.com/Kastervo/OpenVAS-Installation
+> • Source: https://github.com/Kastervo/OpenVAS-Installation
 ---
 
 <br/>
