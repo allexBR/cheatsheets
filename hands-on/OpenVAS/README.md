@@ -16,7 +16,7 @@
 > All credit goes to Kastervo for his commitment and great work!<br/>
 > <br/>
 > I just made some subtle modifications so that the script also works on Debian 13 (Trixie), as it is more current.<br/>
-> <br/>
+<br/>
 ```
 wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/OpenVAS/openvas_install.sh
 ```
