@@ -10,10 +10,10 @@
 <br/>
 
 > [!IMPORTANT]
-> The shell script available in this repository was created and owned by Kastervo (https://github.com/Kastervo/OpenVAS-Installation).<br/>
-> Therefore, it is copyrighted and all credit goes to Kastervo for his commitment and great work!<br/>
+> The shell script available in this repository was created and belongs to the company KASTERVO LTD (https://github.com/Kastervo/OpenVAS-Installation).<br/>
+> Therefore, it is copyrighted and all credit goes to the company KASTERVO LTD for their dedication and excellent work!<br/>
 > <br/>
-> I just made some subtle modifications so that the script also works on Debian 13 (Trixie), as it is more current.<br/>
+> There were no drastic changes to the source code. I just made some subtle modifications so that the script also works on Debian 13 (Trixie), as it is more current.<br/>
 <br/>
 
 ```
