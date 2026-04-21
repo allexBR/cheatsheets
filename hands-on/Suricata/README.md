@@ -112,6 +112,19 @@ sed -i.bak \
 ```
 <br/>
 
+### • Fine-tuning (not mandatory) in the ntopng.conf file:
+```
+sed -i '/#-m=10.10.123.0\/24,10.10.124.0\/24/a \
+#\
+# Defines local network range\
+--local-networks=192.168.0.0/24\
+# Forces identification by MAC Address\
+--interface-id-mode=1\
+# Capture all network traffic\
+--promiscuous=' /etc/ntopng/ntopng.conf
+```
+<br/>
+
 ### • Changes default values (filetype and facility) in suricata.yaml:
 ```
 sed -i \
