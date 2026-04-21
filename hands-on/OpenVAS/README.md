@@ -1,7 +1,9 @@
 > [!TIP]
 > # Building a Powerful Open Source Vulnerability Scanner
 > <br/>
-> • Source: https://github.com/Kastervo/OpenVAS-Installation
+> • Sources: https://github.com/Kastervo/OpenVAS-Installation<br/>
+>            https://greenbone.github.io/docs/latest/background.html<br/>
+>            https://docs.greenbone.net/GSM-Manual/gos-24.10/en/
 ---
 
 <br/>
