@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 21 17:35:58 UTC 2026
+# Last review date: Tue Apr 21 17:51:55 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -58,8 +58,13 @@ echo "[+] Version detected: $SURICATA_VER"
 
 # Performs download using the currently installed version of Suricata
 wget -P /tmp https://rules.emergingthreats.net/open/suricata-${SURICATA_VER}/emerging.rules.tar.gz
+
+# Performs download using other open-source rules
 wget -P /tmp https://ti.stamus-networks.io/open/stamus-lateral-rules.tar.gz
 wget -P /tmp https://www.snort.org/downloads/community/snort3-community-rules.tar.gz
+wget -P /var/lib/suricata/rules https://sslbl.abuse.ch/blacklist/ja3_fingerprints.rules
+wget -P /var/lib/suricata/rules https://sslbl.abuse.ch/blacklist/sslblacklist_tls_cert.rules
+wget -O /var/lib/suricata/rules/urlhaus.rules https://urlhaus.abuse.ch/downloads/ids
 
 # Extract the rules from downloaded file and copy them to the required path
 tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
