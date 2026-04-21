@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 21 17:51:55 UTC 2026
+# Last review date: Tue Apr 21 20:05:09 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -61,7 +61,6 @@ wget -P /tmp https://rules.emergingthreats.net/open/suricata-${SURICATA_VER}/eme
 
 # Performs download using other open-source rules
 wget -P /tmp https://ti.stamus-networks.io/open/stamus-lateral-rules.tar.gz
-wget -P /tmp https://www.snort.org/downloads/community/snort3-community-rules.tar.gz
 wget -P /var/lib/suricata/rules https://sslbl.abuse.ch/blacklist/ja3_fingerprints.rules
 wget -P /var/lib/suricata/rules https://sslbl.abuse.ch/blacklist/sslblacklist_tls_cert.rules
 wget -O /var/lib/suricata/rules/urlhaus.rules https://urlhaus.abuse.ch/downloads/ids
@@ -69,16 +68,18 @@ wget -O /var/lib/suricata/rules/urlhaus.rules https://urlhaus.abuse.ch/downloads
 # Extract the rules from downloaded file and copy them to the required path
 tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
 tar -zxf /tmp/stamus-lateral-rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
-tar -zxf /tmp/snort3-community-rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
 
 # Remove the compressed file
 rm /tmp/*.tar.gz
 
 # # Unify all rules into a single suricata.rules file safely
-#cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
+cd /var/lib/suricata/rules/ && cat *.rules > rules.tmp && rm *.rules && mv rules.tmp suricata.rules
 
 # Adjusts read permissions for Suricata downloaded rules
 find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} + -exec chown root:root {} +
+
+# Check Suricata merged rules file
+suricata -T -c /etc/suricata/suricata.yaml -v
 
 # Start Suricata using the main network interface
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
@@ -92,7 +93,7 @@ echo "Starting Suricata on the network interface: $INTERFACE"
 # Changes eth0 default value to detected network interface and
 # Changes the Suricata rules template (suricata.rules) to a generic format.
 sed -i.bak -e "s/interface: .*/interface: $INTERFACE/g" \
-           -e 's/^[[:space:]]*- suricata.rules/#  - suricata.rules\n  - "*.rules"/' \
+           #-e 's/^[[:space:]]*- suricata.rules/#  - suricata.rules\n  - "*.rules"/' \
            /etc/suricata/suricata.yaml
 
 # Reload System daemon
