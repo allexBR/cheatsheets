@@ -107,7 +107,7 @@ echo "$INTERFACE"
 ```
 sed -i.bak \
     -e "/^-i=eth1/s/^/#/; /^-i=eth2/s/^/#/" \
-    -e "/^#-i=eth2/a\-i=syslog:\/\/127.0.0.1:5140\n-i=$INTERFACE" \
+    -e "/^#-i=eth2/a\--interface=syslog:\/\/127.0.0.1:5140\n--interface=$INTERFACE" \
     /etc/ntopng/ntopng.conf
 ```
 <br/>
