@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 21 16:56:38 UTC 2026
+# Last review date: Tue Apr 21 17:35:58 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -44,7 +44,7 @@ apt clean ; apt update ; apt upgrade -y
 apt -y install -t trixie-backports suricata
 
 # Check that the Suricata service is actually down
-systemctl stop suricata                                                                                                        
+systemctl stop suricata
 
 # Capture the output of Suricata version
 SURICATA_VER=$(/usr/bin/suricata -V 2>&1 | grep -oP '\d+\.\d+\.\d+')
@@ -59,14 +59,15 @@ echo "[+] Version detected: $SURICATA_VER"
 # Performs download using the currently installed version of Suricata
 wget -P /tmp https://rules.emergingthreats.net/open/suricata-${SURICATA_VER}/emerging.rules.tar.gz
 wget -P /tmp https://ti.stamus-networks.io/open/stamus-lateral-rules.tar.gz
+wget -P /tmp https://www.snort.org/downloads/community/snort3-community-rules.tar.gz
 
 # Extract the rules from downloaded file and copy them to the required path
-tar -zxf /tmp/*.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
-#tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
+tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
+tar -zxf /tmp/stamus-lateral-rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
+tar -zxf /tmp/snort3-community-rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
 
 # Remove the compressed file
 rm /tmp/*.tar.gz
-#rm /tmp/emerging.rules.tar.gz
 
 # # Unify all rules into a single suricata.rules file safely
 #cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
