@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 16 12:03:28 UTC 2026
+# Last review date: Tue Apr 21 16:56:38 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -58,12 +58,15 @@ echo "[+] Version detected: $SURICATA_VER"
 
 # Performs download using the currently installed version of Suricata
 wget -P /tmp https://rules.emergingthreats.net/open/suricata-${SURICATA_VER}/emerging.rules.tar.gz
+wget -P /tmp https://ti.stamus-networks.io/open/stamus-lateral-rules.tar.gz
 
 # Extract the rules from downloaded file and copy them to the required path
-tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
+tar -zxf /tmp/*.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
+#tar -zxf /tmp/emerging.rules.tar.gz -C /var/lib/suricata/rules/ --strip-components=1 --wildcards '*.rules'
 
 # Remove the compressed file
-rm /tmp/emerging.rules.tar.gz
+rm /tmp/*.tar.gz
+#rm /tmp/emerging.rules.tar.gz
 
 # # Unify all rules into a single suricata.rules file safely
 #cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
@@ -112,7 +115,7 @@ systemctl status suricata
 #
 #
 #
-# Start Suricata in HIPS Mode
+# >> Start Suricata in HIPS Mode <<
 #
 # 1. nftables Firewall Rules
 #
