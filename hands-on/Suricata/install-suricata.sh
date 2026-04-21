@@ -73,7 +73,7 @@ rm /tmp/*.tar.gz
 #cd /var/lib/suricata/rules/ && cat [^s]*.rules > suricata.rules && rm [^s]*.rules
 
 # Adjusts read permissions for Suricata downloaded rules
-find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} +
+find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} + -exec chown root:root {} +
 
 # Start Suricata using the main network interface
 INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
