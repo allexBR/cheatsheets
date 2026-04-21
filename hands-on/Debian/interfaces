@@ -10,12 +10,12 @@ iface lo inet loopback
 # The primary network interface
 auto eth0
 iface eth0 inet static
-    address 192.168.1.100
-    netmask 255.255.255.0
-    gateway 192.168.1.1
-    # Put interfaces in promiscuous mode
-    up ip link set $IFACE up
-    up ip link set $IFACE promisc on
+     address 192.168.1.100
+     netmask 255.255.255.0
+     gateway 192.168.1.1
+     # Set interfaces in promiscuous mode
+     up ip link set $IFACE up
+     up ip link set $IFACE promisc on
 
 #auto eth0:1
 #iface eth0:1 inet static
