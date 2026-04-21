@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 21 20:05:09 UTC 2026
+# Last review date: Tue Apr 21 20:12:28 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -108,8 +108,13 @@ systemctl start suricata
 # Check Suricata service status
 systemctl status suricata
 
+
+
+# Refresh the rules without taking down the service (Hot Reload)
+# suricatasc -c reload-rules
+
 # Check for rule updates
-#suricata-update
+# suricata-update
 
 
 
