@@ -277,7 +277,7 @@ crontab -e
 <br/>
 
 > [!IMPORTANT]
-> For more information on Remediations for Ntopng Flow Risks, read:<br/>
+> For more information on Remediations for Ntopng Flow Risks, please read:<br/>
 > https://www.ntop.org/guides/ntopng/user_interface/shared/alerts/remediations/ntopng_flow_risks.html<br/>
 
 <br/>
