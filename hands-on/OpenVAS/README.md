@@ -54,16 +54,16 @@ sudo systemctl restart gsad
 <br/>
 
 • Quick Verification:
-> The command below will list the status of each feed (NVT, SCAP, CERT). If "Updating..." appears, it is still processing. When "Current" appears, the system is ready to create the Tasks:
+The command below will list the status of each feed (NVT, SCAP, CERT). If "Updating..." appears, it is still processing. When "Current" appears, the system is ready to create the Tasks:
 ```
 sudo -u gvm gvmd --get-feeds
 ```
-> To check if the feeds are finally "OK" and ready for use, you can list the available scan settings:
+To check if the feeds are finally "OK" and ready for use, you can list the available scan settings:
 ```
 sudo -u gvm gvmd --get-scanners
 ```
 
-> To see if the scan settings (Full and Fast, etc.) are already appearing:
+To see if the scan settings (Full and Fast, etc.) are already appearing:
 ```
 sudo -u gvm gvmd --get-configs
 ```
