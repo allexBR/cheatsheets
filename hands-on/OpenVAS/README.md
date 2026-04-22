@@ -50,6 +50,7 @@ sudo -u gvm greenbone-feed-sync --type cert
 sudo systemctl restart ospd-openvas
 sudo systemctl restart gvmd
 sudo systemctl restart gsad
+sudo systemctl restart openvasd
 ```
 <br/>
 
