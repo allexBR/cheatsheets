@@ -30,7 +30,7 @@ bash openvas_install.sh
 <br/>
 
 > [!NOTE]
-> Before attempting to create a new Task in OpenVAS, it is necessary to update the databases.<br/>
+> Before attempting to create a new Task in OpenVAS, it is necessary to update the feed databases.<br/>
 <br/>
 
 • Update Network Vulnerability Tests (NVTs):
