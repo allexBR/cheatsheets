@@ -270,8 +270,8 @@ crontab -e
 ```
 ```
 # Clears ntopng time series files older than 30 days
-# 00 03 * * 0: means Minute 0, Hour 3, Every Sunday
-00 03 * * 0 find /var/lib/ntopng -type f -name "*.rrd" -mtime +30 -delete > /dev/null 2>&1
+# Run task and clean database every week on Saturday at 20:00
+0 20 * * 6 find /var/lib/ntopng -type f -name "*.rrd" -mtime +30 -delete > /dev/null 2>&1
 ```
 <br/>
 <br/>
