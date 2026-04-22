@@ -45,15 +45,12 @@ sudo -u gvm greenbone-feed-sync --type scap
 ```
 sudo -u gvm greenbone-feed-sync --type cert
 ```
-<br/>
-
 • After synchronization is complete, restart the services to ensure everything has loaded correctly:
 ```
 sudo systemctl restart ospd-openvas
 sudo systemctl restart gvmd
 sudo systemctl restart gsad
 ```
-<br/>
 <br/>
 
 • Quick Verification:
