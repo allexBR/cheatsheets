@@ -241,6 +241,7 @@ Default Password: admin
 > Done!<br/>
 
 <br/>
+<br/>
 
 ### • Ntopng settings hardening:
 > From the perspective of system hardening and security best practices, exposing an internal licensing or management service on 0.0.0.0 (all interfaces) is a design flaw or, at the very least, a sign of the developer’s “laziness” in configuration.<br/>
@@ -249,5 +250,11 @@ Default Password: admin
 > <br/>
 > To fix this, we will do the following:<br/>
 ```
-
+sed -i.bak -e '/^--listen=0.0.0.0:7153/s/^/# /' \
+           -e '/^# --listen=0.0.0.0:7153/a --listen=127.0.0.1:7153\n' \
+           -e '/^--web=0.0.0.0:4444/s/^/# /' \
+           -e '/^# --web=0.0.0.0:4444/a --web=0.0.0.0:4444' \
+           /usr/share/ntop/etc/license-manager.conf
 ```
+<br/>
+
