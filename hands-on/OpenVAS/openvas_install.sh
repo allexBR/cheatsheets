@@ -306,7 +306,7 @@ install_ospd_openvas_dep() {
 	log INFO "Installing ospd-openvas dependencies..."
 	# Required dependencies for ospd-openvas
 	if ! run_command apt install -y \
-		python3 python3-pip python3-setuptools python3-packaging python3-wrapt python3-cffi python3-psutil python3-lxml python3-defusedxml python3-paramiko python3-redis python3-gnupg python3-paho-mqtt; then
+		mosquitto mosquitto-clients python3 python3-pip python3-setuptools python3-packaging python3-wrapt python3-cffi python3-psutil python3-lxml python3-defusedxml python3-paramiko python3-redis python3-gnupg python3-paho-mqtt; then
 		log ERROR "Failed to install required dependencies for ospd-openvas. Check apt configuration."
 		exit 1
 	fi
