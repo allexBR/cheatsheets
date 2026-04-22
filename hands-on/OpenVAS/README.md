@@ -28,3 +28,30 @@ bash openvas_install.sh
 ```
 <br/>
 <br/>
+
+> [!NOTE]
+> Before attempting to create a new Task in OpenVAS, it is necessary to update the databases.<br/>
+
+Update Network Vulnerability Tests (NVTs):
+```
+sudo -u gvm greenbone-feed-sync --type nvt
+```
+Update Common Configuration Enumeration (SCAP) data:
+```
+sudo -u gvm greenbone-feed-sync --type scap
+```
+Update Security Advisory (CERT) data:
+```
+sudo -u gvm greenbone-feed-sync --type cert
+```
+<br/>
+<br/>
+
+After synchronization is complete, restart the services to ensure everything has loaded correctly:
+```
+sudo systemctl restart ospd-openvas
+sudo systemctl restart gvmd
+sudo systemctl restart gsad
+```
+<br/>
+<br/>
