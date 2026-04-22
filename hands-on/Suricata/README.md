@@ -242,3 +242,12 @@ Default Password: admin
 
 <br/>
 
+### • Ntopng settings hardening:
+> From the perspective of system hardening and security best practices, exposing an internal licensing or management service on 0.0.0.0 (all interfaces) is a design flaw or, at the very least, a sign of the developer’s “laziness” in configuration.<br/>
+> <br/>
+> This unnecessarily exposes the attack surface, allowing anyone on the same network (or on the internet, if the VM has a public IP) to attempt to interact with that service.<br/>
+> <br/>
+> To fix this, we will do the following:<br/>
+```
+
+```
