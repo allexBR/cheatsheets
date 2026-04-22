@@ -69,3 +69,31 @@ sudo -u gvm gvmd --get-configs
 ```
 <br/>
 <br/>
+
+> [!WARNING]
+> If for some reason the .lock file has become "orphaned" (which is common after a sudden restart or power outage) and is preventing the database from updating, you can remove it manually.<br/>
+
+• Stop services for safety reasons:
+```
+sudo systemctl stop gvmd
+```
+<br/>
+
+• Remove the lock file:
+```
+sudo rm /var/lib/gvm/feed-update.lock
+```
+<br/>
+
+• Try running the sync command again:
+```
+sudo -u gvm greenbone-feed-sync --type nvt
+```
+```
+sudo -u gvm greenbone-feed-sync --type scap
+```
+```
+sudo -u gvm greenbone-feed-sync --type cert
+```
+<br/>
+<br/>
