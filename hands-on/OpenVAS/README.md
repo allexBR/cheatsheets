@@ -56,3 +56,16 @@ sudo systemctl restart gsad
 ```
 <br/>
 <br/>
+
+• Quick Verification:
+> To check if the feeds are finally "OK" and ready for use, you can list the available scan settings.
+```
+sudo -u gvm gvmd --get-scanners
+```
+
+To see if the scan settings (Full and Fast, etc.) are already appearing:
+```
+sudo -u gvm gvmd --get-configs
+```
+<br/>
+<br/>
