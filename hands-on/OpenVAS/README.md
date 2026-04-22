@@ -72,7 +72,7 @@ sudo -u gvm gvmd --get-configs
 <br/>
 
 > [!WARNING]
-> If for some reason the .lock file has become "orphaned" (which is common after a sudden restart or power outage) and is preventing the database from updating, you can remove it manually.<br/>
+> If for some reason the .lock file has become "orphaned" (which is common after a sudden restart or power outage) and is preventing the feed databases from updating, you can remove it manually.<br/>
 
 • Stop the service for safety reasons:
 ```
