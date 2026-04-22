@@ -76,9 +76,11 @@ sudo systemctl stop gvmd
 ```
 <br/>
 
-• Remove the lock file:
+• Remove the lock files:
 ```
-sudo rm /var/lib/gvm/feed-update.lock
+sudo rm -f /var/lib/gvm/feed-update.lock
+sudo rm -f /var/lib/openvas/feed-update.lock
+sudo rm -f /var/lib/gvm/gvmd/gvmd.lock
 ```
 <br/>
 
