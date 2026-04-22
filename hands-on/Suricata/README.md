@@ -256,6 +256,9 @@ sed -i.bak -e '/^--listen=0.0.0.0:7153/s/^/# /' \
            -e '/^# --web=0.0.0.0:4444/a --web=0.0.0.0:4444' \
            /usr/share/ntop/etc/license-manager.conf
 ```
+```
+systemctl restart ntop-license-manager
+```
 <br/>
 <br/>
 
