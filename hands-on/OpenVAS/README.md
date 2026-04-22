@@ -54,6 +54,7 @@ sudo systemctl restart gsad
 <br/>
 
 • Quick Verification:
+
 The command below will list the status of each feed (NVT, SCAP, CERT). If "Updating..." appears, it is still processing. When "Current" appears, the system is ready to create the Tasks:
 ```
 sudo -u gvm gvmd --get-feeds
