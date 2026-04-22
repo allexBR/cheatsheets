@@ -46,7 +46,6 @@ sudo -u gvm greenbone-feed-sync --type scap
 sudo -u gvm greenbone-feed-sync --type cert
 ```
 <br/>
-<br/>
 
 • After synchronization is complete, restart the services to ensure everything has loaded correctly:
 ```
