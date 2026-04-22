@@ -257,4 +257,16 @@ sed -i.bak -e '/^--listen=0.0.0.0:7153/s/^/# /' \
            /usr/share/ntop/etc/license-manager.conf
 ```
 <br/>
+<br/>
 
+### • Ntopng maintenance tip (save disk space):
+> Since ntopng is configured to use HTTPS and IDS, it will generate many time series files (graphs).<br/>
+> Therefore, it is recommended to create a task to ensure that the database is cleaned at least once a week!<br/>
+```
+crontab -e
+```
+```
+# Clears ntopng time series files older than 30 days
+# Rule explanation: 00 03 * * 0 means Minute 0, Hour 3, Every Sunday
+00 03 * * 0 find /var/lib/ntopng -type f -name "*.rrd" -mtime +30 -delete > /dev/null 2>&1
+```
