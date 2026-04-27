@@ -17,6 +17,18 @@
 > There were no drastic modifications to the source code. I just made subtle portability corrections so that the script also works on Debian 13 (Trixie), as it is more current.<br/>
 <br/>
 
+### • Add PostgreSQL APT Repository:
+```
+apt install -y postgresql-common ca-certificates
+```
+```
+/usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+```
+```
+apt clean && apt update
+```
+<br/>
+
 ```
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/OpenVAS/openvas_install.sh
 ```
