@@ -878,9 +878,26 @@ setting_up_postgresql() {
 		log ERROR "Failed to install PostgreSQL."
 		exit 1
 	fi
-	if ! run_command systemctl start postgresql@17-main; then
+	if ! command -v psql >/dev/null 2>&1; then
+		log ERROR "psql command not found after installation."
+		exit 1
+	fi
+	# Detect installed PostgreSQL version dynamically
+	PG_VERSION=$(dpkg -l | awk '/postgresql-[0-9]+/ {print $2}' | grep -o '[0-9]\+' | sort -n | tail -1)
+	PG_SERVICE="postgresql@${PG_VERSION}-main"
+	log INFO "Detected PostgreSQL version: $PG_VERSION"
+	log INFO "Starting PostgreSQL service: $PG_SERVICE"
+	if ! systemctl is-active --quiet "$PG_SERVICE"; then
+		log ERROR "PostgreSQL service $PG_SERVICE did not start correctly."
+		exit 1
+	fi
+	if ! run_command systemctl start "$PG_SERVICE"; then
 		log ERROR "Failed to start PostgreSQL service."
 		exit 1
+	fi
+#	if ! run_command systemctl start postgresql@17-main; then
+#		log ERROR "Failed to start PostgreSQL service."
+#		exit 1
 	fi
 	if ! runuser -l postgres -c 'createuser -DRS gvm'; then
 		log ERROR "Failed to create PostgreSQL user gvm."
