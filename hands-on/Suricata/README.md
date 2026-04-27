@@ -15,7 +15,7 @@
 > To proceed with the steps below, will need to install Suricata first!<br/>
 > To do this, use the automated installation script available in this repository!<br/>
 ```
-wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/install-suricata.sh
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Suricata/install-suricata.sh
 ```
 ```
 chmod +x install-suricata.sh
