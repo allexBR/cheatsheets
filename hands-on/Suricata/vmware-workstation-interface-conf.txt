@@ -1,0 +1,59 @@
+#------------------------------------------------#
+#  VMware Workstation Pro Suricata Configuration #
+#------------------------------------------------#
+
+
+# Install bridge-utils package (required):
+apt update && apt install -y bridge-utils
+
+
+
+# Template Suricata VM (IDS inline - transparent bridge mode):
+
+nano /etc/network/interfaces
+
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The physical network interfaces
+
+# Firewall side (VMnet5)
+auto ens33
+iface ens33 inet manual
+     up ip link set $IFACE up
+     up ip link set $IFACE promisc on
+
+# Endpoints side (VMnet6)
+auto ens34
+iface ens34 inet manual
+     up ip link set $IFACE up
+     up ip link set $IFACE promisc on
+
+# Transparent bridge mode (inline)
+auto br0
+iface br0 inet static
+    address 192.168.1.100
+    netmask 255.255.255.0
+    gateway 192.168.1.1
+
+    bridge_ports eth0 eth1
+    bridge_stp off
+    bridge_fd 0
+    bridge_maxwait 0
+
+    up ip link set dev br0 up
+
+
+
+# Validation (in order):
+
+ip link show ens33
+ip link show ens34
+
+After:
+
+ip link show br0
+
+
