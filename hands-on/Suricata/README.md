@@ -253,7 +253,7 @@ Default Password: admin
 sed -i.bak -e '/^--listen=0.0.0.0:7153/s/^/# /' \
            -e '/^# --listen=0.0.0.0:7153/a --listen=127.0.0.1:7153\n' \
            -e '/^--web=0.0.0.0:4444/s/^/# /' \
-           -e '/^# --web=0.0.0.0:4444/a --web=0.0.0.0:4444' \
+           -e '/^# --web=0.0.0.0:4444/a --web=127.0.0.1:4444' \
            /usr/share/ntop/etc/license-manager.conf
 ```
 ```
