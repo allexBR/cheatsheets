@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Mon Apr 27 11:01:21 UTC 2026
+# Last review date: Mon Apr 27 11:05:18 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -90,7 +90,7 @@ fi
 echo "Starting Suricata on the network interface: $INTERFACE"
 
 # Performs a copy of the suricata.yaml original file and apply the changes
-# Changes eth0 default value to detected network interface and
+# Changes eth0 default value to detected network interface on the system
 sed -i.bak -e "/^af-packet:/,/^- interface:/s/^\(\s*-\s*interface:\s*\)eth0$/\1$INTERFACE/" \
            -e "/^pcap:/,/^- interface:/s/^\(\s*-\s*interface:\s*\)eth0$/\1$INTERFACE/" \
            /etc/suricata/suricata.yaml
