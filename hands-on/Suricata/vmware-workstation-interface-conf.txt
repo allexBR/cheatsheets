@@ -2,6 +2,9 @@
 #  VMware Workstation Pro Suricata Configuration #
 #------------------------------------------------#
 
+NOTE: The following network settings are required for the Suricata VM (with Debian 13 installed) works in transparent bridge mode.
+
+
 
 # Install bridge-utils package (required):
 apt update && apt install -y bridge-utils
