@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Installing Suricata (via Backports) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 21 20:12:28 UTC 2026
+# Last review date: Mon Apr 27 09:39:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -82,19 +82,19 @@ find /var/lib/suricata/rules -name "*.rules" -exec chmod 644 {} + -exec chown ro
 suricata -T -c /etc/suricata/suricata.yaml -v
 
 # Start Suricata using the main network interface
-INTERFACE=$(ip route | grep default | awk '{print $5}' | head -n1)
-if [ -z "$INTERFACE" ]; then
-    echo "Error: The main network interface could not be detected!"
-    exit 1
-fi
-echo "Starting Suricata on the network interface: $INTERFACE"
+#INTERFACE=$(ip route | awk '/default/ {print $5; exit}')
+#if [ -z "$INTERFACE" ]; then
+#    echo "Error: The main network interface could not be detected!"
+#    exit 1
+#fi
+#echo "Starting Suricata on the network interface: $INTERFACE"
 
 # Performs a copy of the suricata.yaml original file and apply the changes
 # Changes eth0 default value to detected network interface and
 # Changes the Suricata rules template (suricata.rules) to a generic format.
-sed -i.bak -e "s/interface: .*/interface: $INTERFACE/g" \
+#sed -i.bak -e "s/interface: .*/interface: $INTERFACE/g" \
            #-e 's/^[[:space:]]*- suricata.rules/#  - suricata.rules\n  - "*.rules"/' \
-           /etc/suricata/suricata.yaml
+#           /etc/suricata/suricata.yaml
 
 # Reload System daemon
 systemctl daemon-reload
@@ -111,10 +111,10 @@ systemctl status suricata
 
 
 # Refresh the rules without taking down the service (Hot Reload)
-# suricatasc -c reload-rules
+#suricatasc -c reload-rules
 
 # Check for rule updates
-# suricata-update
+suricata-update
 
 
 
