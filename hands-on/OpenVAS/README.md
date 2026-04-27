@@ -28,7 +28,9 @@ apt install -y postgresql-common ca-certificates
 apt clean && apt update
 ```
 <br/>
+<br/>
 
+### • Run Greenbone Vulnerability Management (OpenVAS) installation script:
 ```
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/OpenVAS/openvas_install.sh
 ```
