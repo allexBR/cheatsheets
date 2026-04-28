@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Mon Apr 13 22:05:45 UTC 2026
+# Last review date: Tue Apr 28 15:46:35 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -119,11 +119,38 @@ apt install -y build-essential \
   python3-dev \
   swig
 
-# Download sysctl.conf template to increase system performance
-if [ -f /etc/sysctl.conf ]; then
-    mv /etc/sysctl.conf /etc/sysctl.conf.backup
-fi
-wget -O /etc/sysctl.conf https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Debian/sysctl.conf
+# Increase system performance for Unbound
+# Check if the module is loaded in the system
+modprobe nf_conntrack
+
+# Update the size of the hash table (buckets)
+echo "options nf_conntrack hashsize=32768" | tee /etc/modprobe.d/conntrack.conf
+
+# Add the custom configuration file
+cat > /etc/sysctl.d/99-unbound.conf <<EOF
+###################################################################
+# System performance settings for Unbound (Linux kernel)
+#
+
+# Increase auto tuning TCP buffer limits
+net.core.rmem_max = 4194304
+net.core.wmem_max = 4194304
+
+# Increase memory thresholds to prevent packet dropping
+# The maximum buffer size setable using setsockopt
+net.ipv4.tcp_rmem = 4096 87380 4194304
+net.ipv4.tcp_wmem = 4096 65536 4194304
+
+# Maximum limit of connections tracked by the nftables (4x hashsize/buckets)
+# Balanced Conntrack to prevent Out of Memory
+net.netfilter.nf_conntrack_max = 131072
+
+# Kernel Virtual Memory Overcommit Mode
+vm.overcommit_memory = 1
+
+# Control swap usage (moderate swappiness)
+vm.swappiness = 20
+EOF
 
 # Applies changes immediately without needing to restart
 sysctl -p
@@ -206,7 +233,7 @@ chmod 644 /etc/unbound/root.hints
 mv /etc/unbound/unbound.conf /etc/unbound/unbound.conf.example
 
 # Creates a new custom Unbound server configuration file
-tee /etc/unbound/unbound.conf <<EOF
+cat > /etc/unbound/unbound.conf <<EOF
 ###################################################################################
 #
 # Unbound configuration file for Debian.
@@ -401,7 +428,7 @@ include: "/etc/unbound/conf.d/*.conf"
 EOF
 
 # Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
-tee /etc/unbound/conf.d/doh.conf <<EOF
+cat > /etc/unbound/conf.d/doh.conf <<EOF
 server:
         interface: 127.0.0.1@8443
         https-port: 8443
@@ -425,7 +452,7 @@ chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
 chown -R root:unbound /etc/unbound
 
 # Enable log rotation
-tee /etc/logrotate.d/unbound <<EOF
+cat > /etc/logrotate.d/unbound <<EOF
 /var/log/unbound/unbound.log {
     daily
     rotate 7
@@ -441,7 +468,7 @@ tee /etc/logrotate.d/unbound <<EOF
 EOF
 
 # Add Unbound as a System service
-tee /lib/systemd/system/unbound.service <<EOF
+cat > /lib/systemd/system/unbound.service <<EOF
 [Unit]
 Description=Unbound DNS Resolver
 After=network.target
@@ -464,7 +491,7 @@ systemd-analyze verify /lib/systemd/system/unbound.service || true
 rm -f /etc/resolv.conf
 
 # Create a new resolv.conf file
-tee /etc/resolv.conf <<EOF
+cat > /etc/resolv.conf <<EOF
 nameserver 127.0.0.1
 nameserver ::1
 EOF
