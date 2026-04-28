@@ -32,3 +32,63 @@ vm.swappiness = 10
 # Applies changes immediately without needing to restart
 # Enforce memory settings and firewall maximum limit
 sysctl -p
+
+
+---------------------------------------------------------------------------------------
+
+# Performance adjustments:
+
+/etc/unbound/unbound.conf
+
+server:
+    # Adjustment to take advantage of net.core.rmem_max
+    so-rcvbuf: 16m
+    so-sndbuf: 16m
+    msg-cache-slabs: 4
+    rrset-cache-slabs: 4
+    infra-cache-slabs: 4
+    key-cache-slabs: 4
+
+
+
+---------------------------------------------------------------------------------------
+
+IMPORTANT!
+
+
+/etc/sysctl.d/99-unbound.conf
+
+# Optimization for Lab VM (1GB-2GB RAM)
+net.core.rmem_max = 4194304
+net.core.wmem_max = 4194304
+net.ipv4.tcp_rmem = 4096 87380 4194304
+net.ipv4.tcp_wmem = 4096 65536 4194304
+
+# Balanced Conntrack to prevent Out of Memory
+net.netfilter.nf_conntrack_max = 131072
+
+# Moderate Swappiness
+vm.swappiness = 20
+
+
+
+
+# Check if the module is loaded in the system
+modprobe nf_conntrack
+
+# Update the size of the hash table (buckets)
+echo "options nf_conntrack hashsize=32768" | tee /etc/modprobe.d/conntrack.conf
+
+
+
+
+/etc/unbound/unbound.conf
+
+server:
+    so-rcvbuf: 4m
+    so-sndbuf: 4m
+    msg-cache-slabs: 2
+    rrset-cache-slabs: 2
+    infra-cache-slabs: 2
+    key-cache-slabs: 2
+
