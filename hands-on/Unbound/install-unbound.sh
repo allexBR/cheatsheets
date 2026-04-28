@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 28 15:46:35 UTC 2026
+# Last review date: Tue Apr 28 16:33:22 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -124,6 +124,7 @@ apt install -y build-essential \
 modprobe nf_conntrack
 
 # Update the size of the hash table (buckets)
+echo 32768 | tee /sys/module/nf_conntrack/parameters/hashsize
 echo "options nf_conntrack hashsize=32768" | tee /etc/modprobe.d/conntrack.conf
 
 # Add the custom configuration file
@@ -153,7 +154,7 @@ vm.swappiness = 20
 EOF
 
 # Applies changes immediately without needing to restart
-sysctl -p
+sysctl --system
 
 # Download Unbound (latest stable release) source code
 wget -P /tmp https://nlnetlabs.nl/downloads/unbound/unbound-latest.tar.gz || \
