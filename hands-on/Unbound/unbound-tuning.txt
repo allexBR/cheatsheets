@@ -18,6 +18,11 @@ echo "options nf_conntrack hashsize=131072" | tee /etc/modprobe.d/conntrack.conf
 # Confirm that the value was applied
 sysctl net.netfilter.nf_conntrack_max
 
+# Real-Time Monitoring
+# Use this command to view the connection table in action "live"
+apt update && apt install conntrack -y
+
+conntrack -S
 ---------------------------------------------------------------------------------------
 
 # System tuning configuration (Linux kernel) for a 4GB/8GB RAM server (+200 endpoints)
