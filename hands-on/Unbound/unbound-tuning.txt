@@ -26,6 +26,7 @@ net.core.wmem_max = 16777216
 net.ipv4.tcp_rmem = 4096 87380 16777216
 net.ipv4.tcp_wmem = 4096 65536 16777216
 net.netfilter.nf_conntrack_max = 524288
+vm.overcommit_memory = 1
 vm.swappiness = 10
 
 
@@ -55,19 +56,32 @@ server:
 
 IMPORTANT!
 
+Optimization for Lab VM (1GB-2GB RAM)
+
 
 /etc/sysctl.d/99-unbound.conf
 
-# Optimization for Lab VM (1GB-2GB RAM)
+###################################################################
+# System performance settings for Unbound (Linux kernel)
+#
+
+# Increase auto tuning TCP buffer limits
 net.core.rmem_max = 4194304
 net.core.wmem_max = 4194304
+
+# Increase memory thresholds to prevent packet dropping
+# The maximum buffer size setable using setsockopt
 net.ipv4.tcp_rmem = 4096 87380 4194304
 net.ipv4.tcp_wmem = 4096 65536 4194304
 
+# Maximum limit of connections tracked by the nftables (4x hashsize/buckets)
 # Balanced Conntrack to prevent Out of Memory
 net.netfilter.nf_conntrack_max = 131072
 
-# Moderate Swappiness
+# Kernel Virtual Memory Overcommit Mode
+vm.overcommit_memory = 1
+
+# Control swap usage (moderate swappiness)
 vm.swappiness = 20
 
 
