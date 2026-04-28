@@ -12,6 +12,7 @@ modprobe nf_conntrack
 # Update the size of the hash table (buckets)
 sysctl -a | grep conntrack_buckets
 
+echo 131072 | tee /sys/module/nf_conntrack/parameters/hashsize
 echo "options nf_conntrack hashsize=131072" | tee /etc/modprobe.d/conntrack.conf
 
 # Confirm that the value was applied
@@ -19,7 +20,7 @@ sysctl net.netfilter.nf_conntrack_max
 
 ---------------------------------------------------------------------------------------
 
-# System tuning configuration (Linux kernel) for a 4GB/8GB RAM server (200 endpoints)
+# System tuning configuration (Linux kernel) for a 4GB/8GB RAM server (+200 endpoints)
 
 net.core.rmem_max = 16777216
 net.core.wmem_max = 16777216
@@ -32,7 +33,7 @@ vm.swappiness = 10
 
 # Applies changes immediately without needing to restart
 # Enforce memory settings and firewall maximum limit
-sysctl -p
+sysctl --system
 
 
 ---------------------------------------------------------------------------------------
@@ -49,60 +50,4 @@ server:
     rrset-cache-slabs: 4
     infra-cache-slabs: 4
     key-cache-slabs: 4
-
-
-
----------------------------------------------------------------------------------------
-
-IMPORTANT!
-
-Optimization for Lab VM (1GB-2GB RAM)
-
-
-/etc/sysctl.d/99-unbound.conf
-
-###################################################################
-# System performance settings for Unbound (Linux kernel)
-#
-
-# Increase auto tuning TCP buffer limits
-net.core.rmem_max = 4194304
-net.core.wmem_max = 4194304
-
-# Increase memory thresholds to prevent packet dropping
-# The maximum buffer size setable using setsockopt
-net.ipv4.tcp_rmem = 4096 87380 4194304
-net.ipv4.tcp_wmem = 4096 65536 4194304
-
-# Maximum limit of connections tracked by the nftables (4x hashsize/buckets)
-# Balanced Conntrack to prevent Out of Memory
-net.netfilter.nf_conntrack_max = 131072
-
-# Kernel Virtual Memory Overcommit Mode
-vm.overcommit_memory = 1
-
-# Control swap usage (moderate swappiness)
-vm.swappiness = 20
-
-
-
-
-# Check if the module is loaded in the system
-modprobe nf_conntrack
-
-# Update the size of the hash table (buckets)
-echo "options nf_conntrack hashsize=32768" | tee /etc/modprobe.d/conntrack.conf
-
-
-
-
-/etc/unbound/unbound.conf
-
-server:
-    so-rcvbuf: 4m
-    so-sndbuf: 4m
-    msg-cache-slabs: 2
-    rrset-cache-slabs: 2
-    infra-cache-slabs: 2
-    key-cache-slabs: 2
 
