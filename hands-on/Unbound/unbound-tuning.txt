@@ -12,7 +12,7 @@ modprobe nf_conntrack
 # Update the size of the hash table (buckets)
 sysctl -a | grep conntrack_buckets
 
-echo "options nf_conntrack hashsize=262144" | tee /etc/modprobe.d/conntrack.conf
+echo "options nf_conntrack hashsize=131072" | tee /etc/modprobe.d/conntrack.conf
 
 # Confirm that the value was applied
 sysctl net.netfilter.nf_conntrack_max
