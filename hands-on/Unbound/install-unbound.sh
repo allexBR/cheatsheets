@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 29 18:59:42 UTC 2026
+# Last review date: Wed Apr 29 19:05:42 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -98,7 +98,7 @@ apt install -y dns-root-data unbound-anchor
 /usr/sbin/update-ca-certificates
 
 # Point the Python interpreter to Python 3 (current default)
-apt install -y python-is-python3
+apt install -y python-is-python3 conntrack
 
 # Create the directory /var/lib/unbound/ and grant it the necessary permissions
 install -d -m 755 -o unbound -g unbound /var/lib/unbound/
@@ -107,7 +107,7 @@ install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 /usr/sbin/unbound-anchor -a /var/lib/unbound/root.key
 
 # Unbound system user must have write permission to the file
-chown unbound:unbound /var/lib/unbound/root.key && chmod 644 /var/lib/unbound/root.key
+chown -R unbound:unbound /var/lib/unbound/ && chmod 644 /var/lib/unbound/root.key
 
 # Install libraries and packages required to start compiling
 apt install -y build-essential \
