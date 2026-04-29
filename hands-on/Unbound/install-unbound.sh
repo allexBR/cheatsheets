@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 29 16:21:12 UTC 2026
+# Last review date: Wed Apr 29 18:59:42 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -149,6 +149,10 @@ net.core.wmem_max = 4194304
 net.ipv4.tcp_rmem = 4096 87380 4194304
 net.ipv4.tcp_wmem = 4096 65536 4194304
 
+# Enables TCP Fast Open (TFO) to reduce latency in the TCP handshake
+# client=1, server=2, both=3
+net.ipv4.tcp_fastopen = 3
+
 # Maximum limit of connections tracked by the nftables (4x hashsize/buckets)
 # Balanced Conntrack to prevent Out of Memory
 net.netfilter.nf_conntrack_max = 131072
@@ -229,7 +233,7 @@ mkdir -p /var/log/unbound && touch /var/log/unbound/unbound.log
 chown -R unbound:unbound /var/log/unbound/ && chmod 664 /var/log/unbound/unbound.log
 
 # Create the directory /etc/unbound/conf.d/ and grant it the necessary permissions
-install -d -m 755 -o root -g unbound /etc/unbound/conf.d/
+install -d -m 755 -o root -g unbound /etc/unbound/unbound.conf.d/
 
 # Create a symbolic link to the root.hints file in Unbound default path
 ln -s /usr/share/dns/root.hints /etc/unbound
@@ -265,7 +269,7 @@ cat > /etc/unbound/unbound.conf <<EOF
 ###################################################################################
 
 server:
-        # Common Server Options
+        ## Common Server Options
         directory: "/etc/unbound"
         username: unbound
         chroot: ""
@@ -277,11 +281,13 @@ server:
         do-ip6: yes
         prefer-ip6: no
 
-        # Default Interface to Bind to (listen on all interfaces = 0.0.0.0 - ::0)
+        ## Default Interface to Bind to
+        # Listen on all interfaces = 0.0.0.0 - ::0
         interface-automatic: no
         interface: 127.0.0.1
         interface: ::1
 
+        ## Access Control Options
         # Control which clients are allowed to make (recursive) queries to this server
         # By default everything is refused, except for localhost
         access-control: 127.0.0.0/8 allow
@@ -290,7 +296,7 @@ server:
         access-control: 172.16.0.0/12 allow
         access-control: 192.168.0.0/16 allow
 
-        # Logging Options
+        ## Logging Options
         use-syslog: no
         logfile: /var/log/unbound/unbound.log
         verbosity: 1
@@ -301,48 +307,51 @@ server:
         log-servfail: yes
         log-time-ascii: yes
 
-        # Statistics Options
+        ## Statistics Options
         statistics-interval: 0
         statistics-cumulative: no
         extended-statistics: yes
 
-        # Prefetching settings
+        ## Prefetching settings
         prefetch: yes
         prefetch-key: yes
         minimal-responses: yes
 
-        # Privacy Options
+        ## Privacy Options
         hide-identity: yes
         hide-version: yes
         aggressive-nsec: yes
         qname-minimisation: yes
 
-        # System Performance Options
+        ## System Performance Options
         # Set num-threads equal to the number of CPU cores on the system.
         # For 4 CPUs with 2 cores each, use 8.
-        # Set *-slabs to a power of 2 close to the num-threads value.
-        # Do this for msg-cache-slabs, rrset-cache-slabs, infra-cache-slabs and key-cache-slabs.
-        # This reduces lock contention.
+        # Threading and Cache Slabs
         num-threads: 2
         msg-cache-slabs: 2
         rrset-cache-slabs: 2
         infra-cache-slabs: 2
         key-cache-slabs: 2
+        # Cache and TTL
         cache-min-ttl: 0
         cache-max-ttl: 86400
         msg-cache-size: 64m
         rrset-cache-size: 128m
+        # Limits and Timeouts
         outgoing-range: 8192
         num-queries-per-thread: 4096
-        rrset-roundrobin: yes
         serve-expired: yes
         serve-expired-reply-ttl: 0
+        serve-expired-ttl-reset: no
+        # Network Buffers and Process Management
         so-sndbuf: 4m
         so-rcvbuf: 4m
-        so-reuseport: yes
         do-daemonize: no
+        # Optimization Features
+        rrset-roundrobin: yes
+        so-reuseport: yes
 
-        # Hardening Options
+        ## Hardening Options
         harden-glue: yes
         harden-dnssec-stripped: yes
         harden-below-nxdomain: yes
@@ -350,16 +359,19 @@ server:
         harden-algo-downgrade: yes
         harden-short-bufsize: yes
         harden-referral-path: yes
-        serve-expired: no
-        serve-expired-ttl-reset: no
 
-        # Harden Against DNS Cache Poisoning
+        ## Harden Against DNS Cache Poisoning
         unwanted-reply-threshold: 1000000
 
-        # Timeout Behaviour Options
+        ## Harden for Spoofing Resistance
+        # Use 0x20-encoded random bits in queries
+        use-caps-for-id: yes
+
+        ## Timeout Behaviour Options
         infra-keep-probing: no
 
-        # Private networks for DNS Rebinding prevention (when enabled)
+        ## Private networks
+        # For DNS rebinding revention (when enabled).
         # Enforce privacy of these addresses. Strips them away from answers.
         private-address: 0.0.0.0/8
         private-address: 10.0.0.0/8
@@ -378,22 +390,23 @@ server:
         private-address: fd00::/8
         private-address: fe80::/10
 
-        # Module configuration - validator must be present for DNSSEC
-        # Default is "validator iterator"
+        ## Module configuration
+        # Validator must be present for DNSSEC.
+        # Default value is "validator iterator".
         module-config: "validator cachedb iterator"
 
-        # DNSSEC Validation Options
+        ## DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
         val-log-level: 1
 
-        # Bootstrap DNS Root Servers Options
+        ## Bootstrap DNS Root Servers Options
         root-hints: "/etc/unbound/root.hints"
- 
-        # TLS Options
+
+        ## TLS Options
         tls-cert-bundle: "/etc/ssl/certs/ca-certificates.crt"
 
 
-# Cache DB Module Options
+## Cache DB Module Options
 cachedb:
         backend: redis
         #redis-server-host: 127.0.0.1
@@ -404,7 +417,7 @@ cachedb:
         redis-expire-records: no
 
 
-# Forward zones over TLS (to Public DNS-over-TLS Upstreams)
+## Forward zones over TLS (to Public DNS-over-TLS Upstreams)
 #forward-zone:
 #        name: "."
 #        forward-tls-upstream: yes
@@ -420,7 +433,7 @@ cachedb:
 #        forward-addr: 149.112.122.20@853#protected.canadianshield.cira.ca
 
 
-# Remote Control Options
+## Remote Control Options
 remote-control:
         control-enable: yes
         control-interface: "/run/unbound.sock"
@@ -433,26 +446,26 @@ remote-control:
 
 # Import custom configs: the following line includes additional
 # configuration files from the /etc/unbound/unbound.conf.d directory.
-include: "/etc/unbound/conf.d/*.conf"
+include: "/etc/unbound/unbound.conf.d/*.conf"
 EOF
 
-# Unbound permission
+# Unbound config permission
 chmod 644 /etc/unbound/unbound.conf
 
 # Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
-cat > /etc/unbound/conf.d/doh.conf <<EOF
-server:
-        interface: 127.0.0.1@8443
-        https-port: 8443
-        http-endpoint: "/dns-query"
-        http-notls-downstream: yes
-        http-max-streams: 200
-        http-query-buffer-size: 1m
-        http-response-buffer-size: 1m
+cat > /etc/unbound/unbound.conf.d/doh.conf <<EOF
+#server:
+#        interface: 127.0.0.1@8443
+#        https-port: 8443
+#        http-endpoint: "/dns-query"
+#        http-notls-downstream: yes
+#        http-max-streams: 200
+#        http-query-buffer-size: 1m
+#        http-response-buffer-size: 1m
 EOF
 
-# Unbound permission
-chmod 644 /etc/unbound/conf.d/doh.conf
+# Unbound config permission
+chmod 644 /etc/unbound/unbound.conf.d/doh.conf
 
 # Check that all Unbound default settings are correct
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
