@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Tue Apr 28 16:33:22 UTC 2026
+# Last review date: Wed Apr 29 16:21:12 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -63,16 +63,23 @@ getent group | cut -d: -f1 | grep -w unbound
 apt install -y lsb-release curl gpg
 curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/redis.list
-apt update
-apt install -y redis-server
-cp /etc/redis/redis.conf /etc/redis/redis.conf.example
-sed -i '$a \
-\
-# Redis Unix Socket \
-unixsocket /run/redis/redis.sock \
-unixsocketperm 700' /etc/redis/redis.conf
+apt update && apt install -y redis-server
 
+# Redis Unix socket configuration
+sed -i.bak -e 's/^port 6379/# port 6379\nport 0/' \
+           -e '/# unixsocketperm 700/a unixsocket /run/redis/redis.sock\nunixsocketperm 770' \
+           /etc/redis/redis.conf
+/usr/sbin/usermod -aG redis unbound
 systemctl restart redis-server
+
+# Unix socket connection validation
+if su unbound -s /bin/bash -c "redis-cli -s /run/redis/redis.sock ping" | grep -q "PONG"; then
+    echo "[OK] Connection via Unix Socket successfully validated!"
+else
+    echo "[ERRO] The 'unbound' user was unable to communicate with Redis." >&2
+    echo "Please check the user and group permissions." >&2
+    exit 1
+fi
 
 echo "#########################################################"
 echo "# Starting the Unbound DNS installation. Please wait... #"
@@ -280,6 +287,7 @@ server:
         access-control: 127.0.0.0/8 allow
         access-control: ::1 allow
         access-control: ::ffff:127.0.0.1 allow
+        access-control: 172.16.0.0/12 allow
         access-control: 192.168.0.0/16 allow
 
         # Logging Options
@@ -415,7 +423,7 @@ cachedb:
 # Remote Control Options
 remote-control:
         control-enable: yes
-        control-interface: /run/unbound.sock
+        control-interface: "/run/unbound.sock"
         control-use-cert: no
         #server-key-file: "/etc/unbound/unbound_server.key"
         #server-cert-file: "/etc/unbound/unbound_server.pem"
@@ -428,6 +436,9 @@ remote-control:
 include: "/etc/unbound/conf.d/*.conf"
 EOF
 
+# Unbound permission
+chmod 644 /etc/unbound/unbound.conf
+
 # Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
 cat > /etc/unbound/conf.d/doh.conf <<EOF
 server:
@@ -439,6 +450,9 @@ server:
         http-query-buffer-size: 1m
         http-response-buffer-size: 1m
 EOF
+
+# Unbound permission
+chmod 644 /etc/unbound/conf.d/doh.conf
 
 # Check that all Unbound default settings are correct
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
