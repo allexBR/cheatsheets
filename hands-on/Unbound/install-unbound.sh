@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 29 19:18:09 UTC 2026
+# Last review date: Wed Apr 29 21:26:12 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -89,7 +89,16 @@ echo "#########################################################"
 apt clean ; apt update ; apt upgrade -y
 
 # Install required dependencies
-apt install -y apt-transport-https ca-certificates curl lsb-release
+apt install -y \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  lsb-release \
+  conntrack \
+  dnsutils \
+  dnstop \
+  htop \
+  whois
 
 # Install DNS root hints and DNSSEC trust anchor (required)
 apt install -y dns-root-data unbound-anchor
@@ -98,7 +107,7 @@ apt install -y dns-root-data unbound-anchor
 /usr/sbin/update-ca-certificates
 
 # Point the Python interpreter to Python 3 (current default)
-apt install -y python-is-python3 conntrack
+apt install -y python-is-python3
 
 # Create the directory /var/lib/unbound/ and grant it the necessary permissions
 install -d -m 755 -o unbound -g unbound /var/lib/unbound/
@@ -110,7 +119,8 @@ install -d -m 755 -o unbound -g unbound /var/lib/unbound/
 chown -R unbound:unbound /var/lib/unbound/ && chmod 644 /var/lib/unbound/root.key
 
 # Install libraries and packages required to start compiling
-apt install -y build-essential \
+apt install -y \
+  build-essential \
   bison \
   expat \
   flex \
@@ -181,6 +191,9 @@ UNBOUND_DIR=$(tar -tf unbound-latest.tar.gz | head -1 | cut -f1 -d"/")
 cd "$UNBOUND_DIR" || \
     { echo "[ERROR] Failed to enter directory $UNBOUND_DIR"; exit 1; }
 
+# Clean previous build artifacts
+make realclean || true
+
 # Configure the parameters to start the compilation
 ./configure -q \
   --prefix=/usr \
@@ -219,6 +232,9 @@ cd "$UNBOUND_DIR" || \
 
 # Compile Unbound from source code and convert it into binary files
 make -s -j$(nproc)
+
+# Compile the DoH test utility
+make dohclient
 
 # Install created binary files
 make install
@@ -461,6 +477,8 @@ cat > /etc/unbound/unbound.conf.d/doh.conf <<EOF
 #        interface: 127.0.0.1@8443
 #        https-port: 8443
 #        http-endpoint: "/dns-query"
+#        tls-service-key: "/etc/unbound/certs/unbound-key.pem"
+#        tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
 #        http-notls-downstream: yes
 #        http-max-streams: 200
 #        http-query-buffer-size: 1m
@@ -481,6 +499,74 @@ chmod 640 /etc/unbound/unbound_*.key && chmod 644 /etc/unbound/unbound_*.pem
 
 # Set recursive permissions for the Unbound system user in Unbound folder
 chown -R root:unbound /etc/unbound
+
+# Generate a self-signed certificate (for internal use)
+# IMPORTANT: Do not use this in a prod environment, only for testing!
+#-----------------------------------------------------------------------------
+# Define working directory where cert files will be generated
+WORK_DIR="/tmp/certs"
+mkdir -p "$WORK_DIR"
+cd "$WORK_DIR" || exit 1
+
+echo "[+] Operating in the directory: $WORK_DIR"
+
+# Create 'issuer' private key
+openssl ecparam -name secp384r1 -genkey -noout -out trustedCA.key
+
+# Create 'issuer' certificate (Root CA)
+openssl req -x509 -new -nodes -key trustedCA.key -sha384 -days 3650 \
+  -subj "/C=US/ST=Texas/L=Houston/O=WebSSL Corp/CN=Trusted SSL CA" \
+  -out trustedCA.crt
+
+# Create 'client' private key
+openssl ecparam -name secp384r1 -genkey -noout -out unbound.key
+
+# Define server IP variable for SAN
+SERVER_IP=$(ip route get 1.1.1.1 | grep -oP 'src \K\S+')
+
+# Create SAN (Subject Alternative Name) extension file
+cat > unbound.ext << EOF
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = ${SERVER_IP}
+DNS.1 = dns.local
+EOF
+
+# Create 'client' certificate signing request (CSR) file
+openssl req -new -key unbound.key \
+  -subj "/CN=dns.local" \
+  -out unbound.csr
+
+# Sign the 'client' certificate with Root CA
+openssl x509 -req -in unbound.csr -CA trustedCA.crt -CAkey trustedCA.key \
+  -CAcreateserial -out unbound.crt -days 3650 -sha384 -extfile unbound.ext
+
+# Create the Full Chain file
+# Unbound usually needs the server cert and key separately, 
+# but some clients validating the connection need the full chain.
+cat unbound.crt trustedCA.crt > unbound-fullchain.pem
+
+# Verify that the files were actually generated and copy them to the required path
+# After that, modify necessary permissions
+if [ -f unbound-fullchain.pem ]; then
+    cp unbound-fullchain.pem /etc/unbound/certs/unbound-cert.pem
+    cp unbound.key /etc/unbound/certs/unbound-key.pem
+    chmod 644 /etc/unbound/certs/unbound-cert.pem
+    chmod 600 /etc/unbound/certs/unbound-key.pem
+    chown -R unbound:unbound /etc/unbound/certs
+    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
+else
+    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
+    exit 1
+fi
+
+# Cleanup temp files
+rm -rf "$WORK_DIR"
 
 # Enable log rotation
 cat > /etc/logrotate.d/unbound <<EOF
