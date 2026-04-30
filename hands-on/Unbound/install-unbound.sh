@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 29 21:51:09 UTC 2026
+# Last review date: Thu Apr 30 15:59:32 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -306,8 +306,8 @@ server:
         ## Default Interface to Bind to
         # Listen on all interfaces = 0.0.0.0 - ::0
         interface-automatic: no
-        interface: 127.0.0.1
-        interface: ::1
+        interface: 0.0.0.0
+        interface: ::0
 
         ## Access Control Options
         # Control which clients are allowed to make (recursive) queries to this server
@@ -334,7 +334,7 @@ server:
         statistics-cumulative: no
         extended-statistics: yes
 
-        ## Prefetching settings
+        ## Prefetching Options
         prefetch: yes
         prefetch-key: yes
         minimal-responses: yes
@@ -392,7 +392,7 @@ server:
         ## Timeout Behaviour Options
         infra-keep-probing: no
 
-        ## Private networks
+        ## Private Networks Options
         # For DNS rebinding revention (when enabled).
         # Enforce privacy of these addresses. Strips them away from answers.
         private-address: 0.0.0.0/8
@@ -412,13 +412,14 @@ server:
         private-address: fd00::/8
         private-address: fe80::/10
 
-        ## Module configuration
+        ## Module Configuration Options
         # Validator must be present for DNSSEC.
         # Default value is "validator iterator".
         module-config: "validator cachedb iterator"
 
         ## DNSSEC Validation Options
         auto-trust-anchor-file: "/var/lib/unbound/root.key"
+        val-clean-additional: yes
         val-log-level: 1
 
         ## Bootstrap DNS Root Servers Options
@@ -474,22 +475,60 @@ EOF
 # Unbound config permission
 chmod 644 /etc/unbound/unbound.conf
 
-# Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
+# Creates a custom Unbound configuration file for DNS-over-HTTPS
 cat > /etc/unbound/unbound.conf.d/doh.conf <<EOF
+#=================================#
+#     DNS-over-HTTPS Settings     #
+#=================================#
+
 server:
+        # Interface for DoH (listen all interfaces)
         interface: 0.0.0.0@8443
+        interface: ::0@8443
+
+        # HTTPS port
         https-port: 8443
+
+        # Endpoint DoH
         http-endpoint: "/dns-query"
+
+        # TLS certificates
         tls-service-key: "/etc/unbound/certs/unbound-key.pem"
         tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
+
+        # Enable DoH service without TLS certificates
         #http-notls-downstream: yes
+
+        # Optimization Features
         http-max-streams: 200
         http-query-buffer-size: 1m
         http-response-buffer-size: 1m
 EOF
 
+# Creates a custom Unbound configuration file for DNS-over-TLS
+cat > /etc/unbound/unbound.conf.d/dot.conf <<EOF
+#===============================#
+#     DNS-over-TLS Settings     #
+#===============================#
+
+server:
+        # Interface for DoT (listen all interfaces)
+        interface: 0.0.0.0@853
+        interface: ::0@853
+
+        # TLS port
+        tls-port: 853
+
+        # TLS certificates
+        tls-service-key: "/etc/unbound/certs/unbound-key.pem"
+        tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
+
+        # Supported TLS cipher suites (modern only)
+        tls-ciphers: "PROFILE=SYSTEM"
+EOF
+
 # Unbound config permission
-chmod 644 /etc/unbound/unbound.conf.d/doh.conf
+chmod 644 /etc/unbound/unbound.conf.d/doh.conf /etc/unbound/unbound.conf.d/dot.conf
 
 # Check that all Unbound default settings are correct
 /usr/sbin/unbound-checkconf /etc/unbound/unbound.conf
