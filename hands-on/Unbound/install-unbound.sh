@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 30 15:59:32 UTC 2026
+# Last review date: Thu Apr 30 16:25:32 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -596,6 +596,7 @@ cat unbound.crt trustedCA.crt > unbound-fullchain.pem
 # Verify that the files were actually generated and copy them to the required path
 # After that, modify necessary permissions
 if [ -f unbound-fullchain.pem ]; then
+    cp unbound.crt /etc/unbound/certs/doh.crt
     cp unbound-fullchain.pem /etc/unbound/certs/unbound-cert.pem
     cp unbound.key /etc/unbound/certs/unbound-key.pem
     chmod 644 /etc/unbound/certs/unbound-cert.pem
