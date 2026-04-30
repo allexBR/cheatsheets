@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 30 16:39:32 UTC 2026
+# Last review date: Thu Apr 30 17:46:52 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -98,6 +98,7 @@ apt install -y \
   dnsutils \
   dnstop \
   htop \
+  knot-dnsutils \
   whois
 
 # Install DNS root hints and DNSSEC trust anchor (required)
@@ -393,8 +394,8 @@ server:
         infra-keep-probing: no
 
         ## Private Networks Options
-        # For DNS rebinding revention (when enabled).
-        # Enforce privacy of these addresses. Strips them away from answers.
+        # Prevents DNS rebinding attacks (when enabled).
+        # Block responses containing private IP addresses. Strips them away from answers.
         private-address: 0.0.0.0/8
         private-address: 10.0.0.0/8
         private-address: 100.64.0.0/10
@@ -411,6 +412,18 @@ server:
         private-address: fc00::/8
         private-address: fd00::/8
         private-address: fe80::/10
+
+        ## Private Domain Options
+        # Allow private addresses for specific domains
+        # Useful for internal DNS resolution
+        #private-domain: "home.local"
+        #private-domain: "my.company.internal"
+
+        ## Local Zones Options
+        # Useful for internal domains
+        #local-zone: "home.local." static
+        #local-data: "router.home.local. A 192.168.1.1"
+        #local-data: "server.home.local. A 192.168.1.10"
 
         ## Module Configuration Options
         # Validator must be present for DNSSEC.
@@ -492,12 +505,12 @@ server:
         # Endpoint DoH
         http-endpoint: "/dns-query"
 
+        # DoH service without TLS certificates
+        http-notls-downstream: no
+
         # TLS certificates
         tls-service-key: "/etc/unbound/certs/unbound-key.pem"
         tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
-
-        # Enable DoH service without TLS certificates
-        #http-notls-downstream: yes
 
         # Optimization Features
         http-max-streams: 200
@@ -522,9 +535,6 @@ server:
         # TLS certificates
         tls-service-key: "/etc/unbound/certs/unbound-key.pem"
         tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
-
-        # Supported TLS cipher suites (modern only)
-        #tls-ciphers: "PROFILE=SYSTEM"
 EOF
 
 # Unbound config permission
