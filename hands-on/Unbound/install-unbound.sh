@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Apr 29 21:26:12 UTC 2026
+# Last review date: Wed Apr 29 21:44:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -473,16 +473,16 @@ chmod 644 /etc/unbound/unbound.conf
 
 # Creates a custom Unbound configuration file for DNS-over-HTTPS queries forwarding
 cat > /etc/unbound/unbound.conf.d/doh.conf <<EOF
-#server:
-#        interface: 127.0.0.1@8443
-#        https-port: 8443
-#        http-endpoint: "/dns-query"
-#        tls-service-key: "/etc/unbound/certs/unbound-key.pem"
-#        tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
-#        http-notls-downstream: yes
-#        http-max-streams: 200
-#        http-query-buffer-size: 1m
-#        http-response-buffer-size: 1m
+server:
+        interface: 0.0.0.0@8443
+        https-port: 8443
+        http-endpoint: "/dns-query"
+        tls-service-key: "/etc/unbound/certs/unbound-key.pem"
+        tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
+        #http-notls-downstream: yes
+        http-max-streams: 200
+        http-query-buffer-size: 1m
+        http-response-buffer-size: 1m
 EOF
 
 # Unbound config permission
@@ -558,7 +558,7 @@ if [ -f unbound-fullchain.pem ]; then
     cp unbound.key /etc/unbound/certs/unbound-key.pem
     chmod 644 /etc/unbound/certs/unbound-cert.pem
     chmod 600 /etc/unbound/certs/unbound-key.pem
-    chown -R unbound:unbound /etc/unbound/certs
+    chown unbound:unbound /etc/unbound/certs/unbound-cert.pem /etc/unbound/certs/unbound-key.pem
     echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
 else
     echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
