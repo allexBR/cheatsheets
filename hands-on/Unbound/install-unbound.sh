@@ -2,7 +2,7 @@
 # -----------------------------------------------------------------------------------
 # Compiling and Installing Unbound DNS (with cache DB module) on Debian Server
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Thu Apr 30 16:25:32 UTC 2026
+# Last review date: Thu Apr 30 16:39:32 UTC 2026
 # -----------------------------------------------------------------------------------
 
 # Validating privileges and re-executing as root
@@ -524,7 +524,7 @@ server:
         tls-service-pem: "/etc/unbound/certs/unbound-cert.pem"
 
         # Supported TLS cipher suites (modern only)
-        tls-ciphers: "PROFILE=SYSTEM"
+        #tls-ciphers: "PROFILE=SYSTEM"
 EOF
 
 # Unbound config permission
