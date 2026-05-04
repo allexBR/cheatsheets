@@ -172,7 +172,7 @@ systemctl restart rsyslog ntopng suricata
 rsyslogd -N1
 ```
 ```
-Output:
+> Output:
 rsyslogd: version 8.2504.0, config validation run (level 1), master config /etc/rsyslog.conf
 rsyslogd: End of config validation run. Bye.
 ```
