@@ -123,6 +123,9 @@ sed -i '/#-m=10.10.123.0\/24,10.10.124.0\/24/a \
 # Capture all network traffic\
 --promiscuous=' /etc/ntopng/ntopng.conf
 ```
+```
+sed -i 
+```
 <br/>
 
 ### • Changes default values (filetype and facility) in suricata.yaml:
@@ -167,6 +170,13 @@ systemctl restart rsyslog ntopng suricata
 ### • Validate Rsyslog settings:
 ```
 rsyslogd -N1
+```
+<br/>
+
+```
+Output:
+rsyslogd: version 8.2504.0, config validation run (level 1), master config /etc/rsyslog.conf
+rsyslogd: End of config validation run. Bye.
 ```
 <br/>
 
