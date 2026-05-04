@@ -171,8 +171,6 @@ systemctl restart rsyslog ntopng suricata
 ```
 rsyslogd -N1
 ```
-<br/>
-
 ```
 Output:
 rsyslogd: version 8.2504.0, config validation run (level 1), master config /etc/rsyslog.conf
