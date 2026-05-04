@@ -5,13 +5,32 @@
 NOTE: The following network settings are required for the Suricata VM (with Debian 13 installed) works in transparent bridge mode.
 
 
-
 # Install bridge-utils package (required):
 apt update && apt install -y bridge-utils
 
 
+# Create the bridge device:
+brctl addbr br0
 
-# Template Suricata VM (IDS inline - transparent bridge mode):
+
+# Check which interfaces exist on your computer:
+ip addr show | grep ^[0-9]
+
+
+# Add all the interfaces you want to the bridge:
+brctl addif br0 eth0 eth1 ...
+
+
+# Finally, bring your bridge up:
+ifup br0
+
+
+
+----------------------------------------------------------------------------------------
+
+# Template Suricata VM (IDS inline - transparent bridge mode)
+# NOTE: Set up interfaces manually, avoiding conflicts with, e.g., network manager.
+
 
 nano /etc/network/interfaces
 
@@ -40,13 +59,13 @@ iface br0 inet static
     address 192.168.1.100
     netmask 255.255.255.0
     gateway 192.168.1.1
-
-    bridge_ports ens33 ens34
-    bridge_stp off
-    bridge_fd 0
-    bridge_maxwait 0
-
+    bridge_ports ens33 ens34   # bind to any ports
+    bridge_stp off             # disable Spanning Tree Protocol
+    bridge_waitport 0          # no delay before a port becomes available
+    bridge_fd 0                # no forwarding delay
+    bridge_maxwait 0           # if it is equal to 0 then no waiting is done
     up ip link set dev br0 up
+
 
 
 
