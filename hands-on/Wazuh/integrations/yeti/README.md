@@ -38,6 +38,8 @@
 
 • Yeti API Token.
 
+• Enter the IP address of your YETI instance in the `YETI_INSTANCE = 'http://<YETI_IP_ADDRESS>'` field located in the `custom-yeti.py` file.
+
 <br/>
 <br/>
 
