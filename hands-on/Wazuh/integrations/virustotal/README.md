@@ -1,6 +1,8 @@
 > [!TIP]
 > # Integration with VirusTotal API - Malware detection
+---
 
+<br/>
 
 About VirusTotal
 
