@@ -17,10 +17,12 @@
 <br/>
 <br/>
 
-Modifying Configuration file: /var/ossec/etc/ossec.conf
+# • Modifying Configuration file
 
-Open the ossec.conf file and insert the integration block shown below to forward the hash to the VirusTotal AP.
-
+Open the ossec.conf file and insert the integration block shown below to forward the hash to the VirusTotal API.
+```
+nano /var/ossec/etc/ossec.conf
+```
 ```
 <integration>
   <name>virustotal</name>
