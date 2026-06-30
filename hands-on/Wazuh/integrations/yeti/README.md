@@ -12,16 +12,23 @@
 > In a nutshell, Yeti allows you to:
 >
 > • Bulk search observables and get a pretty good guess on the nature of the threat, and how to find it on a system.
+> 
 > • Inversely, focus on a threat and quickly list all TTPs, malware, and related DFIR artifacts.
+> 
 > • Let CTI analysts focus on adding intelligence rather than worrying about machine-readable export formats.
+> 
 > • Incorporate your own data sources, analytics, and logic very easily.
 > 
 > This is done by:
 > 
 > • Storing technical and tactical CTI (observables, TTPs, campagins, etc.) from internal or external systems.
+> 
 > • Being a backend for DFIR-related queries: Yara signatures, Sigma rules, DFIQ.
+> 
 > • Providing a web API to automate queries (think incident management platform) and enrichment (think malware sandbox).
+> 
 > • Export the data in user-defined formats so that they can be ingested by third-party applications (SIEM, DFIR platforms).
+> 
 <br/>
 <br/>
 
