@@ -35,7 +35,7 @@ nano /var/ossec/etc/ossec.conf
 
 # • Using FIM to monitor a directory
 
-For this use case, we show how to monitor the folder /media/user/software on Linux endpoints.
+For this use case, we show how to monitor the folder /opt and /tmp on Linux endpoints.
 
 Add the following to the <syscheck> section of the configuration file. You can configure these options in the Wazuh server and the Wazuh agent /var/ossec/etc/ossec.conf file. You can also configure this capability remotely using the centralized configuration options provided by the agent.conf file. The list of all FIM configuration options is available in the syscheck section of the documentation. In our example, we configured the options below on the Wazuh server.
 
