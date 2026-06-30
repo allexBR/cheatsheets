@@ -1,0 +1,22 @@
+<!--
+  -  YETI rules
+-->
+
+<group name="yeti,">
+  <rule id="100500" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="integration">yeti</field>
+    <description>Yeti integration messages.</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="100501" level="10">
+    <if_sid>100500</if_sid>
+    <decoded_as>json</decoded_as>
+    <field name="yeti.info.source">\.+</field>
+    <description>Yeti Intel Alert: $(yeti.info.threat) detected! - Match Feed: $(yeti.info.source)!</description>
+    <mitre>
+      <id>T1586</id>
+    </mitre>
+  </rule>
+</group>
