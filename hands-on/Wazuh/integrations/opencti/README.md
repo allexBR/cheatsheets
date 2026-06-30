@@ -1,1 +1,75 @@
+> [!TIP]
+> # Integration with OpenCTI API - Threat Intelligence
+> • Created by allexBR<br/>
+> • Sources: https://github.com/socfortress/Wazuh-Rules/tree/main/OpenCTI<br/>
+>            https://github.com/opencti-platform/opencti
+---
 
+<br/>
+
+> ### # About
+> OpenCTI is an open source platform allowing organizations to manage their cyber threat intelligence knowledge and observables. It has been created in order to structure, store, organize and visualize technical and non-technical information about cyber threats.
+> 
+> The structuration of the data is performed using a knowledge schema based on the STIX2 standards. It has been designed as a modern web application including a GraphQL API and a UX-oriented frontend. Also, OpenCTI can be integrated with other tools and applications such as MISP, TheHive, MITRE ATT&CK, etc.
+<br/>
+<br/>
+
+### # Implementation
+
+The Python script forwards the file hash to the MalwareBazaar API for verification. If the hash is identified in the MalwareBazaar database, it returns data.malwarebazaar.found=1; otherwise, it returns data.malwarebazaar.found=0. This functionality can be integrated with both syscheck (file integrity monitoring) and Sysmon Event ID 1 (process creation events).
+<br/>
+<br/>
+
+• Download the integration python script file
+```
+wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/custom-malwarebazaar.py
+```
+<br/>
+
+• Modifying required permissions
+```
+chmod 750 /var/ossec/integrations/custom-malwarebazaar.py
+chown root:wazuh /var/ossec/integrations/custom-malwarebazaar.py
+```
+<br/>
+
+• Modifying configuration file
+
+Open the ossec.conf file and insert the integration block shown below to forward the hash to the MalwareBazaar API.
+
+```
+nano /var/ossec/etc/ossec.conf
+```
+```
+  <!-- MalwareBazaar Integration -->
+  <integration>
+    <name>custom-malwarebazaar.py</name>
+    <hook_url>https://mb-api.abuse.ch/api/v1/</hook_url>
+    <api_key>API_KEY</api_key> <!-- YOUR MALWARE BAZZAR API-->
+    <rule_id>554</rule_id> <!-- ENTER THE RULE_ID -->
+    <alert_format>json</alert_format>
+  </integration>
+```
+<br/>
+
+• Download the XML rule file
+```
+wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/malwarebazaar_rules.xml
+```
+<br/>
+
+• Modifying required permissions
+```
+chmod 660 /var/ossec/etc/rules/malwarebazaar_rules.xml
+chown wazuh:wazuh /var/ossec/etc/rules/malwarebazaar_rules.xml
+```
+<br/>
+
+• Restart Wazuh Service
+
+After applying the configuration, you must restart the Wazuh manager:
+
+```
+systemctl restart wazuh-manager
+```
+<br/>
