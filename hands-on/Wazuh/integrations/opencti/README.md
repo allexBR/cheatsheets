@@ -1,5 +1,5 @@
 > [!TIP]
-> # OpenCTI Integration - Threat Intelligence
+> # Integration with OpenCTI - Threat Intelligence
 > • Created by allexBR<br/>
 > • Sources: https://github.com/socfortress/Wazuh-Rules/tree/main/OpenCTI<br/>
 >            https://github.com/opencti-platform/opencti
