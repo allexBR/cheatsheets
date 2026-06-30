@@ -40,7 +40,7 @@ Add the following to the <syscheck> section of the configuration file. You can c
 
 ```
 <syscheck>
-  <directories check_all="yes" realtime="yes">/media/user/software</directories>
+  <directories check_all="yes" realtime="yes">/opt,/tmp</directories>
 </syscheck>
 ```
 <br/>
