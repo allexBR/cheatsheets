@@ -21,7 +21,7 @@ GraphQL is a query language for APIs and a runtime for fulfilling those queries 
 <br/>
 <br/>
 
-• Download the integration scripts file
+• Download the integration script files.
 ```
 wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/opencti/custom-opencti
 ```
