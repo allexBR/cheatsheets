@@ -13,6 +13,14 @@
 <br/>
 <br/>
 
+### # Requirements
+
+• OpenCTI instance up and running.
+• OpenCTI API Token
+• Root CA used to sign OpenCTI’s digital certificate (if HTTPS enabled).
+<br/>
+<br/>
+
 ### # Implementation
 
 Wazuh-server will consume data stored in OpenCTI via its GraphQL API endpoint.
