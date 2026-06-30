@@ -18,9 +18,13 @@
 > This method uses a free API with many of VirusTotal's functionalities. However, it has some significant limitations, such as:
 >
 > • The Public API is limited to 500 requests per day and a rate of 4 requests per minute.
+> 
 > • The Public API must not be used in commercial products or services.
+> 
 > • The Public API must not be used in business workflows that do not contribute new files.
+> 
 > • You are not allowed to register multiple accounts to overcome the aforementioned limitations.
+> 
 <br/>
 <br/>
 
