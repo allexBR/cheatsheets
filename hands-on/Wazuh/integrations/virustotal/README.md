@@ -28,7 +28,9 @@
 <br/>
 <br/>
 
-# • Modifying Configuration file
+### # Implementation
+
+• Modifying configuration file
 
 Open the ossec.conf file and insert the integration block shown below to forward the hash to the VirusTotal API.
 ```
