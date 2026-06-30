@@ -43,7 +43,7 @@ chown root:wazuh /var/ossec/integrations/custom-opencti.py
 
 • Modifying configuration file
 
-Open the ossec.conf file and insert the integration block shown below to forward the hash to the MalwareBazaar API.
+Open the ossec.conf file and insert the integration block shown below.
 
 ```
 nano /var/ossec/etc/ossec.conf
