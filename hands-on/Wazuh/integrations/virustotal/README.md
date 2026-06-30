@@ -35,16 +35,17 @@ Open the ossec.conf file and insert the integration block shown below to forward
 nano /var/ossec/etc/ossec.conf
 ```
 ```
-<integration>
-  <name>virustotal</name>
-  <api_key>API_KEY</api_key> <!-- Replace with your VirusTotal API key -->
-  <group>syscheck</group>
-  <alert_format>json</alert_format>
-</integration>
+  <!-- VirusTotal Integration -->
+  <integration>
+    <name>virustotal</name>
+    <api_key>API_KEY</api_key> <!-- Replace with your VirusTotal API key -->
+    <group>syscheck</group>
+    <alert_format>json</alert_format>
+  </integration>
 ```
 <br/>
 
-# • Using FIM to monitor a directory
+• Using FIM to monitor a directory
 
 For this use case, we show how to monitor the folders /opt and /tmp on Linux endpoints.
 
@@ -57,6 +58,9 @@ Add the following to the <syscheck> section of the configuration file. You can c
 ```
 <br/>
 <br/>
+
+• Restart Wazuh Service
+
 After applying the configuration, you must restart the Wazuh manager:
 
 ```
