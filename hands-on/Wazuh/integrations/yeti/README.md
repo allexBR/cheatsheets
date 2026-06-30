@@ -51,14 +51,14 @@ The Python script forwards the file hash to the MalwareBazaar API for verificati
 
 • Download the integration script file
 ```
-wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/custom-malwarebazaar.py
+wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/yeti/custom-yeti.py
 ```
 <br/>
 
 • Modifying required permissions
 ```
-chmod 750 /var/ossec/integrations/custom-malwarebazaar.py
-chown root:wazuh /var/ossec/integrations/custom-malwarebazaar.py
+chmod 750 /var/ossec/integrations/custom-yeti.py
+chown root:wazuh /var/ossec/integrations/custom-yeti.py
 ```
 <br/>
 
@@ -70,12 +70,11 @@ Open the ossec.conf file and insert the integration block shown below to forward
 nano /var/ossec/etc/ossec.conf
 ```
 ```
-  <!-- MalwareBazaar Integration -->
+  <!-- YETI Threat Intel Integration -->
   <integration>
-    <name>custom-malwarebazaar.py</name>
-    <hook_url>https://mb-api.abuse.ch/api/v1/</hook_url>
-    <api_key>API_KEY</api_key> <!-- YOUR MALWARE BAZZAR API-->
-    <rule_id>554</rule_id> <!-- ENTER THE RULE_ID -->
+    <name>custom-yeti.py</name>
+    <api_key>YETI_API_KEY</api_key>
+    <group>syscheck,attack,sshd,ids</group>
     <alert_format>json</alert_format>
   </integration>
 ```
@@ -83,14 +82,14 @@ nano /var/ossec/etc/ossec.conf
 
 • Download the XML rules file
 ```
-wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/malwarebazaar_rules.xml
+wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/yeti/yeti_rules.xml
 ```
 <br/>
 
 • Modifying required permissions
 ```
-chmod 660 /var/ossec/etc/rules/malwarebazaar_rules.xml
-chown wazuh:wazuh /var/ossec/etc/rules/malwarebazaar_rules.xml
+chmod 660 /var/ossec/etc/rules/yeti_rules.xml
+chown wazuh:wazuh /var/ossec/etc/rules/yeti_rules.xml
 ```
 <br/>
 
