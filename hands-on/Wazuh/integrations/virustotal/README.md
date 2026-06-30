@@ -31,7 +31,7 @@ Open the ossec.conf file and insert the integration block shown below to forward
 ```
 <br/>
 
-Using FIM to monitor a directory
+# • Using FIM to monitor a directory
 
 For this use case, we show how to monitor the folder /media/user/software on Linux endpoints.
 
@@ -43,3 +43,11 @@ Add the following to the <syscheck> section of the configuration file. You can c
 </syscheck>
 ```
 <br/>
+<br/>
+After applying the configuration, you must restart the Wazuh manager:
+
+```
+systemctl restart wazuh-manager
+```
+<br/>
+
