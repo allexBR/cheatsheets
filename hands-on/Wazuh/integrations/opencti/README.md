@@ -1,5 +1,5 @@
 > [!TIP]
-> # Integration with OpenCTI API - Threat Intelligence
+> # OpenCTI Integration - Threat Intelligence
 > • Created by allexBR<br/>
 > • Sources: https://github.com/socfortress/Wazuh-Rules/tree/main/OpenCTI<br/>
 >            https://github.com/opencti-platform/opencti
@@ -16,7 +16,9 @@
 
 ### # Implementation
 
-The Python script forwards the file hash to the MalwareBazaar API for verification. If the hash is identified in the MalwareBazaar database, it returns data.malwarebazaar.found=1; otherwise, it returns data.malwarebazaar.found=0. This functionality can be integrated with both syscheck (file integrity monitoring) and Sysmon Event ID 1 (process creation events).
+Wazuh-server will consume data stored in OpenCTI via its GraphQL API endpoint.
+
+GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. The API query needs to be authenticated via an Auth HTTP header and the JSON body includes a query, values and search parameters.
 <br/>
 <br/>
 
