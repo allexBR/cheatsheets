@@ -69,7 +69,7 @@ nano /var/ossec/etc/ossec.conf
 ```
 <br/>
 
-• Download the XML rule file
+• Download the XML rules file
 ```
 wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/opencti/opencti_rules.xml
 ```
