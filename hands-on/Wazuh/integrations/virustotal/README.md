@@ -1,5 +1,7 @@
 > [!TIP]
 > # Integration with VirusTotal API - Malware detection
+> • Created by allexBR<br/>
+> • Sources: https://documentation.wazuh.com/current/user-manual/capabilities/malware-detection/virus-total-integration.html
 ---
 
 <br/>
