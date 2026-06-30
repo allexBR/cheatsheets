@@ -17,8 +17,8 @@
 
 • OpenCTI instance up and running.
 
-• OpenCTI API Token
-.
+• OpenCTI API Token.
+
 • Root CA used to sign OpenCTI’s digital certificate (if HTTPS enabled).
 
 <br/>
