@@ -1,8 +1,7 @@
 > [!TIP]
 > # Integration with OpenCTI - Threat Intelligence
 > • Created by allexBR<br/>
-> • Sources: https://github.com/socfortress/Wazuh-Rules/tree/main/OpenCTI<br/>
->            https://github.com/opencti-platform/opencti
+> • Source: https://github.com/socfortress/Wazuh-Rules/tree/main/OpenCTI
 ---
 
 <br/>
@@ -22,16 +21,23 @@ GraphQL is a query language for APIs and a runtime for fulfilling those queries 
 <br/>
 <br/>
 
-• Download the integration python script file
+• Download the integration scripts file
 ```
-wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/custom-malwarebazaar.py
+wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/opencti/custom-opencti
+```
+```
+wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/opencti/custom-opencti.py
 ```
 <br/>
 
 • Modifying required permissions
 ```
-chmod 750 /var/ossec/integrations/custom-malwarebazaar.py
-chown root:wazuh /var/ossec/integrations/custom-malwarebazaar.py
+chmod 750 /var/ossec/integrations/custom-opencti
+chown root:wazuh /var/ossec/integrations/custom-opencti
+```
+```
+chmod 750 /var/ossec/integrations/custom-opencti.py
+chown root:wazuh /var/ossec/integrations/custom-opencti.py
 ```
 <br/>
 
@@ -43,12 +49,10 @@ Open the ossec.conf file and insert the integration block shown below to forward
 nano /var/ossec/etc/ossec.conf
 ```
 ```
-  <!-- MalwareBazaar Integration -->
+  <!-- OpenCTI Integration -->
   <integration>
-    <name>custom-malwarebazaar.py</name>
-    <hook_url>https://mb-api.abuse.ch/api/v1/</hook_url>
-    <api_key>API_KEY</api_key> <!-- YOUR MALWARE BAZZAR API-->
-    <rule_id>554</rule_id> <!-- ENTER THE RULE_ID -->
+    <name>custom-opencti</name>
+    <group>sysmon_event1,sysmon_event3,sysmon_event6,sysmon_event7,sysmon_event_15,sysmon_event_22,syscheck</group>
     <alert_format>json</alert_format>
   </integration>
 ```
@@ -56,14 +60,14 @@ nano /var/ossec/etc/ossec.conf
 
 • Download the XML rule file
 ```
-wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/malwarebazaar_rules.xml
+wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/opencti/opencti_rules.xml
 ```
 <br/>
 
 • Modifying required permissions
 ```
-chmod 660 /var/ossec/etc/rules/malwarebazaar_rules.xml
-chown wazuh:wazuh /var/ossec/etc/rules/malwarebazaar_rules.xml
+chmod 660 /var/ossec/etc/rules/opencti_rules.xml
+chown wazuh:wazuh /var/ossec/etc/rules/opencti_rules.xml
 ```
 <br/>
 
