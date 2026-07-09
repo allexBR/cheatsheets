@@ -159,7 +159,7 @@ OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> apt -y install opensea
 ```
 <br/>
 
-• Hold the currently installed version of the OpenSearch package to prevent it from being automatically upgraded to a newer version when updates are installed.
+• Hold the currently installed version of the OpenSearch package to prevent it from being automatically upgraded to a newer version when updates are installed:
 ```
 apt-mark hold opensearch
 ```
@@ -171,7 +171,7 @@ nano /etc/opensearch/opensearch.yml
 ```
 <br/>
 
-Update the following fields for a minimum unsecured running state (single node).
+Update the following fields for a minimum unsecured running state (single node):
 ```
 cluster.name: graylog
 node.name: ${HOSTNAME}
@@ -184,12 +184,12 @@ plugins.security.disabled: true
 ```
 <br/>
 
-• Enable JVM options.
+• Enable JVM options:
 ```
 nano /etc/opensearch/jvm.options
 ```
 
-Now, update the Xms and Xmx settings with half of the installed system memory, like shown in the example below.
+Now, update the Xms and Xmx settings with half of the installed system memory, like shown in the example below:
 ```
 ## JVM configuration
 ################################################################
@@ -214,14 +214,14 @@ Now, update the Xms and Xmx settings with half of the installed system memory, l
 ```
 <br/>
 
-• Configure the kernel parameters at runtime.
+• Configure the kernel parameters at runtime:
 ```
 sysctl -w vm.max_map_count=262144
 echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
 ```
 <br/>
 
-• Finally, enable the system service.
+• Enable the system service:
 ```
 systemctl daemon-reload
 ```
@@ -302,4 +302,13 @@ root_password_sha2 =
 
 elasticsearch_hosts = https://admin:<opensearch-admin-password>@127.0.0.1:9200
 
+<br/>
+
+• Finally, enable the system service:
+```
+systemctl daemon-reload
+systemctl enable graylog-server.service
+systemctl start graylog-server.service
+systemctl --type=service --state=active | grep graylog
+```
 <br/>
