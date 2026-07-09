@@ -236,7 +236,7 @@ systemctl start opensearch.service
 
 ---
 
-### * Graylog deployment:
+**Graylog deployment**
 <br/>
 
 • Create an APT repository for Graylog:
@@ -263,7 +263,7 @@ sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/
 ```
 <br/>
 
-• Use the following command to create your password_secret for Graylog and make a note of it:
+• Use the following command to create your `password_secret` for Graylog and make a note of it:
 ```
 < /dev/urandom tr -dc A-Z-a-z-0-9 | head -c${1:-96};echo;
 ```
@@ -277,14 +277,16 @@ echo
 ```
 <br/>
 
-• Use the following command to create your root_password_sha2 and provide the alphanumeric password created in the previous step:
+• Use the following command to create your `root_password_sha2` and provide the alphanumeric password created in the previous step:
 ```
 echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
 ```
 <br/>
 
-> [!WARNING] Add password_secret and root_password_sha2 values to the configuration file<br/>
+> [!WARNING]
+> Add password_secret and root_password_sha2 values to the configuration file<br/>
 > as these are mandatory and Graylog will not start without them.
+<br/>
 
 • Edit the Graylog Configuration File:
 ```
