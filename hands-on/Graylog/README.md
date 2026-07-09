@@ -46,7 +46,7 @@ These installation steps also include installation of OpenSearch so that you can
 <br/>
 
 
-**Prerequisites:**
+***Prerequisites:***
 <br/>
 
 <img width="1189" height="548" alt="image" src="https://github.com/user-attachments/assets/f68809d5-aedd-41c7-adcd-e381a543be32" /><br/>
@@ -236,7 +236,7 @@ systemctl start opensearch.service
 
 ---
 
-**Graylog deployment**
+***Graylog deployment***
 <br/>
 <br/>
 
