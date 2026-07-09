@@ -76,35 +76,40 @@ systemctl status systemd-timesyncd
 ```
 <br/>
 
-• Download the integration script file
+• Initial system repositories update and install required dependencies:
 ```
-wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/custom-malwarebazaar.py
+apt clean ; apt update ; apt upgrade
 ```
-<br/>
-
-• Modifying required permissions
 ```
-chmod 750 /var/ossec/integrations/custom-malwarebazaar.py
-chown root:wazuh /var/ossec/integrations/custom-malwarebazaar.py
+apt install curl apt-transport-https gnupg openjdk-21-jdk-headless dirmngr sudo
 ```
 <br/>
 
-• Modifying configuration file
+• Install MongoDB:
+```
+sudo install -d -m 0755 /usr/share/keyrings
+```
+```
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
+```
+```
+echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
+```
+<br/>
 
-Open the ossec.conf file and insert the integration block shown below to forward the hash to the MalwareBazaar API.
-
+• Update system repositories and install MongoDB
 ```
-nano /var/ossec/etc/ossec.conf
+apt clean ; apt update
 ```
 ```
-  <!-- MalwareBazaar Integration -->
-  <integration>
-    <name>custom-malwarebazaar.py</name>
-    <hook_url>https://mb-api.abuse.ch/api/v1/</hook_url>
-    <api_key>API_KEY</api_key> <!-- YOUR MALWARE BAZZAR API-->
-    <rule_id>554</rule_id> <!-- ENTER THE RULE_ID -->
-    <alert_format>json</alert_format>
-  </integration>
+apt install -y mongodb-org
+```
+```
+systemctl daemon-reload
+systemctl enable mongod.service
+systemctl restart mongod.service
+systemctl --type=service --state=active | grep mongod
 ```
 <br/>
 
