@@ -53,6 +53,23 @@ These installation steps also include installation of OpenSearch so that you can
 <br/>
 <br/>
 
+• Adjust the system time synchronization:
+```
+nano /etc/systemd/timesyncd.conf
+```
+```
+NTP=a.st1.ntp.br b.st1.ntp.br c.st1.ntp.br d.st1.ntp.br
+FallbackNTP=0.br.pool.ntp.org 1.br.pool.ntp.org 2.br.pool.ntp.org 3.br.pool.ntp.org
+```
+<br/>
+
+```
+systemctl restart systemd-timesyncd
+```
+```
+systemctl status systemd-timesyncd
+```
+
 • Download the integration script file
 ```
 wget -P /var/ossec/integrations/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/custom-malwarebazaar.py
