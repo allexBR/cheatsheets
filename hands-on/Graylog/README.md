@@ -123,7 +123,7 @@ apt-mark hold mongodb-org
 
 • Install the necessary packages for OpenSearch deployment:
 ```
-sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl gnupg2
+apt update && apt install -y lsb-release ca-certificates curl gnupg2
 ```
 <br/>
 
