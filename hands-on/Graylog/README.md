@@ -1,7 +1,7 @@
 > [!TIP]
 > # Deploy a Free, Flexible and Open-source Powerful SIEM Solution with Graylog
 > • Created by allexBR<br/>
-> • Sources: https://graylog.org/products/source-available/
+> • Sources: https://graylog.org/products/source-available/<br/>
 >            https://go2docs.graylog.org/current/what_is_graylog/what_is_graylog.htm
 ---
 
