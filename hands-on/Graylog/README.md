@@ -188,7 +188,6 @@ plugins.security.disabled: true
 ```
 nano /etc/opensearch/jvm.options
 ```
-<br/>
 
 Now, update the Xms and Xmx settings with half of the installed system memory, like shown in the example below.
 ```
