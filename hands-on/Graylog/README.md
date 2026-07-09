@@ -52,7 +52,7 @@ These installation steps also include installation of OpenSearch so that you can
 <img width="1189" height="548" alt="image" src="https://github.com/user-attachments/assets/f68809d5-aedd-41c7-adcd-e381a543be32" /><br/>
 
 <br/>
-<br/>
+
 <br/>
 
 • Adjust the system time synchronization:
@@ -233,6 +233,11 @@ systemctl start opensearch.service
 ```
 <br/>
 
+<br/>
+
+---
+
+### * Graylog deployment:
 <br/>
 
 • Create an APT repository for Graylog:
