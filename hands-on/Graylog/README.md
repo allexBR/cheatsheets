@@ -345,6 +345,7 @@ bash create-self-signed-cert-bundle.sh
 ```
 <br/>
 
+• Create a Nginx server block for Graylog:
 ```
 nano /etc/nginx/conf.d/graylog.conf
 ```
