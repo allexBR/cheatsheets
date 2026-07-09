@@ -17,12 +17,19 @@
 > Graylog delivers critical capabilities to support your security posture and IT operations such as:
 > 
 > • Data aggregation and enrichment
+> 
 > • Real-time threat detection and alerting
+> 
 > • Security analytics and dashboards
+> 
 > • Forensic and incident investigation
+> 
 > • User and entity behavior analytics (UEBA)
+> 
 > • IT compliance reporting
+> 
 > • Threat intelligence integration
+> 
 > • Event correlation and monitoring
 <br/>
 <br/>
