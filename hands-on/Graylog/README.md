@@ -76,7 +76,7 @@ systemctl status systemd-timesyncd
 ```
 <br/>
 
-• Initial system repositories update and install required dependencies:
+• Initial update the system repositories and install required dependencies:
 ```
 apt clean ; apt update ; apt upgrade
 ```
@@ -98,7 +98,7 @@ echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mo
 ```
 <br/>
 
-• Update system repositories and install MongoDB
+• Update the system repositories and install MongoDB
 ```
 apt clean ; apt update
 ```
