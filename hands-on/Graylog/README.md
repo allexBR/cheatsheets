@@ -85,7 +85,7 @@ apt install curl apt-transport-https gnupg openjdk-21-jdk-headless dirmngr sudo
 ```
 <br/>
 
-• Install MongoDB:
+• Add the official MongoDB repository to the system:
 ```
 sudo install -d -m 0755 /usr/share/keyrings
 ```
@@ -96,12 +96,12 @@ curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
 ```
 echo "deb [signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
 ```
-<br/>
-
-• Update the system repositories and install MongoDB
 ```
 apt clean ; apt update
 ```
+<br/>
+
+• Install MongoDB:
 ```
 apt install -y mongodb-org
 ```
@@ -113,15 +113,33 @@ systemctl --type=service --state=active | grep mongod
 ```
 <br/>
 
-• Download the XML rules file
+• Hold the currently installed version of the MongoDB to prevent it from being automatically upgraded to a newer version:
 ```
-wget -P /var/ossec/etc/rules/ https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Wazuh/integrations/malwarebazaar/malwarebazaar_rules.xml
+apt-mark hold mongodb-org
 ```
 <br/>
 
-• Modifying required permissions
+<br/>
+
+• Add the official Graylog repository to the system:
 ```
-chmod 660 /var/ossec/etc/rules/malwarebazaar_rules.xml
-chown wazuh:wazuh /var/ossec/etc/rules/malwarebazaar_rules.xml
+wget https://packages.graylog2.org/repo/packages/graylog-7.1-repository_latest.deb
+
+dpkg -i graylog-7.1-repository_latest.deb
+
+apt clean ; apt update
 ```
 <br/>
+
+• Install Graylog Open:
+```
+apt install graylog-server
+```
+<br/>
+
+• Prevent accidental updates on the Graylog server:
+```
+apt-mark hold graylog-server
+```
+<br/>
+
