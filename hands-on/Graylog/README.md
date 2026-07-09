@@ -34,7 +34,8 @@
 <br/>
 <br/>
 
-## # Implementation
+**Implementation**
+<br/>
 
 This guide describes the recommended way to install Graylog on Debian Linux 13 (Trixie).<br/>
 
@@ -237,6 +238,7 @@ systemctl start opensearch.service
 ---
 
 **Graylog deployment**
+<br/>
 <br/>
 
 • Create an APT repository for Graylog:
