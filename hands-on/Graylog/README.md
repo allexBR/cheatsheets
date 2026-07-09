@@ -283,7 +283,7 @@ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut
 ```
 <br/>
 
-> [!Warning] Add password_secret and root_password_sha2 values to the configuration file<br/>
+> [!WARNING] Add password_secret and root_password_sha2 values to the configuration file<br/>
 > as these are mandatory and Graylog will not start without them.
 
 • Edit the Graylog Configuration File:
