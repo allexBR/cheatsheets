@@ -119,9 +119,9 @@ apt-mark hold mongodb-org
 
 <br/>
 
-The recommended method of installation is to follow the user documentation provided by the OpenSearch service.
+<br/>
 
-• Install the necessary packages:
+• Install the necessary packages for OpenSearch installation:
 ```
 sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl gnupg2
 ```
