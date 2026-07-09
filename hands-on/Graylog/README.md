@@ -57,7 +57,7 @@ These installation steps also include installation of OpenSearch so that you can
 
 • Adjust the system time synchronization:
 ```
-timedatectl set-timezone Brazil/East
+timedatectl set-timezone America/Sao_Paulo
 ```
 ```
 nano /etc/systemd/timesyncd.conf
