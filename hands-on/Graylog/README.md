@@ -36,7 +36,9 @@
 
 ## # Implementation
 
-This guide describes the recommended way to install Graylog on Debian Linux 13 (Trixie). All links and packages are present at the time of writing.<br/>
+This guide describes the recommended way to install Graylog on Debian Linux 13 (Trixie).<br/>
+
+All links and packages are present at the time of writing.<br/>
 
 These installation steps also include installation of OpenSearch so that you can manage your search backend manually.
 <br/>
