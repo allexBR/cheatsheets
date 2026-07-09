@@ -294,4 +294,12 @@ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut
 ```
 nano /etc/graylog/server/server.conf
 ```
+Look for the following lines in the Graylog configuration file (server.conf) and provide the data generated in the previous steps.
+
+password_secret = 
+
+root_password_sha2 = 
+
+elasticsearch_hosts = https://admin:<opensearch-admin-password>@127.0.0.1:9200
+
 <br/>
