@@ -257,7 +257,7 @@ apt install graylog-server uuid-runtime openjdk-21-jdk-headless
 ```
 <br/>
 
-• To connect to Graylog, set the http_bind_address value in the configuration file:
+• To connect to Graylog, set the `http_bind_address` value in the configuration file:
 ```
 sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/g' /etc/graylog/server/server.conf
 ```
@@ -284,7 +284,7 @@ echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut
 <br/>
 
 > [!WARNING]
-> Add password_secret and root_password_sha2 values to the configuration file<br/>
+> Add `password_secret` and `root_password_sha2` values to the configuration file<br/>
 > as these are mandatory and Graylog will not start without them.
 <br/>
 
@@ -298,7 +298,7 @@ password_secret =
 
 root_password_sha2 = 
 
-elasticsearch_hosts = https://admin:<opensearch-admin-password>@127.0.0.1:9200
+elasticsearch_hosts = `http://admin:<opensearch-admin-password>@127.0.0.1:9200`
 
 <br/>
 
