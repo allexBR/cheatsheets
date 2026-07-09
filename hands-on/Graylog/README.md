@@ -263,7 +263,7 @@ sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/
 ```
 <br/>
 
-• Use the following command to create your `password_secret` for Graylog and make a note of it:
+• Use the following command to create your password_secret for Graylog and make a note of it:
 ```
 < /dev/urandom tr -dc A-Z-a-z-0-9 | head -c${1:-96};echo;
 ```
