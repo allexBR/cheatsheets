@@ -3,10 +3,10 @@
 # Generating self-signed SSL/TLS certificates for Graylog WebUI via Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Jul 09 16:41:01 UTC 2026
+# Last review date: Wed Jul 09 20:47:21 UTC 2026
 # -----------------------------------------------------------------------------------
 
-set -e
+set -Eeuo pipefail
 # Validating privileges and re-executing as root
 # Check if the script is already running as root (UID 0)
 if [ "$(id -u)" -ne 0 ]; then
@@ -87,14 +87,18 @@ if [ -f graylog.crt ]; then
     chmod 600 /etc/ssl/private/graylog.key
     chmod 640 /etc/ssl/certs/graylog.pem
     chown root:root /etc/ssl/private/graylog.key /etc/ssl/certs/graylog.pem
-    echo -e "\e[32m>>> Certificates generated successfully! <<<\e[0m"
+    echo -e "\e[38;5;46mDone: Certificates  generated successfully!\e[0m"
 else
-    echo -e "\e[31m[X] Error: OpenSSL failed to generate certificates!\e[0m"
+    echo -e "\e[31mError: OpenSSL failed to generate certificates!\e[0m"
     exit 1
 fi
 
 # Remove temp files
 rm -rf /tmp/certs
+
+# Allow previous services or installation processes to settle
+echo -e "\e[93mThe script is still running! Please wait...\e[0m"
+sleep 5
 
 # Create /certs directory
 mkdir -p /etc/graylog/server/certs
@@ -102,6 +106,9 @@ mkdir -p /etc/graylog/server/certs
 # Check if Java is installed on the system; if not, install it
 if ! command -v java >/dev/null 2>&1; then
     echo "Java not found. Installing OpenJDK..."
+
+    apt clean
+    apt update
 
     JAVA_PKG=$(apt-cache search '^openjdk-[0-9]+-jdk-headless$' \
         | awk '{print $1}' \
@@ -113,7 +120,7 @@ if ! command -v java >/dev/null 2>&1; then
         exit 1
     fi
 
-    apt update && apt install -y "$JAVA_PKG"
+    apt install -y "$JAVA_PKG"
 fi
 
 # Locate Java cacerts file
@@ -151,7 +158,7 @@ chown root:root /etc/graylog/server/certs/graylog-ca.pem
 chmod 640 /etc/graylog/server/certs/graylog-ca.pem
 
 # Import certificate into Java Trust Store
-# keytool -importcert -cacerts -storepass changeit -alias graylog_ca -file /etc/graylog/server/certs/graylog-ca.pem
+# keytool -importcert -noprompt -cacerts -storepass changeit -alias graylog_ca -file /etc/graylog/server/certs/graylog-ca.pem
 if keytool -list \
     -keystore /etc/graylog/server/certs/cacerts \
     -storepass changeit \
@@ -169,3 +176,12 @@ keytool -importcert \
     -storepass changeit \
     -alias graylog_ca \
     -file /etc/graylog/server/certs/graylog-ca.pem
+
+# Add Java Trust Store configuration to Graylog JVM options
+sed -i.bak \
+'s|^GRAYLOG_SERVER_JAVA_OPTS=.*log4j2\.formatMsgNoLookups=true"$|'\
+'GRAYLOG_SERVER_JAVA_OPTS="$GRAYLOG_SERVER_JAVA_OPTS -Dlog4j2.formatMsgNoLookups=true '\
+'-Djavax.net.ssl.trustStore=/etc/graylog/server/certs/cacerts '\
+'-Djavax.net.ssl.trustStorePassword=changeit"|' \
+/etc/default/graylog-server
+
