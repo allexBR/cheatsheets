@@ -79,7 +79,7 @@ systemctl status systemd-timesyncd
 apt clean ; apt update ; apt upgrade
 ```
 ```
-apt install curl apt-transport-https gnupg openjdk-21-jdk-headless dirmngr sudo
+apt install apt-transport-https gnupg curl sudo
 ```
 <br/>
 
@@ -254,7 +254,7 @@ apt clean ; apt update
 
 • Install Graylog Open:
 ```
-apt install graylog-server
+apt install graylog-server uuid-runtime openjdk-21-jdk-headless
 ```
 <br/>
 
@@ -264,3 +264,34 @@ apt-mark hold graylog-server
 ```
 <br/>
 
+• To connect to Graylog, set the http_bind_address value in the configuration file:
+```
+sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/g' /etc/graylog/server/server.conf
+```
+<br/>
+
+• Use the following command to create your `password_secret` for Graylog and make a note of it:
+```
+< /dev/urandom tr -dc A-Z-a-z-0-9 | head -c${1:-96};echo;
+```
+<br/>
+
+• Generate a custom admin password for Graylog:
+```
+chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789.+-*'
+printf '%s\n' "$chars" | grep -o . | shuf | head -n 32 | tr -d '\n'
+echo
+```
+<br/>
+
+• Use the following command to create your root_password_sha2 and provide the alphanumeric password created in the previous step:
+```
+echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
+```
+<br/>
+
+• Edit the Graylog Configuration File:
+```
+nano /etc/graylog/server/server.conf
+```
+<br/>
