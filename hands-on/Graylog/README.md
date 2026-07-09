@@ -313,3 +313,114 @@ systemctl --type=service --state=active | grep graylog
 apt-mark hold graylog-server
 ```
 <br/>
+
+<br/>
+
+---
+
+***Graylog WebGUI HTTPS***
+<br/>
+<br/>
+
+• Download and install the following scripts:
+```
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
+```
+```
+chmod 744 install-nginx.sh
+```
+```
+bash install-nginx.sh
+```
+<br/>
+
+```
+cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Graylog/create-self-signed-cert-bundle.sh
+```
+```
+chmod 744 create-self-signed-cert-bundle.sh
+```
+```
+bash create-self-signed-cert-bundle.sh
+```
+<br/>
+
+```
+nano /etc/nginx/conf.d/graylog.conf
+```
+```
+server {
+    listen 80;
+    server_name app.graylog.local;
+    # Redirect everything to HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name app.graylog.local;
+
+    server_tokens off;
+
+    access_log  /var/log/nginx/eventviewer.access.log  main;
+
+    # SSL/TLS certs path
+    ssl_certificate     /etc/ssl/certs/graylog.pem;
+    ssl_certificate_key /etc/ssl/private/graylog.key;
+
+    # SSL/TLS security settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    #ssl_ciphers HIGH:!aNULL:!MD5:!SHA;
+    ssl_prefer_server_ciphers on;
+
+    ##############################
+    #--- Graylog Server HTTPS ---#
+    ##############################
+    location / {
+        # Internal address where Graylog is running
+        proxy_pass http://127.0.0.1:9000/;
+        # Critical headers for Graylog working over HTTPS
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Graylog-Server-URL https://$server_name/;
+        # Avoids problems with WebSockets and long connection times
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        # Buffer and Timeouts for large searches
+        proxy_read_timeout 90;
+        proxy_connect_timeout 90;
+    }
+
+    ##########################
+    #--- Security headers ---#
+    ##########################
+
+    # Content Security Policy (CSP)
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self' *.graylog.org *.graylog.com; frame-src 'self' *.graylog.org *.graylog.com;" always;
+    # Clickjacking protection
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    # MIME type protection (Sniffing)
+    add_header X-Content-Type-Options "nosniff" always;
+    # Cross-Site Scripting protection (XSS)
+    add_header X-XSS-Protection "1; mode=block" always;
+    # Referrer Policy
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    # Hardware Resource Restriction (Permissions Policy)
+    add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+}
+```
+<br/>
+
+```
+nginx -t -c /etc/nginx/nginx.conf
+```
+```
+systemctl restart nginx
+```
+<br/>
