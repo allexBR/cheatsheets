@@ -119,7 +119,122 @@ apt-mark hold mongodb-org
 
 <br/>
 
-• Add the official Graylog repository to the APT list:
+The recommended method of installation is to follow the user documentation provided by the OpenSearch service.
+
+• Install the necessary packages:
+```
+sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl gnupg2
+```
+<br/>
+
+• Create an APT repository for OpenSearch:
+```
+curl -o- https://artifacts.opensearch.org/publickeys/opensearch.pgp | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-keyring
+
+echo "deb [signed-by=/usr/share/keyrings/opensearch-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt stable main" | sudo tee /etc/apt/sources.list.d/opensearch-2.x.list
+
+apt clean ; apt update
+```
+<br/>
+
+• With the repository information added, list all available versions of OpenSearch:
+```
+apt list -a opensearch
+```
+<br/>
+
+• Generate a custom admin password for OpenSearch:
+```
+chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789.+-*'
+printf '%s\n' "$chars" | grep -o . | shuf | head -n 32 | tr -d '\n'
+echo
+```
+<br/>
+
+• Install OpenSearch 2.19.5:
+```
+OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> apt -y install opensearch=2.19.5
+```
+<br/>
+
+• Hold the currently installed version of the OpenSearch package to prevent it from being automatically upgraded to a newer version when updates are installed.
+```
+apt-mark hold opensearch
+```
+<br/>
+
+• OpenSearch configuration for Graylog:
+```
+nano /etc/opensearch/opensearch.yml
+```
+<br/>
+
+Update the following fields for a minimum unsecured running state (single node).
+```
+cluster.name: graylog
+node.name: ${HOSTNAME}
+path.data: /var/lib/opensearch
+path.logs: /var/log/opensearch
+discovery.type: single-node
+network.host: 0.0.0.0
+action.auto_create_index: false
+plugins.security.disabled: true
+```
+<br/>
+
+• Enable JVM options.
+```
+nano /etc/opensearch/jvm.options
+```
+<br/>
+
+Now, update the Xms and Xmx settings with half of the installed system memory, like shown in the example below.
+```
+## JVM configuration
+################################################################
+## IMPORTANT: JVM heap size
+################################################################
+##
+## You should always set the min and max JVM heap
+## size to the same value. For example, to set
+## the heap to 4 GB, set:
+##
+## -Xms4g
+## -Xmx4g
+##
+## See https://opensearch.org/docs/opensearch/install/important-settings/
+## for more information
+##
+################################################################
+# Xms represents the initial size of total heap space
+# Xmx represents the maximum size of total heap space
+-Xms1g
+-Xmx1g
+```
+<br/>
+
+• Configure the kernel parameters at runtime.
+```
+sysctl -w vm.max_map_count=262144
+echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
+```
+<br/>
+
+• Finally, enable the system service.
+```
+systemctl daemon-reload
+```
+```
+systemctl enable opensearch.service
+```
+```
+systemctl start opensearch.service
+```
+<br/>
+
+<br/>
+
+• Create an APT repository for Graylog:
 ```
 wget https://packages.graylog2.org/repo/packages/graylog-7.1-repository_latest.deb
 ```
