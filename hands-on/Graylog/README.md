@@ -257,12 +257,6 @@ apt install graylog-server uuid-runtime openjdk-21-jdk-headless
 ```
 <br/>
 
-• Prevent accidental updates on the Graylog server:
-```
-apt-mark hold graylog-server
-```
-<br/>
-
 • To connect to Graylog, set the http_bind_address value in the configuration file:
 ```
 sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/g' /etc/graylog/server/server.conf
@@ -309,5 +303,11 @@ systemctl daemon-reload
 systemctl enable graylog-server.service
 systemctl start graylog-server.service
 systemctl --type=service --state=active | grep graylog
+```
+<br/>
+
+• Prevent accidental updates on the Graylog server:
+```
+apt-mark hold graylog-server
 ```
 <br/>
