@@ -71,6 +71,7 @@ systemctl restart systemd-timesyncd
 ```
 systemctl status systemd-timesyncd
 ```
+<br/>
 
 • Download the integration script file
 ```
