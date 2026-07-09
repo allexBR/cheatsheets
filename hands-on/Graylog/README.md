@@ -66,8 +66,6 @@ nano /etc/systemd/timesyncd.conf
 NTP=a.st1.ntp.br b.st1.ntp.br c.st1.ntp.br d.st1.ntp.br
 FallbackNTP=0.br.pool.ntp.org 1.br.pool.ntp.org 2.br.pool.ntp.org 3.br.pool.ntp.org
 ```
-<br/>
-
 ```
 systemctl restart systemd-timesyncd
 ```
@@ -124,9 +122,11 @@ apt-mark hold mongodb-org
 • Add the official Graylog repository to the APT list:
 ```
 wget https://packages.graylog2.org/repo/packages/graylog-7.1-repository_latest.deb
-
+```
+```
 dpkg -i graylog-7.1-repository_latest.deb
-
+```
+```
 apt clean ; apt update
 ```
 <br/>
