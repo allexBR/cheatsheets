@@ -171,7 +171,7 @@ nano /etc/opensearch/opensearch.yml
 Update the following fields for a minimum unsecured running state (single node):
 ```
 cluster.name: graylog
-node.name: ${HOSTNAME}
+node.name: graylog-indexer
 path.data: /var/lib/opensearch
 path.logs: /var/log/opensearch
 discovery.type: single-node
