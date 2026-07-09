@@ -365,7 +365,7 @@ server {
 
     server_tokens off;
 
-    access_log  /var/log/nginx/eventviewer.access.log  main;
+    access_log  /var/log/nginx/graylog.access.log  main;
 
     # SSL/TLS certs path
     ssl_certificate     /etc/ssl/certs/graylog.pem;
