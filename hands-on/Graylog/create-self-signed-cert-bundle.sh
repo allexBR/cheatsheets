@@ -3,7 +3,7 @@
 # Generating self-signed SSL/TLS certificates for Graylog WebUI via Nginx
 # IMPORTANT: Do not use this in a prod environment, only for testing!
 # Created by allexBR | https://github.com/allexBR
-# Last review date: Wed Jul 09 20:47:21 UTC 2026
+# Last review date: Wed Jul 09 20:49:01 UTC 2026
 # -----------------------------------------------------------------------------------
 
 set -Eeuo pipefail
@@ -69,7 +69,7 @@ EOF
 
 # Create 'client' certificate signing request (CSR) file
 openssl req -new -key graylog.key \
-  -subj "/CN=Graylog Open-Source Edition" \
+  -subj "/CN=Graylog Open Edition" \
   -out graylog.csr
 
 # Create 'client' self-signed certificate (Valid for 10 years)
