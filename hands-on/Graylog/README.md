@@ -123,7 +123,7 @@ apt-mark hold mongodb-org
 
 • Install the necessary packages for OpenSearch deployment:
 ```
-apt update && apt install -y lsb-release ca-certificates curl gnupg2
+apt install -y lsb-release ca-certificates curl gnupg2
 ```
 <br/>
 
@@ -169,7 +169,6 @@ apt-mark hold opensearch
 ```
 nano /etc/opensearch/opensearch.yml
 ```
-<br/>
 
 Update the following fields for a minimum unsecured running state (single node):
 ```
