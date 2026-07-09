@@ -40,14 +40,16 @@ This guide describes the recommended way to install Graylog on Debian Linux 13 (
 
 These installation steps also include installation of OpenSearch so that you can manage your search backend manually.
 <br/>
+
 <br/>
+
 
 ### # Prerequisites:
 <br/>
 
 <img width="1189" height="548" alt="image" src="https://github.com/user-attachments/assets/f68809d5-aedd-41c7-adcd-e381a543be32" />
 <br/>
-
+<br/>
 
 • Download the integration script file
 ```
