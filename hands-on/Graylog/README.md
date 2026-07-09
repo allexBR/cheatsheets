@@ -85,7 +85,7 @@ apt install curl apt-transport-https gnupg openjdk-21-jdk-headless dirmngr sudo
 ```
 <br/>
 
-• Add the official MongoDB repository to the system:
+• Add the official MongoDB repository to the APT list:
 ```
 sudo install -d -m 0755 /usr/share/keyrings
 ```
@@ -101,7 +101,7 @@ apt clean ; apt update
 ```
 <br/>
 
-• Install MongoDB:
+• Install latest stable MongoDB:
 ```
 apt install -y mongodb-org
 ```
@@ -121,7 +121,7 @@ apt-mark hold mongodb-org
 
 <br/>
 
-• Add the official Graylog repository to the system:
+• Add the official Graylog repository to the APT list:
 ```
 wget https://packages.graylog2.org/repo/packages/graylog-7.1-repository_latest.deb
 
