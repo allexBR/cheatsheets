@@ -83,7 +83,7 @@ apt install curl apt-transport-https gnupg openjdk-21-jdk-headless dirmngr sudo
 ```
 <br/>
 
-• Add the official MongoDB repository to the APT list:
+• Create an APT repository for MongoDB:
 ```
 sudo install -d -m 0755 /usr/share/keyrings
 ```
@@ -130,9 +130,11 @@ sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl 
 • Create an APT repository for OpenSearch:
 ```
 curl -o- https://artifacts.opensearch.org/publickeys/opensearch.pgp | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-keyring
-
+```
+```
 echo "deb [signed-by=/usr/share/keyrings/opensearch-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt stable main" | sudo tee /etc/apt/sources.list.d/opensearch-2.x.list
-
+```
+```
 apt clean ; apt update
 ```
 <br/>
