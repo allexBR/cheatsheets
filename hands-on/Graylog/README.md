@@ -321,7 +321,7 @@ apt-mark hold graylog-server
 <br/>
 <br/>
 
-• Download and install the following scripts:
+• Download and install latest stable Nginx via script:
 ```
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Nginx/install-nginx.sh
 ```
@@ -333,6 +333,7 @@ bash install-nginx.sh
 ```
 <br/>
 
+• Download and install Graylog SSL/TLS certificate:
 ```
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Graylog/create-self-signed-cert-bundle.sh
 ```
@@ -422,5 +423,28 @@ nginx -t -c /etc/nginx/nginx.conf
 ```
 ```
 systemctl restart nginx
+```
+<br/>
+
+• Edit the Graylog configuration file:
+```
+nano /etc/graylog/server/server.conf
+```
+<br/>
+
+```
+http_bind_address = 127.0.0.1:9000
+
+http_publish_uri = http://127.0.0.1:9000/
+
+http_external_uri = https://app.graylog.local/
+
+http_non_proxy_hosts = app.graylog.local
+```
+<br/>
+
+• Restart service:
+```
+systemctl restart graylog-server
 ```
 <br/>
