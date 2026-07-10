@@ -103,6 +103,9 @@ apt clean ; apt update
 ```
 apt install -y mongodb-org
 ```
+<br/>
+
+• Enable the system service:
 ```
 systemctl daemon-reload
 systemctl enable mongod.service
@@ -206,8 +209,8 @@ Now, update the Xms and Xmx settings with half of the installed system memory, l
 ################################################################
 # Xms represents the initial size of total heap space
 # Xmx represents the maximum size of total heap space
--Xms1g
--Xmx1g
+-Xms2g
+-Xmx2g
 ```
 <br/>
 
@@ -221,11 +224,7 @@ echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
 • Enable the system service:
 ```
 systemctl daemon-reload
-```
-```
 systemctl enable opensearch.service
-```
-```
 systemctl start opensearch.service
 ```
 <br/>
@@ -256,7 +255,7 @@ apt install graylog-server uuid-runtime openjdk-21-jdk-headless
 ```
 <br/>
 
-• To connect to Graylog, set the `http_bind_address` value in the configuration file:
+• Set the `http_bind_address` value so that Graylog listens on all interfaces:
 ```
 sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/g' /etc/graylog/server/server.conf
 ```
