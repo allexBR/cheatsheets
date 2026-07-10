@@ -418,7 +418,7 @@ server {
 ```
 <br/>
 
-• Test and restart service:
+• Test and restart Nginx service:
 ```
 nginx -t -c /etc/nginx/nginx.conf
 ```
