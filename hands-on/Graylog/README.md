@@ -292,6 +292,8 @@ password_secret =
 
 root_password_sha2 = 
 
+root_timezone = America/Sao_Paulo
+
 elasticsearch_hosts = `http://admin:<opensearch-admin-password>@127.0.0.1:9200`
 
 <br/>
