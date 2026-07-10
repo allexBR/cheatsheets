@@ -53,8 +53,6 @@ These installation steps also include installation of OpenSearch so that you can
 
 <br/>
 
-<br/>
-
 • Adjust the system time synchronization:
 ```
 timedatectl set-timezone America/Sao_Paulo
