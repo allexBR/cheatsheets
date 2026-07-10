@@ -418,6 +418,7 @@ server {
 ```
 <br/>
 
+• Test and restart service:
 ```
 nginx -t -c /etc/nginx/nginx.conf
 ```
@@ -430,8 +431,6 @@ systemctl restart nginx
 ```
 nano /etc/graylog/server/server.conf
 ```
-<br/>
-
 ```
 http_bind_address = 127.0.0.1:9000
 
