@@ -423,10 +423,7 @@ systemctl restart nginx
 ```
 <br/>
 
-• Edit the Graylog configuration file:
-```
-nano /etc/graylog/server/server.conf
-```
+• Edit the Graylog configuration file: `nano /etc/graylog/server/server.conf`
 ```
 http_bind_address = 127.0.0.1:9000
 ```
