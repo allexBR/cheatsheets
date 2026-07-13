@@ -138,6 +138,12 @@ env OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> dpkg -i opensearch
 ```
 <br/>
 
+• Try connecting to the OpenSearch API:
+```
+curl -k -X GET https://localhost:9200 -u "admin:<custom-admin-password>"
+```
+<br/>
+
 • OpenSearch configuration for Graylog:
 ```
 nano /etc/opensearch/opensearch.yml
