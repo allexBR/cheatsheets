@@ -433,9 +433,6 @@ http_publish_uri = http://127.0.0.1:9000/
 ```
 http_external_uri = https://app.graylog.local/
 ```
-```
-http_non_proxy_hosts = app.graylog.local
-```
 <br/>
 
 • Restart service:
