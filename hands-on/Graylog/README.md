@@ -279,7 +279,7 @@ elasticsearch_hosts = `https://admin:<opensearch-admin-password>@127.0.0.1:9200`
 
 • Add the OpenSearch RootCA certificate to the Java Trust Keystore for HTTPS connection:
 ```
-keytool -importcert -cacerts -storepass changeit -alias opensearch_ca -file /etc/opensearch/root-ca.pem
+keytool -importcert -noprompt -cacerts -storepass changeit -alias opensearch_ca -file /etc/opensearch/root-ca.pem
 ```
 <br/>
 
