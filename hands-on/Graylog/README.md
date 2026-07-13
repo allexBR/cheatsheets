@@ -274,8 +274,14 @@ root_password_sha2 =
 
 root_timezone = America/Sao_Paulo
 
-elasticsearch_hosts = `http://admin:<opensearch-admin-password>@127.0.0.1:9200`
+elasticsearch_hosts = `https://admin:<opensearch-admin-password>@127.0.0.1:9200`
 
+<br/>
+
+• Add the OpenSearch RootCA certificate to the Java Trust Keystore for HTTPS connection:
+```
+keytool -importcert -cacerts -storepass changeit -alias opensearch_ca -file /etc/opensearch/root-ca.pem
+```
 <br/>
 
 • Finally, enable the system service:
