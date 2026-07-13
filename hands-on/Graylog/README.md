@@ -229,7 +229,7 @@ apt clean ; apt update
 
 • Install Graylog Open:
 ```
-apt install graylog-server uuid-runtime openjdk-21-jdk-headless
+apt install graylog-server uuid-runtime openjdk-25-jdk-headless
 ```
 <br/>
 
