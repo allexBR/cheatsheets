@@ -153,12 +153,11 @@ Update the following fields for a minimum unsecured running state (single node):
 ```
 cluster.name: graylog
 node.name: graylog-indexer
+discovery.type: single-node
 path.data: /var/lib/opensearch
 path.logs: /var/log/opensearch
-discovery.type: single-node
 network.host: 0.0.0.0
 action.auto_create_index: false
-plugins.security.disabled: true
 ```
 <br/>
 
