@@ -284,6 +284,16 @@ keytool -importcert -cacerts -storepass changeit -alias opensearch_ca -file /etc
 ```
 <br/>
 
+• Add the Java Trust Keystore configuration to the Graylog JVM options by inserting the line below:
+```
+nano /etc/default/graylog-server
+```
+```
+# Fix for log4j CVE-2021-44228
+GRAYLOG_SERVER_JAVA_OPTS="$GRAYLOG_SERVER_JAVA_OPTS -Dlog4j2.formatMsgNoLookups=true -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Djavax.net.ssl.trustStorePassword=changeit"
+```
+<br/>
+
 • Finally, enable the system service:
 ```
 systemctl daemon-reload
