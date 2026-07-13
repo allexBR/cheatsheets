@@ -122,27 +122,9 @@ apt-mark hold mongodb-org
 
 <br/>
 
-• Install the necessary packages for OpenSearch deployment:
+• Download the required package for OpenSearch deployment:
 ```
-apt install -y lsb-release ca-certificates curl gnupg2
-```
-<br/>
-
-• Create an APT repository for OpenSearch:
-```
-curl -o- https://artifacts.opensearch.org/publickeys/opensearch.pgp | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-keyring
-```
-```
-echo "deb [signed-by=/usr/share/keyrings/opensearch-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt stable main" | sudo tee /etc/apt/sources.list.d/opensearch-2.x.list
-```
-```
-apt clean ; apt update
-```
-<br/>
-
-• With the repository information added, list all available versions of OpenSearch:
-```
-apt list -a opensearch
+cd /tmp && wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.19.5/opensearch-2.19.5-linux-x64.deb
 ```
 <br/>
 
@@ -154,13 +136,7 @@ apt list -a opensearch
 
 • Install OpenSearch 2.19.5:
 ```
-OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> apt -y install opensearch=2.19.5
-```
-<br/>
-
-• Hold the currently installed version of the OpenSearch package to prevent it from being automatically upgraded to a newer version when updates are installed:
-```
-apt-mark hold opensearch
+env OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> dpkg -i opensearch-2.19.5-linux-x64.deb
 ```
 <br/>
 
