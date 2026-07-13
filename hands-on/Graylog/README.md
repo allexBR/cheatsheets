@@ -120,8 +120,6 @@ apt-mark hold mongodb-org
 
 <br/>
 
-<br/>
-
 • Download the required package for OpenSearch deployment:
 ```
 cd /tmp && wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.19.5/opensearch-2.19.5-linux-x64.deb
