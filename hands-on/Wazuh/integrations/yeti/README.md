@@ -73,7 +73,7 @@ nano /var/ossec/etc/ossec.conf
   <integration>
     <name>custom-yeti.py</name>
     <api_key>YETI_API_KEY</api_key>
-    <group>syscheck,attack,sshd,ids</group>
+    <group>syscheck,web,accesslog,attack,syslog,sshd,ids</group>
     <alert_format>json</alert_format>
   </integration>
 ```
