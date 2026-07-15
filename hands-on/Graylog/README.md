@@ -343,9 +343,7 @@ bash create-self-signed-cert-bundle.sh
 
 • Create a Nginx server block for Graylog:
 ```
-nano /etc/nginx/conf.d/graylog.conf
-```
-```
+cat > /etc/nginx/conf.d/graylog.conf <<'EOF'
 server {
     listen 80;
     server_name app.graylog.local;
@@ -411,6 +409,7 @@ server {
     # Hardware Resource Restriction (Permissions Policy)
     add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
 }
+EOF
 ```
 <br/>
 
