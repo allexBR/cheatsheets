@@ -42,7 +42,7 @@ cd /opt/yeti/docker/prod
 
 mv docker-compose.yaml docker-compose.yaml.bak
 
-cat > /opt/yeti/docker/prod/docker-compose.yaml <<EOF
+cat > /opt/yeti/docker/prod/docker-compose.yaml <<'EOF'
 services:
 
   frontend:
