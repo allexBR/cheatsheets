@@ -110,26 +110,27 @@ def process_args(args, access_token: str) -> None:
     json_alert = get_json_alert(alert_file_location)
     debug(f"# Opening alert file at '{alert_file_location}' with '{json_alert}'")
 
+    #--- CHANGED AND IMPROVED ---#
     # Determine the type of alert and process accordingly
-    if 'data' in json_alert and ('sshd' in json_alert or 'srcip' in json_alert['data']):
-        debug('# Detected an SSH-related alert')
-        msg: any = request_ssh_info(json_alert, access_token)
+    if 'data' in json_alert and 'srcip' in json_alert['data']:
+        debug(f"# Detected a source IP ({json_alert['data']['srcip']}) in the alert. Processing IP query...")
+        msg: any = request_ip_info(json_alert, access_token)
 
     elif 'data' in json_alert and ('http' in json_alert['data'] and 'url' in json_alert['data']['http']):
         debug('# Detected a URL observable in the alert')
         msg: any = request_url_info(json_alert, access_token)
 
-    elif 'syscheck' in json_alert or 'md5_after' in json_alert['syscheck']:
+    elif 'syscheck' in json_alert and 'md5_after' in json_alert['syscheck']:
         debug('# Detected a file integrity alert (MD5 check)')
         msg: any = request_md5_info(json_alert, access_token)
 
     else:
-        debug('# Alert does not match known types (SSH or MD5). Skipping processing.')
+        debug('# Alert does not match known types (IP, URL or MD5). Skipping processing.')
         return None
 
     # If a valid message is generated, send it
     if msg:
-        send_msg(msg, json_alert['agent'])
+        send_msg(msg, json_alert.get('agent'))
     else:
         debug('# No valid message generated. Skipping sending.')
 
@@ -145,8 +146,9 @@ def get_json_alert(file_location: str) -> any:
         debug('Failed getting JSON alert. Error: %s' % e)
         sys.exit(ERR_INVALID_JSON)
 
-def request_ssh_info(alert: any, access_token: str):
-    """Generate the JSON object with the message to be send."""
+#--- CHANGED AND IMPROVED ---#
+def request_ip_info(alert: any, access_token: str):
+    """Generate the JSON object with the message to be sent for IP observables."""
     alert_output = {'yeti': {}, 'integration': 'yeti'}
 
     # Extract source IP
@@ -180,10 +182,11 @@ def request_ssh_info(alert: any, access_token: str):
         debug("No data returned from the Yeti API.")
         return None
    
+    # Uso seguro do .get() para evitar KeyErrors se os campos não existirem no log original do Wazuh
     alert_output['yeti']['source'] = {
-        'alert_id': alert['id'],
-        'src_ip': alert['data']['srcip'],
-        'src_port': alert['data']['srcport'],
+        'alert_id': alert.get('id', 'N/A'),
+        'src_ip': src_ip,
+        'src_port': alert['data'].get('srcport', 'N/A'),
         'dst_user': alert['data'].get('srcuser', alert['data'].get('dstuser', 'unknown')),
     }
 
@@ -387,7 +390,7 @@ def handle_api_error(status_code):
     raise Exception(f'# Error: Yeti API request failed with status code {status_code}')
 
 def send_msg(msg: any, agent: any = None) -> None:
-    if not agent or agent['id'] == '000':
+    if not agent or agent.get('id') == '000':
         string = '1:yeti:{0}'.format(json.dumps(msg))
     else:
         location = '[{0}] ({1}) {2}'.format(agent['id'], agent['name'], agent['ip'] if 'ip' in agent else 'any')
