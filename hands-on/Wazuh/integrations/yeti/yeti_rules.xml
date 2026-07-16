@@ -14,7 +14,7 @@
     <if_sid>100500</if_sid>
     <decoded_as>json</decoded_as>
     <field name="yeti.info.source">\.+</field>
-    <description>Yeti Intel Alert: $(yeti.info.threat) detected! - Match Feed: $(yeti.info.source)!</description>
+    <description>Yeti Alert: $(yeti.info.threat) detected! - Match Feed: $(yeti.info.source)!</description>
     <mitre>
       <id>T1586</id>
     </mitre>
