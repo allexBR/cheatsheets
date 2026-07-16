@@ -32,7 +32,7 @@ ALERT_INDEX = 1
 APIKEY_INDEX = 2
 TIMEOUT_INDEX = 6
 RETRIES_INDEX = 7
-YETI_INSTANCE = 'http://<YETI_IP_ADDRESS>'
+YETI_INSTANCE = 'http://<YETI_IP_ADDRESS>' # Replace this with your Yeti's IP address
 
 def debug(msg: str) -> None:
     """Log the message in the log file with the timestamp, if debug flag
