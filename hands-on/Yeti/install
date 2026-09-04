@@ -1,4 +1,4 @@
-## Deploy YETI Threat Intel Platform ##
+## Deploy YETI Threat Intel Platform on Debian ##
 
 
 NOTE: You need to install Docker first!
@@ -12,11 +12,12 @@ bash install-docker.sh
 
 
 
-docker run hello-world
+systemctl status docker
+
+systemctl start docker
 
 
 -----------------------------------------------------------------------------------------
-
 
 mv /usr/lib/python3.13/EXTERNALLY-MANAGED /usr/lib/python3.13/EXTERNALLY-MANAGED.bak
 
@@ -30,17 +31,13 @@ git clone https://github.com/yeti-platform/yeti-feeds-frontend /opt/yeti/fronten
 
 git clone https://github.com/yeti-platform/yeti-docker /opt/yeti/docker
 
-mkdir -p /opt/yeti/bloomfilters
-
-mkdir -p /opt/yeti/exports
-
 cp /opt/yeti/app/yeti.conf.sample /opt/yeti/app/yeti.conf
 
 nano /opt/yeti/app/yeti.conf
 
-cd /opt/yeti/docker/prod
+cp /opt/yeti/docker/prod/.env.example /opt/yeti/docker/prod/.env
 
-mv docker-compose.yaml docker-compose.yaml.bak
+mv /opt/yeti/docker/prod/docker-compose.yaml /opt/yeti/docker/prod/docker-compose.yaml.bak
 
 cat > /opt/yeti/docker/prod/docker-compose.yaml <<'EOF'
 services:
@@ -158,6 +155,9 @@ EOF
 
 ----------------------------------------------------------------------------------------
 
+cd /opt/yeti/docker/prod/
+
+
 SECRET_KEY=$(openssl rand -hex 64)
 echo YETI_AUTH_SECRET_KEY=$SECRET_KEY >> .env
 
@@ -180,20 +180,21 @@ docker compose build
 
 
 # Spins up the entire infrastructure in the background
-docker compose up -d --wait --quiet-pull
-
---------
-
-# Spins up the entire infrastructure in the background
 docker compose up -d
+or
+docker compose -f /opt/yeti/docker/prod/docker-compose.yaml up -d
 
 
 # Container Status
 docker compose ps
+or
+docker compose -f /opt/yeti/docker/prod/docker-compose.yaml ps
 
 
 # Stop container execution
 docker compose stop
+or
+docker compose -f /opt/yeti/docker/prod/docker-compose.yaml stop
 
 
 # Logs
@@ -202,6 +203,9 @@ docker compose logs -f --tail=20
 
 # Create username and password for administration
 docker compose run --rm api create-user USERNAME PASSWORD --admin
+
+docker compose -f /opt/yeti/docker/prod/docker-compose.yaml run --rm api create-user <admin> <password> --admin
+
 
 # Web GUI
 http://localhost:80/
