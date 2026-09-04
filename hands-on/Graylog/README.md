@@ -128,7 +128,7 @@ cd /tmp && wget https://artifacts.opensearch.org/releases/bundle/opensearch/2.19
 
 • Generate a custom admin password for OpenSearch:
 ```
-{ printf '%s\n' . + - '*'; shuf -e {A..H} {J..N} {P..Z} {a..h} {j..k} {m..n} {p..z} {2..9} -n28; } | shuf | tr -d '\n'; echo
+{ printf '%s\n' . _ - '*'; shuf -e {A..H} {J..N} {P..Z} {a..h} {j..k} {m..n} {p..z} {2..9} -n28; } | shuf | tr -d '\n'; echo
 ```
 <br/>
 
@@ -246,7 +246,7 @@ sed -i.bak 's/#http_bind_address = 127.0.0.1.*/http_bind_address = 0.0.0.0:9000/
 
 • Generate a custom admin password for Graylog:
 ```
-{ printf '%s\n' . + - '*'; shuf -e {A..H} {J..N} {P..Z} {a..h} {j..k} {m..n} {p..z} {2..9} -n28; } | shuf | tr -d '\n'; echo
+{ printf '%s\n' . _ - '*'; shuf -e {A..H} {J..N} {P..Z} {a..h} {j..k} {m..n} {p..z} {2..9} -n28; } | shuf | tr -d '\n'; echo
 ```
 <br/>
 
