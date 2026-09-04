@@ -1,6 +1,6 @@
-#################################################################
-## Installing Fluent Bit on the Wazuh Server to Forward Alerts ##
-#################################################################
+###################################################################
+##  Installing Fluent Bit on the Wazuh Server to Forward Alerts  ##
+###################################################################
 
 
 NOTES: (1) Fluent Bit will read the alerts.json file and sends its entries to Graylog.
