@@ -1,9 +1,12 @@
+#################################################################
 ## Installing Fluent Bit on the Wazuh Server to Forward Alerts ##
+#################################################################
 
 
-NOTE: Fluent Bit will read the alerts.json file and sends its entries to Graylog.
+NOTES: (1) Fluent Bit will read the alerts.json file and sends its entries to Graylog.
+       (2) It is also necessary to create an Input in Graylog to receive the alerts being sent via Fluent Bit.
 
-----------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
 
 curl https://raw.githubusercontent.com/fluent/fluent-bit/master/install.sh | sh
 
@@ -60,12 +63,13 @@ nano /etc/fluent-bit/fluent-bit.conf
 #    Format json_lines
 
 
-----------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
 
 systemctl enable fluent-bit
+
 systemctl start fluent-bit
 
-----------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------
 
 tail -f /var/log/td-agent-bit.log
 
