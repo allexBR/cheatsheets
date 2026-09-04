@@ -1,0 +1,71 @@
+## Installing Fluent Bit on the Wazuh Server to Forward Alerts ##
+
+
+NOTE: Fluent Bit will read the alerts.json file and sends its entries to Graylog.
+
+----------------------------------------------------------------------------------------------------------
+
+curl https://raw.githubusercontent.com/fluent/fluent-bit/master/install.sh | sh
+
+
+# Edit the file /etc/fluent-bit/fluent-bit.conf to collect the alerts.json file and send it to Graylog:
+
+mv /etc/fluent-bit/fluent-bit.conf /etc/fluent-bit/fluent-bit.conf.bak
+
+nano /etc/fluent-bit/fluent-bit.conf
+
+[SERVICE]
+    flush        5
+    daemon       Off
+    log_level    info
+    parsers_file parsers.conf
+    plugins_file plugins.conf
+    http_server  Off
+    http_listen  0.0.0.0
+    http_port    2020
+    storage.metrics on
+    storage.path /var/log/flb-storage/
+    storage.sync normal
+    storage.checksum off
+    storage.backlog.mem_limit 5M
+    Log_File /var/log/td-agent-bit.log
+
+[INPUT]
+    name  tail
+    path  /var/ossec/logs/alerts/alerts.json
+    tag wazuh
+    parser  json
+    Buffer_Max_Size 5MB
+    Buffer_Chunk_Size 400k
+    storage.type      filesystem
+    Mem_Buf_Limit     512MB
+
+#[FILTER]
+#    Name    grep
+#    Match   wazuh
+#    Exclude data['integration'] ^(yeti|opencti|misp)$
+
+[OUTPUT]
+    Name  tcp
+    Host  <GRAYLOG_SERVER_IP>
+    Port  5555
+    net.keepalive off
+    Match wazuh
+    Format  json_lines
+    json_date_key true
+
+#[OUTPUT]
+#    Name stdout
+#    Match wazuh
+#    Format json_lines
+
+
+----------------------------------------------------------------------------------------------------------
+
+systemctl enable fluent-bit
+systemctl start fluent-bit
+
+----------------------------------------------------------------------------------------------------------
+
+tail -f /var/log/td-agent-bit.log
+
