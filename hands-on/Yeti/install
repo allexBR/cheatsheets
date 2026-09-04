@@ -1,8 +1,11 @@
-## Deploy YETI Threat Intel Platform on Debian ##
+###################################################
+##  Deploy YETI Threat Intel Platform on Debian  ##
+###################################################
 
 
 NOTE: You need to install Docker first!
 
+-------------------------------------------------------------------------------------------------------------
 
 cd /tmp && wget https://raw.githubusercontent.com/allexBR/cheatsheets/main/hands-on/Docker/install-docker.sh
 
@@ -11,13 +14,11 @@ chmod 744 install-docker.sh
 bash install-docker.sh
 
 
-
 systemctl status docker
 
 systemctl start docker
 
-
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
 
 mv /usr/lib/python3.13/EXTERNALLY-MANAGED /usr/lib/python3.13/EXTERNALLY-MANAGED.bak
 
@@ -153,7 +154,7 @@ volumes:
     driver: local
 EOF
 
-----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
 
 cd /opt/yeti/docker/prod/
 
@@ -161,7 +162,7 @@ cd /opt/yeti/docker/prod/
 SECRET_KEY=$(openssl rand -hex 64)
 echo YETI_AUTH_SECRET_KEY=$SECRET_KEY >> .env
 
-----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
 
 # Stop the containers from running
 docker stop $(docker ps -aq)
