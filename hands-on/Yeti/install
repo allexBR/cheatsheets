@@ -112,7 +112,6 @@ services:
 
   arangodb:
     image: arangodb:3.11
-    #image: arangodb:3.8.9
     container_name: arangodb
     restart: unless-stopped
     environment:
