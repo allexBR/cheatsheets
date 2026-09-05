@@ -121,9 +121,9 @@ nano /etc/network/interfaces
 ```
 ```
 # The primary network interface
-allow-hotplug enp0s3
-iface enp0s3 inet static
-    address 192.168.1.2
+allow-hotplug eth0
+iface eth0 inet static
+    address 192.168.1.5
     netmask 255.255.255.0
     gateway 192.168.1.1
     # Put interfaces in promiscuous mode
