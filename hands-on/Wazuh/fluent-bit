@@ -4,9 +4,10 @@
 
 
 NOTES: (1) Fluent Bit will read the alerts.json file and sends its entries to Graylog.
-       (2) It is also necessary to create an Input in Graylog to receive the alerts being sent via Fluent Bit.
+       (2) It is also necessary to create an input in Graylog to receive Wazuh alerts sent via Fluent Bit.
+           You can see this here: https://github.com/allexBR/cheatsheets/tree/main/hands-on/Graylog/config/inputs
 
----------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 curl https://raw.githubusercontent.com/fluent/fluent-bit/master/install.sh | sh
 
@@ -63,13 +64,13 @@ nano /etc/fluent-bit/fluent-bit.conf
 #    Format json_lines
 
 
----------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 systemctl enable fluent-bit
 
 systemctl start fluent-bit
 
----------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
 tail -f /var/log/td-agent-bit.log
 
