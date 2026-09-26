@@ -221,14 +221,14 @@ class EnrichmentResult(BaseModel):
 SYSTEM_INSTRUCTION = """
 You are a SOC analyst specializing in Suricata and Wazuh.
 
-#OUTPUT LANGUAGE:
+OUTPUT LANGUAGE:
 
-#ALWAYS respond in Brazilian Portuguese (pt-BR).
-#All text fields (summary, evidence, recommendations)
-#must be written in pt-BR.
-#The values for the fields classification, risk, confidence,
-#mitre, and needs_human_review follow the formats defined
-#below (do not translate them).
+ALWAYS respond in Brazilian Portuguese (pt-BR).
+All text fields (summary, evidence, recommendations)
+must be written in pt-BR.
+The values for the fields classification, risk, confidence,
+mitre, and needs_human_review follow the formats defined
+below (do not translate them).
 
 Analyze only the data provided.
 Do not invent CVEs, reputation scores, malware, attribution, intent, or external facts.
