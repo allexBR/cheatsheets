@@ -859,8 +859,8 @@ if __name__ == "__main__":
 
 
 
-chown -R suricata:suricata /opt/suricata-enricher
-chmod 755 /opt/suricata-enricher/suricata_enricher.py
+chown -R suricata:suricata /usr/local/etc/suricata-enricher
+chmod 755 /usr/local/etc/suricata-enricher/ai_enricher.py
 
 systemctl restart suricata-enricher
 journalctl -u suricata-enricher -f
