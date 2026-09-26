@@ -20,8 +20,6 @@ suricata-enricher.service
 
 bash:
 
-useradd --system --no-create-home --shell /usr/sbin/nologin suricata
-
 install -o root -g root -m 644 /dev/null \
   /var/log/suricata/enriched.json
 
@@ -32,6 +30,8 @@ install -o root -g root -m 644 /dev/null \
 ============================================================
 
 bash:
+
+useradd --system --no-create-home --shell /usr/sbin/nologin suricata
 
 apt -y install acl
 
@@ -47,17 +47,19 @@ getfacl /var/log/suricata/enriched.json /var/log/suricata/
 ## ENVIRONMENT SETUP ##
 ============================================================
 
-mkdir -p /opt/suricata-enricher/
+bash:
+
+mkdir -p /usr/local/etc/suricata-enricher/
 
 apt -y install python3.13-venv
 
-python3 -m venv /opt/suricata-enricher/venv
+python3 -m venv /usr/local/etc/suricata-enricher/venv
 
-source /opt/suricata-enricher/venv/bin/activate
+source /usr/local/etc/suricata-enricher/venv/bin/activate
 
 pip install --upgrade \
-  openai \
   google-genai \
+  openai \
   anthropic \
   pydantic
 
@@ -110,8 +112,8 @@ Group=suricata
 
 EnvironmentFile=/etc/suricata/ai-engine/environment
 
-ExecStart=/opt/suricata-enricher/venv/bin/python \
-          /opt/suricata-enricher/suricata_enricher.py
+ExecStart=/usr/local/etc/suricata-enricher/venv/bin/python \
+          /usr/local/etc/suricata-enricher/ai_enricher.py
 
 Restart=always
 RestartSec=10
@@ -135,7 +137,7 @@ systemctl enable --now suricata-enricher
 ## AUTOMATION SCRIPT ##
 ============================================================
 
-nano /opt/suricata-enricher/suricata_enricher.py
+nano /usr/local/etc/suricata-enricher/ai_enricher.py
 
 #!/usr/bin/env python3
 
